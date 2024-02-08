@@ -113,8 +113,8 @@ resource "aws_iam_role" "lambda_exec" {
   })
 }
 
-resource "aws_iam_policy" "lambda_policy" {
-  name = "my-lambda-policy"
+resource "aws_iam_policy" "lambda_policy_secrets" {
+  name = "my-lambda-policy-secret"
 
   policy = <<EOF
 {
@@ -123,10 +123,7 @@ resource "aws_iam_policy" "lambda_policy" {
     {
       "Effect": "Allow",
       "Action": [
-        "secretsmanager:GetSecretValue",
-        "ec2:CreateNetworkInterface",
-        "ec2:DescribeNetworkInterfaces",
-        "ec2:DeleteNetworkInterface"
+        "secretsmanager:GetSecretValue"
       ],
       "Resource": "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:${var.secret_manager_name}"
     }
@@ -135,9 +132,37 @@ resource "aws_iam_policy" "lambda_policy" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
+resource "aws_iam_policy" "lambda_policy_interface" {
+  name = "my-lambda-policy-interface"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DeleteNetworkInterface"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_policy_attachment_interface" {
   role       = aws_iam_role.lambda_exec.name
-  policy_arn = aws_iam_policy.lambda_policy.arn
+  policy_arn = aws_iam_policy.lambda_policy_interface.arn
+
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_policy_attachment_secrets" {
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = aws_iam_policy.lambda_policy_secrets.arn
+
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_policy" {
