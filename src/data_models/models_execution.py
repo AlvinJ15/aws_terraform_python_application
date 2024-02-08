@@ -2,18 +2,18 @@ from sqlalchemy import create_engine
 from urllib.parse import quote_plus, quote
 from sqlalchemy.schema import CreateTable
 
-from model_roles import Role
-from model_compliance_package import CompliancePackage
-from model_document_type import DocumentType
-from model_package_role import PackageRole
-from model_package_document import PackageDocument
+from data_models.model_roles import Role
+from data_models.model_organization import Organization
+from data_models.model_compliance_package import CompliancePackage
+from data_models.model_document_type import DocumentType
+from data_models.model_package_role import PackageRole
+from data_models.model_package_document import PackageDocument
 
-from models import Base
+from data_models.models import Base
 
 import os
 
 # Database connection (or replace with your credentials)
-
 connection_string = (
     f"mysql+pymysql://{os.getenv('DB_USERNAME')}:"
     f"{os.getenv('DB_PASSWORD')}"
@@ -28,11 +28,11 @@ connection_string = (
 #                    f"{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_DATABASE')}"
 #
 
-engine = create_engine(connection_string)
+engine = create_engine(connection_string, echo=True)
 Base.metadata.reflect(engine)
 
-
 # Generate SQL statement without executing it
+create_sql_organizations = CreateTable(Organization.__table__).compile(engine)
 create_sql_roles = CreateTable(Role.__table__).compile(engine)
 create_sql_compliance_package = CreateTable(CompliancePackage.__table__).compile(engine)
 create_sql_document_type = CreateTable(DocumentType.__table__).compile(engine)
@@ -40,6 +40,7 @@ create_sql_package_role = CreateTable(PackageRole.__table__).compile(engine)
 create_sql_package_document = CreateTable(PackageDocument.__table__).compile(engine)
 
 # Print the SQL statement for analysis
+
 print("Roles" + "-" * 20)
 print(create_sql_roles.string)
 print("CompliancePackage" + "-" * 20)

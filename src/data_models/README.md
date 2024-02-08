@@ -28,6 +28,7 @@ Set ENV variables from .env file
 source DEV.env
 ```
 
+For Create or Modify existing tables according to the `data_models` we run:
 ```sh
 python3 models_execution.py
 ```
