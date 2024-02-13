@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 100px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .container h2 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #C1554E;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-group a {
+            color: #3498db;
+            text-decoration: none;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .image.object {
+            display: block;
+            margin: 0 auto; /* Center the image */
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+    </style>
+    <body>
+        <span class="image object"></span></div>
+            <img src="images/bpologo.png" alt="center" width="313" height="156" />
+        </span>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <button type="button" onclick="submitForm()">Login</button>
+            </div>
+            <div class="form-group">
+                <a href="#" onclick="openPasswordResetModal()">Forgot Password?</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Password Reset Modal -->
+    <div id="passwordResetModal" class="modal" style="width: 400px; height: 400px;">
+        <h2>Password Reset</h2>
+        <p>Enter your email to reset your password:</p>
+        <form id="passwordResetForm">
+            <div class="form-group">
+                <label for="resetEmail">Email</label>
+                <input type="email" id="resetEmail" name="resetEmail" style="width: calc(100% - 20px);" required>
+            </div>
+            <div class="form-group">
+                <button type="button" onclick="resetPassword()" style="width: 100%;">Reset Password</button>
+            </div>
+        </form>
+        <button onclick="closePasswordResetModal()">Close</button>
+    </div>
+    <div id="overlay" class="overlay"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const baseURL = 'https://p4u9i76s6f.execute-api.us-east-1.amazonaws.com';
+
+        async function makeRequest(method, url, data = null) {
+            try {
+                const response = await axios({
+                    method,
+                    url: `${baseURL}/${url}`,
+                    data
+                });
+                return response.data;
+            } catch (error) {
+                console.error('Error making request:', error.message);
+                throw error;
+            }
+        }
+
+        async function loginUser(username, password) {
+            const loginEndpoint = 'auth/login';
+
+            try {
+                const response = await makeRequest('POST', loginEndpoint, { username, password });
+                console.log('Login successful:', response);
+
+                // Redirect or perform any action upon successful login
+            } catch (error) {
+                console.error('Login failed:', error.message);
+                // Handle login failure, show error message, etc.
+            }
+        }
+
+        function submitForm() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            loginUser(username, password);
+        }
+
+        function openPasswordResetModal() {
+            document.getElementById('passwordResetModal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closePasswordResetModal() {
+            document.getElementById('passwordResetModal').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function resetPassword() {
+            const resetEmail = document.getElementById('resetEmail').value;
+
+            // Implement logic to send a reset link to the email
+            console.log('Password reset requested for email:', resetEmail);
+
+            // Close the modal
+            closePasswordResetModal();
+        }
+    </script>
+</body>
+</html>

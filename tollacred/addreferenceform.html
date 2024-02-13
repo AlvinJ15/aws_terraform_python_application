@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Create Reference Form</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<!-- Header -->
+								<header id="header">
+									<a href="dashboard.html" class="logo"><strong>BPO Credentialing</strong> by Tollanis</a>
+								</header>
+							<!-- Banner -->
+							<section id="banner">
+								<div class="content">
+                                <header>
+								<h2 style="margin-left: 50px;">Create Reference Form<br /></h2>
+                                </header>
+                                </div>
+                            </section>
+							<div class="form-group" style="margin-left: 50px;">
+								<label for="name" style="margin-top: 15px;">Name*</label>
+								<div class="input-container">
+									<input type="text" id="name" name="name" class="textbox" placeholder="Name*" style="width: 500px;" required>
+								</div>
+							</div>
+							<div class="form-group" style="margin-left: 50px;">
+								<label for="name" style="margin-top: 15px;">REFERENCE BUSINESS RULES</label>
+								<div class="input-container">
+									<textarea id="reference" name="reference" class="textbox" placeholder="Please provide business rules for your staff members regarding references here, e.g. provider references over 3 years of employment history." style="width: 500px; height: 90px;" required></textarea>
+								</div>
+							</div>
+							<div class="box-selection-group" style="margin-left: 50px;">
+								<div class="box-selection">
+									<label for="category" style="margin-top: 15px;">Contact requirements:</label>
+									<input type="checkbox" id="phone" name="category" value="Phone-required">
+									<label for="phone">Phone required</label>
+									<input type="checkbox" id="businessmail" name="category" value="businessmail">
+									<label for="businessmail">Only accept references from professional email addresses.</label>
+								</div>
+							</div>
+							<div class="form-group" style="margin-left: 50px;">
+								<label for="reference-form" style="margin-top: 15px;">Reference form</label>
+								<div class="input-container" style="background-color: #E4E4E4; width: 450px; height: 135px; margin: 10px 0; margin-left: 10px; margin-top: 10px;">
+									<strong style="margin-left: 10px; margin-top: 20px;">We automatically add the following fields (do not add them):</strong>
+									<ul style="margin: 10px;">
+										<li style="margin-left: 10px;">Referee full name</li>
+										<li style="margin-left: 10px;">Referee email</li>
+										<li style="margin-left: 10px;">Staff Member's full name</li>
+										<li style="margin-left: 10px;">Job start date</li>
+									</ul>   
+								</div>
+							</div>
+							<div class="form-group" style="margin-left: 50px;">
+								<label for="description" style="margin-top: 15px;">Description*</label>
+								 <div class="input-container">
+								 <input type="text" id="description" name="description" class="textbox" placeholder="Description" style="width: 500px;" required>
+								 </div>
+							</div>
+							<div class="content">
+								<h4 style="margin-left: 50px; margin-top: 20px;">QUESTIONS</h4>
+								<div class="form-group" style="margin-left: 50px;">
+								</div>
+							</div>
+							<div class="form-group" style="margin-left: 50px; margin-top: 15px;">
+								<label for="question1">Question 1</label>
+								<div class="input-container">
+									<input type="text" id="question1" name="question1" class="textbox" placeholder="Enter 1st question" style="width: 500px;">
+								</div>
+							</div>
+							<div class="form-group" style="margin-left: 50px; margin-top: 15px;">
+								<label for="answer1">Answer 1</label>
+								<div class="input-container">
+									<input type="text" id="answer1" name="answer1" class="textbox" placeholder="1st Answer" style="width: 500px;">
+								</div>
+							</div>
+							<div class="form-group" style="margin-left: 50px; margin-top: 15px;">
+								<label for="question2">Question 2</label>
+								<div class="input-container">
+									<input type="text" id="question2" name="question2" class="textbox" placeholder="Enter 2nd question" style="width: 500px;">
+								</div>
+							</div>
+							<div class="form-group" style="margin-left: 50px; margin-top: 15px;">
+								<label for="answer2">Answer 2</label>
+								<div class="input-container">
+									<input type="text" id="answer2" name="answer2" class="textbox" placeholder="2nd Answer" style="width: 500px;">
+								</div>
+							</div>
+							<div class="form-group" style="margin-left: 50px; margin-top: 15px;">
+								<label for="question3">Question 3</label>
+								<div class="input-container">
+									<input type="text" id="question3" name="question3" class="textbox" placeholder="Enter 3rd question" style="width: 500px;">
+								</div>
+							</div>
+							<div class="form-group" style="margin-left: 50px; margin-top: 15px;">
+								<label for="answer3">Answer 3</label>
+								<div class="input-container">
+									<input type="text" id="answer3" name="answer3" class="textbox" placeholder="3rd Answer" style="width: 500px;">
+								</div>
+							</div>
+							<div class="form-group" style="margin-left: 50px; margin-top: 20px;">
+								<a href="#" class="button primary default" id="save-button" disabled>Save</a>
+								<a href="#" class="button default" id="cancel-button">Cancel</a>
+								<br></br>
+								<br></br>
+								<br></br>
+							</div>
+                            </body>
+                    </div>
+            </div>
+                    
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+								<span class="image object">
+   								 	<img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
+								</span>
+							
+							<!-- Search -->
+								<section id="search" class="alt">
+									<form method="post" action="#">
+										<input type="text" name="query" id="query" placeholder="Search" />
+									</form>
+								</section>
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>Menu</h2>
+									</header>
+									<ul>
+										<li><a href="dashboard.html">Homepage</a></li>
+										<li>
+											<span class="opener">Organization Settings</span>
+											<ul>
+												<li><a href="organizationdetails.html">Organization Details</a></li>
+												<li><a href="documenttypes.html">Document Types</a></li>
+												<li><a href="compliancerequirements.html">Compliance Requirements</a></li>
+												<li><a href="organizationdocuments.html">Organization Documents</a></li>
+												<li><a href="questionnaires.html">Questionnaires</a></li>
+												<li><a href="onboarding.html">Onboarding</a></li>
+											</ul>
+										</li>
+										<li>
+											<span class="opener">Staff</span>
+											<ul>
+												<li><a href="staff.html">Staff</a></li>
+												<li><a href="staffapproval.html">Staff needing approval</a></li>
+											</ul>
+										</li>
+										
+									</ul>
+								</nav>
+
+							<!-- Section -->
+								<section>
+									<header class="major">
+										<h2>Get in touch</h2>
+									</header>
+									<p>We're here to help! If you're experiencing any issues or have questions, please don't hesitate to reach out to us at help@tollanis.com. Our dedicated support team is ready to assist you and ensure you have a smooth experience with our new product. Your satisfaction is our priority.</p>
+									<ul class="contact">
+										<li class="icon solid fa-envelope"><a href="#">help@tollanis.com</a></li>
+									</ul>
+								</section>
+
+						</div>
+					</div>
+					
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

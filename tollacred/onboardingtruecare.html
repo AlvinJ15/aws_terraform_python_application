@@ -1,0 +1,329 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <title>Onboarding True Care</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <style>
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Main -->
+        <div id="main">
+            <div class="inner">
+
+              <!-- Header -->
+<header id="header" style="display: flex; align-items: center;">
+    <a href="dashboard.html" class="logo"><strong>BPO Credentialing</strong> by Tollanis</a>
+    <img src="images/truecarebutton.png" alt="True Care instance" style="max-width: 40px; max-height: 40px; margin-left: 10px;" />
+</header>
+
+
+                <!-- Banner -->
+                <section id="banner">
+                    <div class="content">
+                            <!-- Page 1 -->
+       				 <div class="page" id="page1">
+                        <div class="container">
+                              <img src="images/welcome.png" alt="Welcome Image" style="float: left; margin-right: 20px;">
+                          <h2>Welcome to the Onboarding True Care page</h2>
+                          <p>Our mission is to enable our internal corporate team members to efficiently credential healthcare providers for our platform, ensuring seamless integration into our network.</p>
+                          <p>We explore innovative approaches to enhance the onboarding experience for our team and the successful inclusion of healthcare providers.</p>
+                          <p>We believe in providing our team and the organization with flexibility, transparency, and choice throughout the credentialing process.</p>
+                          <p>We have carefully designed the onboarding process to facilitate the smooth addition of healthcare providers to our platform.</p>
+                          <button onclick="showPage('page2')">Next</button>
+                          <br></br>
+                          <br></br>
+                          <br></br>
+                        </div>
+                  </div>
+                  <!-- Page 2 -->
+					<div class="page" id="page2">
+						<div class="container">
+							<img src="images/emergencycontact.png" alt="Emergency Image" style="float: right; margin-left: 20px;">
+							<h2>Emergency Contact Information</h2>
+							<p>As part of our commitment to ensuring the safety and well-being of our team, we kindly request that you provide us with your emergency contact information.</p>
+							<p>This information will be kept confidential and will only be used in case of an emergency situation. Please take a moment to fill out the emergency contact form in your onboarding portal.</p>
+							<p>If you have any questions or concerns, feel free to reach out to our HR department. Thank you for your cooperation!</p>
+								<div style="max-width: 500px; display: flex; flex-wrap: wrap; gap: 10px;">
+									<label for="emergency-contact">Emergency Contact Name:</label>
+									<input type="text" id="emergency-contact" name="Emergency Contact" style="float: left;">
+									<label for="phone-number">Phone Number:</label>
+									<input type="text" id="phone-number" name="Phone Number" style="float: left;">
+									<label for="email">Email:</label>
+									<input type="text" id="email" name="Email" style="float: left;">
+								</div>
+									<button onclick="showPage('page1')" style="margin-top: 10px;">Previous</button>
+									<button onclick="showPage('page3')" style="margin-top: 10px;">Next</button>
+									<br></br>
+									<br></br>
+									<br></br>
+						</div>
+					</div>
+                    <!-- Page 3 -->
+					<div class="page" id="page3">
+						<div class="container">
+							<img src="images/mandatoryuploads.png" alt="mandatory uploads" style="float: right; margin-left: 20px;">
+								<h2>Mandatory documents upload</h2>
+								<p>1. License or Certification<br>
+									<input type="file" id="fileCert"></p>
+								<p>2. Verification of License or Certification<br><input type="file" id="fileLicCertVer"></p>
+								<p>3. Education Verification (online verification required)<br><input type="file" id="fileedu"></p>
+								<p>4.a Reference1 <br><input type="file" id="fileref1"></p>
+								<p>4.b Reference2 <br><input type="file" id="fileref2"></p>
+								<p>5. Experience (resume is sufficient)<br><input type="file" id="filexp"></p>
+								<p>6. Competency Evaluation (specialty) - must be done annually<br><input type="file" id="fileCompEv"></p>
+								<p>7. Skills Checklist - must be done annually<br><input type="file" id="fileskillckl"></p>
+								<p>8. Performance Evaluation - annually after one year of work<br><input type="file" id="filepfev"></p>
+								<p>9. Criminal Background Check<br><input type="file" id="fileBGcheck"></p>
+								<p>10. Company Orientation Attestation (acknowledgment of the handbook is sufficient)<br><input type="file" id="fileCOA"></p>
+								<p>11. BLS <br><input type="file" id="fileBLS"></p>
+								<p>12. ACLS <br><input type="file" id="fileACLS"></p>
+								<p>13. Covid* <br><input type="file" id="fileCovid"></p>
+								<p>14. Flu* <br><input type="file" id="fileFlu"></p>
+								<p>15. Varicella* <br><input type="file" id="fileVaricella"></p>
+								<p>16. MMR* <br><input type="file" id="fileMMR"></p>
+								<p>17. HepB* <br><input type="file" id="fileHepB"></p>
+								<p>18. TB* <br><input type="file" id="fileTB"></p>
+								<p>19. Health Statement <br><input type="file" id="fileHealthStatement"></p>
+								<p>20. Drug Screening <br><input type="file" id="fileDrugScreening"></p>
+								<button onclick="showPage('page2')" style="margin-top: 10px;">Previous</button>
+								<button id="submitButton" onclick="submitFiles()" style="margin-top: 10px;">Submit</button>
+								<button id="nextButtonPage3" style="display:none; margin-top: 10px;" onclick="showPage(4)">Next</button>
+								<br></br>
+								<br></br>
+								<br></br>
+						</div>
+					</div>
+                    <!-- Page 4 -->
+						<div class="page" id="page4">
+							<div class="container">
+								<h2>Read and Download Organization’s Documents</h2>
+								<img src="images/readdownload.png" alt="Read download" style="float: right; margin-left: 20px;">
+								<p>Specialty 1 - <button class="button icon solid fa-download" id="downloadSpecialty1">Download</button></p>
+								<p>Specialty 2 - <button class="button icon solid fa-download" id="downloadSpecialty2">Download</button></p>
+								<p>Specialty 3 - <button class="button icon solid fa-download" id="downloadSpecialty3">Download</button></p>
+								<p>Specialty 4 - <button class="button icon solid fa-download" id="downloadSpecialty4">Download</button></p>
+								<p>Specialty 5 - <button class="button icon solid fa-download" id="downloadSpecialty5">Download</button></p>
+								<p>Specialty 6 - <button class="button icon solid fa-download" id="downloadSpecialty6">Download</button></p>
+								<p>Specialty 7 - <button class="button icon solid fa-download" id="downloadSpecialty7">Download</button></p>
+								<p>Specialty 8 - <button class="button icon solid fa-download" id="downloadSpecialty8">Download</button></p>
+								<button onclick="showPage('page3')">Previous</button>
+								<button onclick="showPage('page5')">Next</button>
+								<br></br>
+								<br></br>
+								<br></br>
+							</div>
+						</div>
+
+					<!-- Page 5 -->
+					<div class="page" id="page5">
+						<div class="container">
+						<img src="images/docupload.png" alt="Doc upload" style="float: right; margin-left: 20px;">
+						<h2>Documents Upload</h2>
+						<p>Choose which documents Tollanis will ask Staff Members to upload at this step.
+							You can ask Staff Members to upload other files at the other ‘Documents upload’ steps.</p>
+						<label for="rolesDropdown" style="width: 400px;">Roles:</label>
+						<select id="rolesDropdown" onchange="updateDocumentList()" style="width: 400px;">
+							<option value="" disabled selected>Select Role</option>
+							<option value="Role1">Role1</option>
+							<option value="Role2">Role2</option>
+							<option value="Role3">Role3</option>
+							<option value="Role4">Role4</option>
+							<option value="Role5">Role5</option>
+							<option value="Role6">Role6</option>
+							<option value="Role7">Role7</option>
+							<option value="Role8">Role8</option>
+							<option value="Role9">Role9</option>
+							<option value="Role10">Role10</option>
+						</select>
+							<div id="documentList" style="margin-top: 10px;"></div>
+							<button onclick="showPage('page4')">Previous</button>
+							<button onclick="showPage('page6')">Next</button>
+							<br></br>
+							<br></br>
+							<br></br>
+							</div>
+						</div>
+                </section>
+                <script>
+                    function showPage(pageId) {
+                      // Hide all pages
+                      document.querySelectorAll('.page').forEach(function (page) {
+                        page.style.display = 'none';
+                      });
+                
+                      // Show the selected page
+                      document.getElementById(pageId).style.display = 'block';
+                    }
+                
+                    function submitFiles() {
+                      // Implement file submission logic here
+                      alert("Files submitted successfully!");
+                      // Show the "Next" button after submitting files (assuming it's on page 3)
+                      showPage('page4');
+                    }
+                
+                    function updateDocumentList() {
+                      var rolesDropdown = document.getElementById("rolesDropdown");
+                      var selectedRole = rolesDropdown.options[rolesDropdown.selectedIndex].value;
+                      var documentListContainer = document.getElementById("documentList");
+                
+                      // Define document lists for each role
+                      var documentLists = {
+                        Role1: ["Doc A", "Doc B", "Doc C", "Doc D", "Doc E", "Doc F", "Doc G", "Doc H"],
+                        Role2: ["Doc I", "Doc J", "Doc K", "Doc L", "Doc M", "Doc N", "Doc O", "Doc P"],
+                        Role3: ["Doc Q", "Doc R", "Doc S", "Doc T", "Doc U", "Doc V", "Doc X", "Doc Z"],
+                        Role4: ["Doc AA", "Doc BB", "Doc CC", "Doc DD", "Doc EE", "Doc FF", "Doc GG", "Doc HH"],
+                        Role5: ["Doc AB", "Doc BC", "Doc CD", "Doc DE", "Doc EF", "Doc FG", "Doc GH", "Doc HI"],
+                        Role6: ["Doc A,Q", "Doc BW", "Doc CM", "Doc DT", "Doc ES", "Doc FW", "Doc GS", "Doc HZ"],
+                        Role7: ["Doc AT", "Doc BQ", "Doc CS", "Doc DO", "Doc EY", "Doc FI", "Doc GY", "Doc HY"],
+                        Role8: ["Doc A1", "Doc B1", "Doc C1", "Doc D1", "Doc E1", "Doc F1", "Doc G1", "Doc H1"],
+                        Role9: ["Doc A0", "Doc B0", "Doc C0", "Doc D0", "Doc E0", "Doc F0", "Doc G0", "Doc H0"],
+                        Role10: ["Doc AQ", "Doc BQ", "Doc CQ", "Doc DQ", "Doc EQ", "Doc FQ", "Doc GQ", "Doc HQ"]
+                      };
+                
+                      // Clear existing document list
+                      documentListContainer.innerHTML = "";
+                
+                      // Populate document list based on selected role
+                      var documents = documentLists[selectedRole];
+                      for (var i = 0; i < documents.length; i++) {
+                        var documentItem = document.createElement("p");
+                        documentItem.textContent = documents[i];
+                        documentListContainer.appendChild(documentItem);
+                      }
+                    }
+                
+                    // Initially show the first page
+                    document.addEventListener('DOMContentLoaded', function () {
+                      showPage('page1');
+                    });
+                  </script>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <div class="inner">
+                <span class="image object">
+                    <img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
+                </span>
+                <br />
+                <section>
+                    <header class="major">
+                        <h2>Quick Access</h2>
+                    </header>
+                    <a href="dashboardelite.html">
+                        <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; margin-bottom: 20px;">
+                            <li style="margin-right: 10px; display: flex; align-items: center;">
+                                <img src="images/elitebutton.png" alt="Elite 365 instance" style="width: 40px; height: 40px; margin-right: 10px;" />
+                                <span style="font-weight: bold; color: #00125B;" spellcheck="false">Elite 365 instance</span>
+                            </li>
+                        </ul>
+                    </a>
+                    <a href="dashboardelitelocums.html">
+                        <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; margin-bottom: 20px;">
+                            <li style="margin-right: 10px; display: flex; align-items: center;">
+                                <img src="images/elitebutton.png" alt="Elite 365 Locums instance" style="width: 40px; height: 40px; margin-right: 10px;" />
+                                <span style="font-weight: bold; color: #00125B;" spellcheck="false">Elite 365 Locums instance</span>
+                            </li>
+                        </ul>
+                    </a>
+                    <a href="dashboardgenevive.html">
+                        <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; margin-bottom: 20px;">
+                            <li style="margin-right: 10px; display: flex; align-items: center;">
+                                <img src="images/genevivebutton.png" alt="Genevive instance" style="width: 40px; height: 40px; margin-right: 10px;" />
+                                <span style="font-weight: bold; color: #00125B;" spellcheck="false">Genevive instance</span>
+                            </li>
+                        </ul>
+                    </a>
+                    <a href="dashboardpulse.html">
+                        <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; margin-bottom: 20px;">
+                            <li style="margin-right: 10px; display: flex; align-items: center;">
+                                <img src="images/pulsebutton.png" alt="Pulse instance" style="width: 40px; height: 40px; margin-right: 10px;" />
+                                <span style="font-weight: bold; color: #00125B;" spellcheck="false">Pulse instance</span>
+                            </li>
+                        </ul>
+                    </a>
+                    <a href="tollanistraining.html">
+                        <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; margin-bottom: 20px;">
+                            <li style="margin-right: 10px; display: flex; align-items: center;">
+                                <img src="images/tollanisbutton.png" alt="Tollanis Training instance" style="width: 40px; height: 40px; margin-right: 10px;" />
+                                <span style="font-weight: bold; color: #00125B;" spellcheck="false">Tollanis Training instance</span>
+                            </li>
+                        </ul>
+                    </a>
+                </section>
+
+                <!-- Search -->
+                <section id="search" class="alt">
+                    <form method="post" action="#">
+                        <input type="text" name="query" id="query" placeholder="Search" />
+                    </form>
+                </section>
+
+                <!-- Menu -->
+                <nav id="menu">
+                    <header class="major">
+                        <h2>Menu</h2>
+                    </header>
+                    <ul>
+                        <li><a href="dashboard.html">Homepage</a></li>
+                        <li>
+                            <span class="opener">Organization Settings</span>
+                            <ul>
+                                <li><a href="organizationdetails.html">Organization Details</a></li>
+                                <li><a href="documenttypes.html">Document Types</a></li>
+                                <li><a href="compliancerequirements.html">Compliance Requirements</a></li>
+                                <li><a href="organizationdocuments.html">Organization Documents</a></li>
+                                <li><a href="questionnaires.html">Questionnaires</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span class="opener">Staff</span>
+                            <ul>
+                                <li><a href="staff.html">Staff</a></li>
+                                <li><a href="staffapproval.html">Staff needing approval</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Section -->
+                <section style="margin-top: 20px;">
+                    <header class="major">
+                        <h2>Get in touch</h2>
+                    </header>
+                    <p>We're here to help! If you're experiencing any issues or have questions, please don't hesitate to reach out to us at <a href="mailto:help@tollanis.com">help@tollanis.com</a>. Our dedicated support team is ready to assist you and ensure you have a smooth experience with our new product. Your satisfaction is our priority.</p>
+                    <ul class="contact">
+                        <li class="icon solid fa-envelope"><a href="mailto:help@tollanis.com">help@tollanis.com</a></li>
+                    </ul>
+                </section>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
