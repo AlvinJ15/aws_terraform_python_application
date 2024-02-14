@@ -1,16 +1,16 @@
 from sqlalchemy import Column, String, ForeignKey, Enum
 
 from data_models.model_organization import Organization
-from data_models.models import Base
+from data_models.models import Base, get_collation_ids
 
 
 class Role(Base):
     __tablename__ = 'roles'
     __table_args__ = {'extend_existing': True}
 
-    role_id = Column(String(36, collation='utf8mb4_unicode_ci'), primary_key=True)
+    role_id = Column(String(36, collation=get_collation_ids()), primary_key=True)
     organization_id = Column(
-        String(36, collation='utf8mb4_unicode_ci'),
+        String(36, collation=get_collation_ids()),
         ForeignKey(Organization.id)
     )
     name = Column(String(255), nullable=False)

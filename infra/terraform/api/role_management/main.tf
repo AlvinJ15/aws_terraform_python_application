@@ -1,73 +1,68 @@
 locals {
-  base_role_path = "roles"
+  base_path = "roles"
   methods_names = {
     get_all_roles = {
-      handler   = "api_services/roles/role_management.get_all_handler"
+      handler = "api_services/roles/roles_management.get_all_handler"
       path      = ""
       method    = "GET",
       responses = var.api_status_response
       resource  = "base_resource"
     }
-    get_single_role = {
-      handler   = "api_services/roles/role_management.get_single_handler"
+    get_single_roles = {
+      handler  = "api_services/roles/roles_management.get_single_handler"
       path      = "{role_id}"
       method    = "GET"
       responses = var.api_status_response
-      resource  = "role_id_resource"
+      resource = "id_resource"
     }
-    create_role = {
-      handler   = "api_services/roles/role_management.create_handler"
+    create_roles = {
+      handler = "api_services/roles/roles_management.create_handler"
       path      = ""
       method    = "POST"
       responses = var.api_status_response
       resource  = "base_resource"
     }
-    update_role = {
-      handler   = "api_services/roles/role_management.update_handler"
+    update_roles = {
+      handler  = "api_services/roles/roles_management.update_handler"
       path      = "{role_id}"
       method    = "PUT"
       responses = var.api_status_response
-      resource  = "role_id_resource"
+      resource = "id_resource"
+    }
+    delete_single_roles = {
+      handler   = "api_services/roles/roles_management.delete_single_handler"
+      path      = "{role_id}"
+      method    = "DELETE"
+      responses = var.api_status_response
+      resource  = "id_resource"
     }
   }
 }
 
-resource "aws_api_gateway_resource" "base_organizations_resource" {
+resource "aws_api_gateway_resource" "base_resource_roles" {
   rest_api_id = var.rest_api.id
-  parent_id   = var.rest_api.root_resource_id
-  path_part   = "organizations"
+  parent_id = var.id_resource_organization.id
+  path_part = local.base_path
 }
 
-resource "aws_api_gateway_resource" "base_organizations_id_resource" {
+resource "aws_api_gateway_resource" "id_resource_roles" {
   rest_api_id = var.rest_api.id
-  parent_id   = aws_api_gateway_resource.base_organizations_resource.id
-  path_part   = "{organization_id}"
-}
-
-resource "aws_api_gateway_resource" "base_roles_resource" {
-  rest_api_id = var.rest_api.id
-  parent_id   = aws_api_gateway_resource.base_organizations_id_resource.id
-  path_part   = local.base_role_path
-}
-
-resource "aws_api_gateway_resource" "role_id_resource" {
-  rest_api_id = var.rest_api.id
-  parent_id   = aws_api_gateway_resource.base_roles_resource.id
+  parent_id = aws_api_gateway_resource.base_resource_roles.id
   path_part   = "{role_id}"
 }
 
 locals {
-  roles_resources = {
-    base_resource    = aws_api_gateway_resource.base_roles_resource
-    role_id_resource = aws_api_gateway_resource.role_id_resource
+  resources = {
+    base_resource = aws_api_gateway_resource.base_resource_roles
+    id_resource   = aws_api_gateway_resource.id_resource_roles
   }
 }
 
-resource "aws_api_gateway_method" "roles_methods" {
+resource "aws_api_gateway_method" "methods_roles" {
   for_each = local.methods_names
 
   rest_api_id   = var.rest_api.id
-  resource_id   = local.roles_resources[each.value.resource].id
+  resource_id = local.resources[each.value.resource].id
   http_method   = each.value.method
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = var.api_authorizer.id
@@ -77,15 +72,15 @@ resource "aws_api_gateway_method" "roles_methods" {
   }
 }
 
-resource "aws_api_gateway_integration" "roles_integration" {
+resource "aws_api_gateway_integration" "integration_roles" {
   for_each = local.methods_names
 
   rest_api_id             = var.rest_api.id
-  resource_id             = local.roles_resources[each.value.resource].id
-  http_method             = aws_api_gateway_method.roles_methods[each.key].http_method
+  resource_id = local.resources[each.value.resource].id
+  http_method = aws_api_gateway_method.methods_roles[each.key].http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = aws_lambda_function.roles_lambda_function[each.key].invoke_arn
+  uri         = aws_lambda_function.lambda_function_roles[each.key].invoke_arn
 }
 
 locals {
@@ -103,11 +98,11 @@ locals {
   }
 }
 
-resource "aws_api_gateway_method_response" "roles_response" {
+resource "aws_api_gateway_method_response" "response_roles" {
   for_each = local.flat_map
 
   rest_api_id = var.rest_api.id
-  resource_id = local.roles_resources[each.value.resource].id
-  http_method = aws_api_gateway_method.roles_methods[each.value.method_name].http_method
+  resource_id = local.resources[each.value.resource].id
+  http_method = aws_api_gateway_method.methods_roles[each.value.method_name].http_method
   status_code = each.value.status
 }

@@ -1,3 +1,4 @@
+from sqlalchemy.dialects.mysql import TINYINT
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -9,3 +10,12 @@ def update_object_from_dict(data_model, data):
             setattr(data_model, key, value)
         else:
             print(f"Warning: Attribute '{key}' does not exist on model '{type(data_model).__name__}'")
+    return data_model
+
+
+def get_collation_ids():
+    return "utf8mb4_unicode_ci"
+
+
+def get_tinyint_class():
+    return TINYINT

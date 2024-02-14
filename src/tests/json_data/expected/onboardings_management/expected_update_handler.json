@@ -1,0 +1,51 @@
+{
+  "onboarding_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "organization_id": "11111111-1111-1111-1111-111111111111",
+  "created": "2024-02-12 00:00:00",
+  "last_modified": "2000-01-01 00:00:00",
+  "steps": [
+    {
+      "step_id": "xxxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "organization_id": "11111111-1111-1111-1111-111111111111",
+      "onboarding_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "type": "Upload mandatory documents",
+      "name": "Upload ID and Proof of Address MODIFIED",
+      "description": "Instructions for uploading required identification documents. MODIFIED",
+      "order": 1,
+      "mandatory": true,
+      "additional_properties": {},
+      "roles": [
+        "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+        "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+      ]
+    },
+    {
+      "step_id": "_created-0000-0000-0000-000mocked_21",
+      "organization_id": "11111111-1111-1111-1111-111111111111",
+      "onboarding_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "type": "Upload mandatory documents",
+      "name": "Upload ID and Proof of Address NEW",
+      "description": "Instructions for uploading required identification documents. NEW",
+      "order": 1,
+      "mandatory": true,
+      "additional_properties": {},
+      "roles": [
+        "cccccccc-cccc-cccc-cccc-cccccccccccc"
+      ]
+    },
+    {
+      "step_id": "_created-0000-0000-0000-000mocked_22",
+      "organization_id": "11111111-1111-1111-1111-111111111111",
+      "onboarding_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "type": "Upload mandatory documents",
+      "name": "Upload ID and Proof of Address NEW WITH ID",
+      "description": "Instructions for uploading required identification documents. NEW WITH ID",
+      "order": 1,
+      "mandatory": true,
+      "additional_properties": {},
+      "roles": [
+        "cccccccc-cccc-cccc-cccc-cccccccccccc"
+      ]
+    }
+  ]
+}

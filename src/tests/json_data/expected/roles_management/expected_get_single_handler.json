@@ -1,0 +1,7 @@
+{
+  "role_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "organization_id": "11111111-1111-1111-1111-111111111111",
+  "name": "Attending Physician",
+  "description": "Diagnoses and treats patients in a specific medical specialty.",
+  "type": "Non-Clinical"
+}

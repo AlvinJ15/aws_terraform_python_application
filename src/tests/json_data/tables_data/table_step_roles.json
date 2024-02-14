@@ -1,0 +1,30 @@
+[
+  {
+    "role_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "step_id": "wwwwwwww-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+  },
+  {
+    "role_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+    "step_id": "wwwwwwww-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+  },
+  {
+    "role_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "step_id": "xxxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+  },
+  {
+    "role_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+    "step_id": "xxxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+  },
+  {
+    "role_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+    "step_id": "yyyyyyyy-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+  },
+  {
+    "role_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+    "step_id": "zzzzzzzz-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+  },
+  {
+    "role_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+    "step_id": "zzzzzzzz-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+  }
+]

@@ -2,20 +2,18 @@ module "lambda_layers" {
   source = "../layers"
 }
 
-data "archive_file" "role_management_package" {
-  type        = "zip"
-  source_dir  = "${path.module}/../../../../src"
-  output_path = "${path.module}/src_roles.zip"
+module "source_code" {
+  source = "../source_code"
 }
 
-resource "aws_lambda_function" "roles_lambda_function" {
+resource "aws_lambda_function" "lambda_function_roles" {
   for_each = local.methods_names
 
   function_name    = each.key
-  filename         = data.archive_file.role_management_package.output_path
-  source_code_hash = data.archive_file.role_management_package.output_base64sha256
+  filename         = module.source_code.source_code_package.output_path
+  source_code_hash = module.source_code.source_code_package.output_base64sha256
   role             = var.lambda_exec.arn
-  runtime = "python3.11"
+  runtime          = "python3.11"
   handler          = each.value.handler
   depends_on       = [module.lambda_layers]
   layers           = [module.lambda_layers.layer_arn]
@@ -40,22 +38,22 @@ resource "aws_lambda_function" "roles_lambda_function" {
   }
 }
 
-resource "aws_lambda_permission" "roles_permissions" {
+resource "aws_lambda_permission" "permissions_roles" {
   for_each = local.methods_names
 
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.roles_lambda_function[each.key].function_name
+  function_name = aws_lambda_function.lambda_function_roles[each.key].function_name
   principal     = "apigateway.amazonaws.com"
 
-  source_arn = "arn:aws:execute-api:${var.aws_region}:${var.account_id}:${var.rest_api.id}/*/${aws_api_gateway_method.roles_methods[each.key].http_method}${local.roles_resources[each.value.resource].path}"
+  source_arn = "arn:aws:execute-api:${var.aws_region}:${var.account_id}:${var.rest_api.id}/*/${aws_api_gateway_method.methods_roles[each.key].http_method}${local.resources[each.value.resource].path}"
 }
 
-resource "aws_lambda_permission" "secretsmanager_access" {
+resource "aws_lambda_permission" "secretsmanager_access_roles" {
   for_each = local.methods_names
 
   statement_id  = "AllowSecretsManagerAccess"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.roles_lambda_function[each.key].function_name
+  function_name = aws_lambda_function.lambda_function_roles[each.key].function_name
   principal     = "secretsmanager.amazonaws.com"
 }

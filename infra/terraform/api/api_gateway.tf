@@ -12,7 +12,14 @@ resource "aws_api_gateway_authorizer" "api_authorizer" {
 
 resource "aws_api_gateway_deployment" "deployment" {
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
-  depends_on = [module.role_management]
+  depends_on = [
+    module.organization_management,
+    module.role_management,
+    module.document_type_management,
+    module.compliance_package_management,
+    module.questionnaire_management,
+    module.onboarding_management
+  ]
   lifecycle {
     create_before_destroy = true
   }

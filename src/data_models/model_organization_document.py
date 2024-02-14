@@ -1,14 +1,12 @@
-from enum import Enum as EnumType
-
 from sqlalchemy import Column, String, ForeignKey, Enum
 
 from data_models.model_organization import Organization
-from data_models.models import Base
+from data_models.models import Base, get_collation_ids
 
-
-class PurposeEnum(EnumType):
-    SIGNATURE_REQUIRED = "Signature required"
-    DOWNLOAD_ONLY = "Download only"
+PURPOSE_VALUES = [
+    "Signature required",
+    "Download only"
+]
 
 
 class OrganizationDocument(Base):
@@ -16,14 +14,14 @@ class OrganizationDocument(Base):
     __table_args__ = {'extend_existing': True}
 
     document_id = Column(
-        String(36, collation="utf8mb4_unicode_ci"),
+        String(36, collation=get_collation_ids()),
         primary_key=True
     )
     organization_id = Column(
-        String(36, collation="utf8mb4_unicode_ci"),
+        String(36, collation=get_collation_ids()),
         ForeignKey(Organization.id)
     )
     title = Column(String(255), nullable=False)
     description = Column(String(255))
-    purpose = Column(Enum(PurposeEnum), nullable=False)
+    purpose = Column(Enum(*PURPOSE_VALUES), nullable=False)
     s3_path = Column(String(255))

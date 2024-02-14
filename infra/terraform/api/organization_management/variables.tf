@@ -1,0 +1,1 @@
+variable "rest_api" {}

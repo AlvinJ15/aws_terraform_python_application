@@ -24,7 +24,7 @@ connection_string = (
     f"mysql+pymysql://{os.getenv('DB_USERNAME')}:"
     f"{os.getenv('DB_PASSWORD')}"
     f"@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}"
-    f"/{os.getenv('DB_DATABASE')}"
+    f"/{os.getenv('DB_NAME')}"
 )
 
 # TODO: Refactor password handling for special characters compatibility (#@!...)

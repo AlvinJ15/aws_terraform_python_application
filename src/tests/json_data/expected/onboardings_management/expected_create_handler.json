@@ -1,0 +1,38 @@
+{
+  "onboarding_id": "_created-0000-0000-0000-000mocked_01",
+  "organization_id": "11111111-1111-1111-1111-111111111111",
+  "created": "2000-01-01 00:00:00",
+  "last_modified": null,
+  "steps": [
+    {
+      "step_id": "_created-0000-0000-0000-000mocked_02",
+      "organization_id": "11111111-1111-1111-1111-111111111111",
+      "onboarding_id": "_created-0000-0000-0000-000mocked_01",
+      "type": "Upload mandatory documents",
+      "name": "Upload ID and Proof of Address",
+      "description": "Instructions for uploading required identification documents.",
+      "order": 1,
+      "mandatory": true,
+      "additional_properties": {},
+      "roles": [
+        "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+        "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+      ]
+    },
+    {
+      "step_id": "_created-0000-0000-0000-000mocked_03",
+      "organization_id": "11111111-1111-1111-1111-111111111111",
+      "onboarding_id": "_created-0000-0000-0000-000mocked_01",
+      "type": "Welcome",
+      "name": "Welcome to our company!",
+      "description": "A warm welcome message for the new employee.",
+      "order": 2,
+      "mandatory": true,
+      "additional_properties": {},
+      "roles": [
+        "cccccccc-cccc-cccc-cccc-cccccccccccc",
+        "dddddddd-dddd-dddd-dddd-dddddddddddd"
+      ]
+    }
+  ]
+}
