@@ -3,7 +3,7 @@ import datetime
 from sqlalchemy import Column, String, ForeignKey, DateTime
 
 from data_models.model_organization import Organization
-from data_models.models import Base, get_collation_ids
+from data_models.models import Base, get_collation_ids, set_fields_from_dict
 
 
 class CompliancePackage(Base):
@@ -23,11 +23,7 @@ class CompliancePackage(Base):
 
     def __init__(self, **kwargs):
         date_fields = ['creation_date']
-        for key, value in kwargs.items():
-            if key in date_fields:
-                # Parse value as datetime if the key is "created"
-                value = datetime.datetime.strptime(value, "%Y-%m-%d %H:%M:%S")  # Adjust format if needed
-            setattr(self, key, value)
+        set_fields_from_dict(self, kwargs, date_fields)
 
     def to_dict(self):
         return {

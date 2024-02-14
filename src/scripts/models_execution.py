@@ -2,6 +2,11 @@ from sqlalchemy import create_engine
 from urllib.parse import quote_plus, quote
 from sqlalchemy.schema import CreateTable
 
+from data_models.model_administrator import Administrator
+from data_models.model_employee import Employee
+from data_models.model_employee_document import EmployeeDocument
+from data_models.model_employee_profile import EmployeeProfile
+from data_models.model_employee_reference import EmployeeReference
 from data_models.model_onboarding import Onboarding
 from data_models.model_onboarding_step import OnboardingStep
 from data_models.model_organization_document import OrganizationDocument
@@ -37,45 +42,33 @@ connection_string = (
 engine = create_engine(connection_string, echo=True)
 Base.metadata.reflect(engine)
 
+classes_list = [
+    Organization,
+    Role,
+    CompliancePackage,
+    DocumentType,
+    PackageRole,
+    PackageDocument,
+    OrganizationDocument,
+    OrganizationDocumentRole,
+    Questionnaire,
+    Onboarding,
+    OnboardingStep,
+    StepRole,
+    Administrator,
+    Employee,
+    EmployeeProfile,
+    EmployeeDocument,
+    EmployeeReference
+]
+
 # Generate SQL statement without executing it
-create_sql_organizations = CreateTable(Organization.__table__).compile(engine)
-create_sql_roles = CreateTable(Role.__table__).compile(engine)
-create_sql_compliance_package = CreateTable(CompliancePackage.__table__).compile(engine)
-create_sql_document_type = CreateTable(DocumentType.__table__).compile(engine)
-create_sql_package_role = CreateTable(PackageRole.__table__).compile(engine)
-create_sql_package_document = CreateTable(PackageDocument.__table__).compile(engine)
-create_sql_organization_document = CreateTable(OrganizationDocument.__table__).compile(engine)
-create_sql_organization_document_role = CreateTable(OrganizationDocumentRole.__table__).compile(engine)
-create_sql_questionnaire = CreateTable(Questionnaire.__table__).compile(engine)
-create_sql_onboarding = CreateTable(Onboarding.__table__).compile(engine)
-create_sql_onboarding_step = CreateTable(OnboardingStep.__table__).compile(engine)
-create_sql_step_role = CreateTable(StepRole.__table__).compile(engine)
+for cls in classes_list:
+    sql = CreateTable(cls.__table__).compile(engine)
+    # Print the SQL statement for analysis
+    print(cls.__tablename__ + "-" * 20)
+    print(sql.string)
 
-
-# Print the SQL statement for analysis
-
-print("Roles" + "-" * 20)
-print(create_sql_roles.string)
-print("CompliancePackage" + "-" * 20)
-print(create_sql_compliance_package)
-print("DocumentType" + "-" * 20)
-print(create_sql_document_type)
-print("PackageRole" + "-" * 20)
-print(create_sql_package_role)
-print("PackageDocument" + "-" * 20)
-print(create_sql_package_document)
-print("OrganizationDocument" + "-" * 20)
-print(create_sql_organization_document)
-print("OrganizationDocumentRole" + "-" * 20)
-print(create_sql_organization_document_role)
-print("Roles" + "-" * 20)
-print(create_sql_questionnaire.string)
-print("Roles" + "-" * 20)
-print(create_sql_onboarding.string)
-print("Roles" + "-" * 20)
-print(create_sql_onboarding_step.string)
-print("Roles" + "-" * 20)
-print(create_sql_step_role.string)
 # Create all tables:
 
 Base.metadata.create_all(engine)

@@ -14,7 +14,7 @@ from sqlalchemy.orm import relationship
 
 
 from data_models.model_organization import Organization
-from data_models.models import Base, get_collation_ids
+from data_models.models import Base, get_collation_ids, set_fields_from_dict
 
 
 class Onboarding(Base):
@@ -36,11 +36,8 @@ class Onboarding(Base):
 
     def __init__(self, **kwargs):
         date_fields = ['created', 'last_modified']
-        for key, value in kwargs.items():
-            if key in date_fields and value is not None:
-                # Parse value as datetime if the key is "created"
-                value = datetime.datetime.strptime(value, "%Y-%m-%d %H:%M:%S")  # Adjust format if needed
-            setattr(self, key, value)
+        set_fields_from_dict(self, kwargs, date_fields)
+
 
     def to_dict(self):
         return {
