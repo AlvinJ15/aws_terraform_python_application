@@ -18,7 +18,8 @@ resource "aws_api_gateway_deployment" "deployment" {
     module.document_type_management,
     module.compliance_package_management,
     module.questionnaire_management,
-    module.onboarding_management
+    module.onboarding_management,
+    module.organization_document_management
   ]
   lifecycle {
     create_before_destroy = true
@@ -119,6 +120,34 @@ resource "aws_iam_role" "lambda_exec" {
     ]
   })
 }
+
+resource "aws_s3_bucket_policy" "lambda_access" {
+  bucket = "tollacred"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": [
+          "${aws_iam_role.lambda_exec.arn}"
+        ]
+      },
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::tollacred/*"
+      ]
+    }
+  ]
+}
+EOF
+}
+
 
 resource "aws_iam_policy" "lambda_policy_secrets" {
   name = "my-lambda-policy-secret"

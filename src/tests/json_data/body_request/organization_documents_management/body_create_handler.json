@@ -1,0 +1,8 @@
+{
+  // This request should be sent as Form-Data not JSON
+  "title": "title of the organization document",
+  "description": "description of the uploaded document CREATED",
+  "purpose": "Download only or Signature required",
+  "roles": "[\"aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa\",\"bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb\"]"  // array as String
+  "file": ""  // file loaded as input file on HTML
+}

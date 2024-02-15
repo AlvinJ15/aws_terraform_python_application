@@ -13,7 +13,7 @@ resource "aws_lambda_function" "lambda_function_questionnaires" {
   filename         = module.source_code.source_code_package.output_path
   source_code_hash = module.source_code.source_code_package.output_base64sha256
   role             = var.lambda_exec.arn
-  runtime          = "python3.11"
+  runtime = "python3.10"
   handler          = each.value.handler
   depends_on       = [module.lambda_layers]
   layers           = [module.lambda_layers.layer_arn]

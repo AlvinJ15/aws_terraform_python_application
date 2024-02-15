@@ -28,17 +28,18 @@ terraform apply
 
 ### Testing and API endpoint using Authentication Token (Terminal)
 
+Login to Hosted UI (Login page of AWS cognito) and copy the `code` output and set is as variable in bash
+
+```sh
+CODE=<code>
+```
+
 Initialize `.env` file for export credentials
 
 ```sh
 source DEV.env
 ```
 
-Login to Hosted UI (Login page of AWS cognito) and copy the `code` output and set is as variable in bash
-
-```sh
-CODE=<code>
-```
 
 Invoke Cognito token exchange (`CLIENT_ID` is obtained from App Client in the Cognito Pool)
 

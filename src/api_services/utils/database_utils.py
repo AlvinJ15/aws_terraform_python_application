@@ -24,7 +24,7 @@ class DataBase:
         config.scan('data_models')  # the "important" line
         engine = engine_from_config(config.get_settings(), 'sqlalchemy.')
 
-        session_local = sessionmaker(autocommit=False, autoflush=True, bind=engine)
+        session_local = sessionmaker(autocommit=False, autoflush=True, bind=engine, expire_on_commit=False)
         return session_local()
 
     @classmethod

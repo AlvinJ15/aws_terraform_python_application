@@ -8,7 +8,7 @@ resource "terraform_data" "pip_install" {
   }
 
   provisioner "local-exec" {
-    command = "python3 -m pip install -r requirements.txt -t ${path.module}/layer/python"
+    command = "python3.10 -m pip install -r requirements.txt -t ${path.module}/layer/python"
   }
 }
 
@@ -23,5 +23,5 @@ resource "aws_lambda_layer_version" "lambda_api_dependencies" {
   layer_name          = "lambda_api_dependencies"
   filename            = data.archive_file.layer.output_path
   source_code_hash    = data.archive_file.layer.output_base64sha256
-  compatible_runtimes = ["python3.11", "python3.10", "python3.9"]
+  compatible_runtimes = ["python3.10"]
 }

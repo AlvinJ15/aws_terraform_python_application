@@ -1,6 +1,8 @@
 from sqlalchemy import Column, String, ForeignKey, Enum
+from sqlalchemy.orm import relationship
 
 from data_models.model_organization import Organization
+from data_models.model_roles import Role
 from data_models.models import Base, get_collation_ids
 
 PURPOSE_VALUES = [
@@ -25,3 +27,17 @@ class OrganizationDocument(Base):
     description = Column(String(255))
     purpose = Column(Enum(*PURPOSE_VALUES), nullable=False)
     s3_path = Column(String(255))
+
+    roles = relationship(Role, secondary="org_document_roles", backref="organization_documents", lazy="subquery",
+                         viewonly=True, cascade="all, delete-orphan")
+
+    def to_dict(self):
+        return {
+            "document_id": self.document_id,
+            "organization_id": self.organization_id,
+            "title": self.title,
+            "description": self.description,
+            "purpose": self.purpose,
+            "s3_path": self.s3_path,
+            "roles": [role.role_id for role in self.roles]
+        }
