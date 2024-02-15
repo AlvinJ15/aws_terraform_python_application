@@ -1,6 +1,4 @@
 {
-  "role_id": "_created-8022-4109-84d7-442e_mocked_",
-  "organization_id": "a2345678-90ab-cdef-1234-567890abcdef",
   "name": "Manager",
   "description": "Manages teams and oversees operations.",
   "type": "Non-Clinical"

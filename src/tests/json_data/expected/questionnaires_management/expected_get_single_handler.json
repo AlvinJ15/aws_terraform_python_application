@@ -1,0 +1,35 @@
+{
+  "questionnaire_id": "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "organization_id": "11111111-1111-1111-1111-111111111111",
+  "title": "My Sample Questionnaire 2",
+  "definition": {
+    "questions": [
+      {
+        "id": "question-1",
+        "text": "What is your name?",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "question-2",
+        "text": "What is your favorite color?",
+        "type": "multiple_choice",
+        "options": [
+          {
+            "id": "option-1",
+            "label": "Red"
+          },
+          {
+            "id": "option-2",
+            "label": "Blue"
+          },
+          {
+            "id": "option-3",
+            "label": "Green"
+          }
+        ],
+        "required": true
+      }
+    ]
+  }
+}

@@ -1,8 +1,4 @@
 {
-  "onboarding_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
-  "organization_id": "11111111-1111-1111-1111-111111111111",
-  "created": "2024-02-12 00:00:00",
-  "last_modified": "2024-02-12 00:00:00",
   "steps": [
     {
       "step_id": "1xxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa",

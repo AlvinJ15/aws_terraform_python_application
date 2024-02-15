@@ -1,0 +1,33 @@
+{
+  "title": "My Sample Questionnaire UPDATED",
+  "definition": {
+    "questions": [
+      {
+        "id": "question-1",
+        "text": "What is your name?",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "question-2",
+        "text": "What is your favorite color?",
+        "type": "multiple_choice",
+        "options": [
+          {
+            "id": "option-1",
+            "label": "Red"
+          },
+          {
+            "id": "option-2",
+            "label": "Blue"
+          },
+          {
+            "id": "option-3",
+            "label": "Green"
+          }
+        ],
+        "required": true
+      }
+    ]
+  }
+}
