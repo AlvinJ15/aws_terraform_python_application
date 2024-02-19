@@ -1,0 +1,30 @@
+[
+  {
+    "role_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "package_id": "wwwwwwww-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+  },
+  {
+    "role_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+    "package_id": "wwwwwwww-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+  },
+  {
+    "role_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "package_id": "xxxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+  },
+  {
+    "role_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+    "package_id": "xxxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+  },
+  {
+    "role_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+    "package_id": "yyyyyyyy-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+  },
+  {
+    "role_id": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+    "package_id": "zzzzzzzz-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+  },
+  {
+    "role_id": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+    "package_id": "zzzzzzzz-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+  }
+]

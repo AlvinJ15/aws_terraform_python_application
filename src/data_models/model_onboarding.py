@@ -8,10 +8,8 @@ if TYPE_CHECKING:
 else:
     OnboardingStep = "OnboardingStep"
 
-
 from sqlalchemy import Column, String, ForeignKey, Enum, DateTime
 from sqlalchemy.orm import relationship
-
 
 from data_models.model_organization import Organization
 from data_models.models import Base, get_collation_ids, set_fields_from_dict
@@ -37,7 +35,6 @@ class Onboarding(Base):
     def __init__(self, **kwargs):
         date_fields = ['created', 'last_modified']
         set_fields_from_dict(self, kwargs, date_fields)
-
 
     def to_dict(self):
         return {

@@ -1,0 +1,13 @@
+{
+  "package_id": "zzzzzzzz-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "organization_id": "11111111-1111-1111-1111-111111111111",
+  "name": "California Consumer Privacy Act (CCPA) UPDATED",
+  "creation_date": "2024-02-12 00:00:00",
+  "roles": [
+    "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+    "cccccccc-cccc-cccc-cccc-cccccccccccc"
+  ],
+  "document_types": [
+    "11111111-cccc-cccc-cccc-cccccccccccc"
+  ]
+}

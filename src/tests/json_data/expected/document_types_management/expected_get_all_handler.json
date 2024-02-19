@@ -14,5 +14,13 @@
     "description": "Issued by the Department of State",
     "category": "Personal",
     "expiration": null
+  },
+  {
+    "category": "Personal",
+    "description": "Issued by the Employee",
+    "expiration": null,
+    "id": "11111111-cccc-cccc-cccc-cccccccccccc",
+    "name": "Resume",
+    "organization_id": "11111111-1111-1111-1111-111111111111"
   }
 ]

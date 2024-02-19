@@ -24,6 +24,9 @@ def initialize_db():
     from data_models.model_questionnaire import Questionnaire
     from data_models.model_roles import Role
     from data_models.model_step_role import StepRole
+    from data_models.model_compliance_package import CompliancePackage
+    from data_models.model_package_document import PackageDocument
+    from data_models.model_package_role import PackageRole
 
     table_insert_data(Role)
     table_insert_data(Organization)
@@ -32,9 +35,12 @@ def initialize_db():
     table_insert_data(OnboardingStep)
     table_insert_data(StepRole)
     table_insert_data(Questionnaire)
+    table_insert_data(CompliancePackage)
+    table_insert_data(PackageDocument)
+    table_insert_data(PackageRole)
 
 
-def table_insert_data(BaseModelClass):
+def table_insert_data(BaseModelClass: object):
     table_name = BaseModelClass.__tablename__
     records = json.load(open(f"tests/json_data/tables_data/table_{table_name}.json"))
     with DataBase.get_session() as db:

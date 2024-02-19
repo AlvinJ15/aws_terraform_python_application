@@ -1,0 +1,11 @@
+{
+  "name": "Health Insurance Portability and Accountability Act (HIPAA) CREATED",
+  "roles": [
+    "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+  ],
+  "document_types": [
+    "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "11111111-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+  ]
+}

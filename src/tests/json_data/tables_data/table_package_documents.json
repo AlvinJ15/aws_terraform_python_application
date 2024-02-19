@@ -1,0 +1,26 @@
+[
+  {
+    "document_type_id": "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "package_id": "wwwwwwww-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+  },
+  {
+    "document_type_id": "11111111-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+    "package_id": "wwwwwwww-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+  },
+  {
+    "document_type_id": "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "package_id": "xxxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+  },
+  {
+    "document_type_id": "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "package_id": "yyyyyyyy-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+  },
+  {
+    "document_type_id": "11111111-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+    "package_id": "zzzzzzzz-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+  },
+  {
+    "document_type_id": "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "package_id": "zzzzzzzz-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+  }
+]
