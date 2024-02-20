@@ -1,0 +1,14 @@
+[
+  {
+    "document_id": "4ee31248-6dd0-4985-9ae3-00de2e91c0ab",
+    "organization_id": "11111111-1111-1111-1111-111111111111",
+    "title": "foto.jpg",
+    "description": "description UPDATED",
+    "purpose": "Download only",
+    "s3_path": "dev/app_data/orgs/11111111-1111-1111-1111-111111111111/org_documents/foto.jpg",
+    "roles": [
+        "1468f55d-62c2-455a-ba8c-6c315f3eb619",
+        "47b8be06-ddf5-487d-b982-e3c99d44f51e"
+    ]
+  }
+]
