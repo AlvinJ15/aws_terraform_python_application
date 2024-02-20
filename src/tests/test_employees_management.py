@@ -6,17 +6,17 @@ from tests.mocks.mock_database_utils import MockDatabase, \
 from tests.test_utils import get_file_content
 
 BASE_JSON_FOLDER = "tests/json_data"
-EXPECTED_JSON_PATH = f'{BASE_JSON_FOLDER}/expected/questionnaires_management'
-BODY_JSON_FOLDER = f'{BASE_JSON_FOLDER}/body_request/questionnaires_management'
+EXPECTED_JSON_PATH = f'{BASE_JSON_FOLDER}/expected/employees_management'
+BODY_JSON_FOLDER = f'{BASE_JSON_FOLDER}/body_request/employees_management'
 
 
 @patch("data_models.models.get_collation_ids", mock_get_collation_ids)
 @patch("data_models.models.get_tinyint_class", mock_get_tinyint_class)
 @patch("api_services.utils.database_utils.DataBase.generate_uuid", MockDatabase.mock_generate_uuid)
 @patch("api_services.utils.database_utils.DataBase.get_now", MockDatabase.mock_now)
-class TestQuestionnaire:
+class TestEmployees:
     def setup_method(self, method):
-        from api_services.questionnaires.questionnaires_management import (
+        from api_services.employees.employees_management import (
             get_all_handler, get_single_handler, create_handler, update_handler, delete_single_handler
         )
         self.get_all_handler = get_all_handler
@@ -39,7 +39,7 @@ class TestQuestionnaire:
         event = {
             "pathParameters": {
                 "organization_id": "11111111-1111-1111-1111-111111111111",
-                "questionnaire_id": "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+                "employee_id": "xxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
             }
         }
         response = self.get_single_handler(event, {})
@@ -51,6 +51,7 @@ class TestQuestionnaire:
         assert json.loads(response["body"]) == expected
 
     def test_create_handler(self, initialize_db):
+        MockDatabase.COUNT_UUID = 0
         event = {
             "pathParameters": {
                 "organization_id": "11111111-1111-1111-1111-111111111111"
@@ -66,15 +67,16 @@ class TestQuestionnaire:
         assert json.loads(response["body"]) == expected
 
     def test_update_handler(self, initialize_db):
+        MockDatabase.COUNT_UUID = 20
         event = {
             "pathParameters": {
                 "organization_id": "11111111-1111-1111-1111-111111111111",
-                "questionnaire_id": "11111111-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+                "employee_id": "xxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
             },
             "body": get_file_content(f"{BODY_JSON_FOLDER}/body_update_handler.json")
         }
-        response = self.update_handler(event, {})
 
+        response = self.update_handler(event, {})
         assert response["statusCode"] == 200
         expected = json.load(
             open(f"{EXPECTED_JSON_PATH}/expected_update_handler.json")
@@ -85,7 +87,7 @@ class TestQuestionnaire:
         event = {
             "pathParameters": {
                 "organization_id": "11111111-1111-1111-1111-111111111111",
-                "questionnaire_id": "11111111-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+                "employee_id": "xxxxxxx-cccc-cccc-cccc-cccccccccccc"
             }
         }
         response = self.delete_single_handler(event, {})

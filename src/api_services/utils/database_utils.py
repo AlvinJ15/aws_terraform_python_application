@@ -43,3 +43,9 @@ class DataBase:
     @classmethod
     def get_now(cls):
         return datetime.now()
+
+    @classmethod
+    def pop_non_updatable_fields(cls, keys, data):
+        for key in keys:
+            if key in data:
+                data.pop(key)

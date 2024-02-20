@@ -27,6 +27,9 @@ def initialize_db():
     from data_models.model_compliance_package import CompliancePackage
     from data_models.model_package_document import PackageDocument
     from data_models.model_package_role import PackageRole
+    from data_models.model_administrator import Administrator
+    from data_models.model_employee import Employee
+    from data_models.model_employee_profile import EmployeeProfile
 
     table_insert_data(Role)
     table_insert_data(Organization)
@@ -38,6 +41,9 @@ def initialize_db():
     table_insert_data(CompliancePackage)
     table_insert_data(PackageDocument)
     table_insert_data(PackageRole)
+    table_insert_data(Administrator)
+    table_insert_data(Employee)
+    table_insert_data(EmployeeProfile)
 
 
 def table_insert_data(BaseModelClass: object):

@@ -37,7 +37,7 @@ class TestOnboardings:
         )
         assert json.loads(response["body"]) == expected
 
-    def test_single_all_handler(self, initialize_db):
+    def test_get_single_handler(self, initialize_db):
         event = {
             "pathParameters": {
                 "organization_id": "11111111-1111-1111-1111-111111111111",

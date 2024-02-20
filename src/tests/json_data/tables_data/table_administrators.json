@@ -1,0 +1,23 @@
+[
+  {
+    "admin_id": "aaaaaaaa-1111-1111-1111-111111111111",
+    "first_name": "John",
+    "last_name": "Smith",
+    "email": "john.smith@organization.com",
+    "created": "2023-11-21 15:30:00"
+  },
+  {
+    "admin_id": "bbbbbbbb-1111-1111-1111-111111111111",
+    "first_name": "Jane",
+    "last_name": "Doe",
+    "email": "jane.doe@organization.com",
+    "created": "2023-12-05 09:15:00"
+  },
+  {
+    "admin_id": "cccccccc-1111-1111-1111-111111111111",
+    "first_name": "Michael",
+    "last_name": "Lee",
+    "email": "michael.lee@organization.com",
+    "created": "2022-08-17 10:00:00"
+  }
+]

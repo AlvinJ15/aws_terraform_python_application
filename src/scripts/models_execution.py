@@ -4,8 +4,10 @@ from sqlalchemy.schema import CreateTable
 
 from data_models.model_administrator import Administrator
 from data_models.model_employee import Employee
+from data_models.model_employee_compliance_package import EmployeeCompliancePackage
 from data_models.model_employee_document import EmployeeDocument
 from data_models.model_employee_profile import EmployeeProfile
+from data_models.model_employee_questionnaire_response import EmployeeQuestionnaireResponse
 from data_models.model_employee_reference import EmployeeReference
 from data_models.model_onboarding import Onboarding
 from data_models.model_onboarding_step import OnboardingStep
@@ -59,7 +61,9 @@ classes_list = [
     Employee,
     EmployeeProfile,
     EmployeeDocument,
-    EmployeeReference
+    EmployeeReference,
+    EmployeeQuestionnaireResponse,
+    EmployeeCompliancePackage
 ]
 
 # Generate SQL statement without executing it

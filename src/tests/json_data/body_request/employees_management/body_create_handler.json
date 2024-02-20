@@ -1,0 +1,24 @@
+{
+  "assignee_id": "aaaaaaaa-1111-1111-1111-111111111111",
+  "compliance_tags": "HIPAA,PCI",
+  "user_tags": "Admin,Full-time",
+  "status": "Active",
+  "created": "2023-11-21 15:30:00",
+  "profile": {
+    "title": "Dr. CREATED",
+    "first_name": "John CREATED",
+    "last_name": "Smith CREATED",
+    "gender": "Male",
+    "email": "john.smith_created@hospital.com",
+    "role": "Physician CREATED",
+    "grade": "Attending Physician CREATED",
+    "medical_category": "MD",
+    "specialty": "Cardiology",
+    "date_of_birth": "1970-01-01 00:00:00",
+    "address": "123 Main Street CREATED",
+    "country": "United States",
+    "city": "New York",
+    "state": "NY",
+    "zip": "10001"
+  }
+}
