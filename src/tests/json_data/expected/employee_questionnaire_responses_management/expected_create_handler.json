@@ -1,0 +1,17 @@
+{
+  "response_id": "_created-0000-0000-0000-000mocked_01",
+  "employee_id": "xxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "questionnaire_id": "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "status": "Completed",
+  "completed": "2000-01-01 00:00:00",
+  "answers": [
+    {
+      "answer": "answer to question-1 CREATED",
+      "question": "What is your name?"
+    },
+    {
+      "answer": "answer to question-2 CREATED",
+      "question": "What is your favorite color?"
+    }
+  ]
+}

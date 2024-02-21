@@ -64,9 +64,8 @@ def create_handler(event, context):
 
     stage = event.get('requestContext', {}).get('stage')
     path = f"{stage}/app_data/orgs/{organization_id}/org_documents/{title}"
-    bucket_name = "tollacred"
     try:
-        s3_path = upload_file_to_s3(bucket_name, path, file_target.value)
+        s3_path = upload_file_to_s3(path, file_target.value)
         with DataBase.get_session() as db:
             new_org_document = OrganizationDocument()
             new_org_document.document_id = DataBase.generate_uuid()
@@ -131,14 +130,13 @@ def update_handler(event, context):
 
         stage = event.get('requestContext', {}).get('stage')
         path = f"{stage}/app_data/orgs/{organization_id}/org_documents/{title}"
-        bucket_name = "tollacred"
         try:
             with DataBase.get_session() as db:
                 org_document.title = title
                 org_document.description = description
                 org_document.purpose = purpose
                 if file_target.value:
-                    org_document.s3_path = upload_file_to_s3(bucket_name, path, file_target.value)
+                    org_document.s3_path = upload_file_to_s3(path, file_target.value)
 
                 roles_ids = []
                 # Deleting the existing roles for the current steps if the request doesn't have them

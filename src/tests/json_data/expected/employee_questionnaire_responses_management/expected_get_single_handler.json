@@ -1,0 +1,17 @@
+{
+  "response_id": "xxxxxxx-xxxx-aaaa-aaaa-aaaaaaaaaaaa",
+  "employee_id": "xxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "questionnaire_id": "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  "status": "Draft",
+  "completed": "1970-01-01 00:00:00",
+  "answers": [
+    {
+      "answer": "answer to question-1",
+      "question": "What is your name?"
+    },
+    {
+      "answer": "answer to question-2",
+      "question": "What is your favorite color?"
+    }
+  ]
+}

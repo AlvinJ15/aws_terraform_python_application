@@ -1,8 +1,10 @@
 import json
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.s3_utils import create_path_to_s3
 from data_models.model_employee import Employee
 from data_models.model_employee_profile import EmployeeProfile
+from data_models.model_organization import Organization
 from data_models.models import update_object_from_dict, set_fields_from_dict
 
 
@@ -53,6 +55,12 @@ def create_handler(event, context):
             db.add(new_employee_profile)
             db.commit()
             db.refresh(new_employee)
+            stage = event.get('requestContext', {}).get('stage')
+            organization = db.query(Organization).filter_by(id=organization_id)
+            path = (f"{stage}/app_data/orgs/{organization.name} {DataBase.get_now().year}/"
+                    f"Ongoing/{new_employee_profile.first_name} {new_employee_profile.last_name} - "
+                    f"{new_employee_profile.role}")
+            create_path_to_s3(path)
             return {"statusCode": 201, "body": json.dumps(new_employee.to_dict())}
         except Exception as err:  # Handle general exceptions for robustness
             return {"statusCode": 500, "body": f"Error creating Employee: {err}"}

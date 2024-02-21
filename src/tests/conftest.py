@@ -30,6 +30,7 @@ def initialize_db():
     from data_models.model_administrator import Administrator
     from data_models.model_employee import Employee
     from data_models.model_employee_profile import EmployeeProfile
+    from data_models.model_employee_questionnaire_response import EmployeeQuestionnaireResponse
 
     table_insert_data(Role)
     table_insert_data(Organization)
@@ -44,6 +45,7 @@ def initialize_db():
     table_insert_data(Administrator)
     table_insert_data(Employee)
     table_insert_data(EmployeeProfile)
+    table_insert_data(EmployeeQuestionnaireResponse)
 
 
 def table_insert_data(BaseModelClass: object):

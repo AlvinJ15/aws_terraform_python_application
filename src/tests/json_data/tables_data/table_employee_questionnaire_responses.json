@@ -1,0 +1,44 @@
+[
+  {
+    "response_id": "xxxxxxx-xxxx-aaaa-aaaa-aaaaaaaaaaaa",
+    "employee_id": "xxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "questionnaire_id": "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "status": "Draft",
+    "completed": "1970-01-01 00:00:00",
+    "response": {
+      "answers": [
+        {
+          "id": "answer-1",
+          "answer": "answer to question-1",
+          "question_id": "question-1"
+        },
+        {
+          "id": "answer-2",
+          "answer": "answer to question-2",
+          "question_id": "question-2"
+        }
+      ]
+    }
+  },
+  {
+    "response_id": "xxxxxxx-xxxx-bbbb-bbbb-bbbbbbbbbbbb",
+    "employee_id": "xxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "questionnaire_id": "11111111-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+    "status": "Draft",
+    "completed": "1970-01-01 00:00:00",
+    "response": {
+      "answers": [
+        {
+          "id": "answer-1",
+          "answer": "answer to question-1",
+          "question_id": "question-1"
+        },
+        {
+          "id": "answer-2",
+          "answer": "answer to question-2",
+          "question_id": "question-2"
+        }
+      ]
+    }
+  }
+]

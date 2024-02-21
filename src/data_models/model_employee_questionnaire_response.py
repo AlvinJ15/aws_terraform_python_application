@@ -5,11 +5,11 @@ from data_models.model_employee import Employee
 from data_models.model_questionnaire import Questionnaire
 from data_models.models import Base, get_collation_ids, set_fields_from_dict
 
-STATUS = ["Completed", "Draft"]
+STATUS = ['Completed', 'Draft']
 
 
 class EmployeeQuestionnaireResponse(Base):
-    __tablename__ = "employee_questionnaire_responses"
+    __tablename__ = 'employee_questionnaire_responses'
     __table_args__ = {'extend_existing': True}
 
     response_id = Column(
@@ -28,7 +28,7 @@ class EmployeeQuestionnaireResponse(Base):
     status = Column(Enum(*STATUS), nullable=False)
     completed = Column(DateTime)
 
-    questionnaire = relationship(Questionnaire, backref="employees")
+    questionnaire = relationship(Questionnaire, backref='employees')
 
     def __init__(self, **kwargs):
         date_fields = ['completed']
@@ -36,10 +36,23 @@ class EmployeeQuestionnaireResponse(Base):
 
     def to_dict(self):
         return {
-            "response_id": self.response_id,
-            "employee_id": self.employee_id,
-            "questionnaire_id": self.questionnaire_id,
-            "response": self.response,
-            "status": self.status,
-            "completed": self.completed.strftime("%Y-%m-%d %H:%M:%S") if self.completed else None
+            'response_id': self.response_id,
+            'employee_id': self.employee_id,
+            'questionnaire_id': self.questionnaire_id,
+            'answers': self.build_answer_response(),
+            'status': self.status,
+            'completed': self.completed.strftime('%Y-%m-%d %H:%M:%S') if self.completed else None
         }
+
+    def build_answer_response(self):
+        question_json = self.questionnaire.definition
+        answer_question_list = []
+        for question in question_json.get('questions', []):
+            for answer in self.response.get('answers', []):
+                if answer.get('question_id') == question.get('id'):
+                    answer_question_list.append({
+                        'answer': answer.get('answer'),
+                        'question': question.get('question')
+                    })
+                    break
+        return answer_question_list

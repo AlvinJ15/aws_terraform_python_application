@@ -7,13 +7,13 @@
       "questions": [
         {
           "id": "question-1",
-          "text": "What is your name?",
+          "question": "What is your name?",
           "type": "text",
           "required": true
         },
         {
           "id": "question-2",
-          "text": "What is your favorite color?",
+          "question": "What is your favorite color?",
           "type": "multiple_choice",
           "options": [
             {
@@ -42,13 +42,13 @@
       "questions": [
         {
           "id": "question-1",
-          "text": "What is your name?",
+          "question": "What is your name?",
           "type": "text",
           "required": true
         },
         {
           "id": "question-2",
-          "text": "What is your favorite color?",
+          "question": "What is your favorite color?",
           "type": "multiple_choice",
           "options": [
             {
