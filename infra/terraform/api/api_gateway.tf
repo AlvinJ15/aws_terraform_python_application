@@ -1,6 +1,7 @@
 resource "aws_api_gateway_rest_api" "rest_api" {
   name        = "Tollacred-api"
   description = "Tollanis Credentially API Gateway"
+  binary_media_types = ["multipart/form-data"]
 }
 
 resource "aws_api_gateway_authorizer" "api_authorizer" {
@@ -19,7 +20,10 @@ resource "aws_api_gateway_deployment" "deployment" {
     module.compliance_package_management,
     module.questionnaire_management,
     module.onboarding_management,
-    module.organization_document_management
+    module.organization_document_management,
+    module.employee_management,
+    module.employee_document_management,
+    module.employee_questionnaire_response_management
   ]
   lifecycle {
     create_before_destroy = true

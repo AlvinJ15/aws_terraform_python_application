@@ -56,7 +56,7 @@ def create_handler(event, context):
             db.commit()
             db.refresh(new_employee)
             stage = event.get('requestContext', {}).get('stage')
-            organization = db.query(Organization).filter_by(id=organization_id)
+            organization = db.query(Organization).filter_by(id=organization_id).first()
             path = (f"{stage}/app_data/orgs/{organization.name} {DataBase.get_now().year}/"
                     f"Ongoing/{new_employee_profile.first_name} {new_employee_profile.last_name} - "
                     f"{new_employee_profile.role}")

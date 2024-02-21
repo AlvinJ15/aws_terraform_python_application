@@ -1,22 +1,20 @@
 import json
 from unittest.mock import patch
 
-from requests_toolbelt import MultipartEncoder
-
 from tests.mocks.mock_database_utils import MockDatabase, \
     mock_get_collation_ids, mock_get_tinyint_class
 from tests.test_utils import get_file_content
 
 BASE_JSON_FOLDER = "tests/json_data"
-EXPECTED_JSON_PATH = f'{BASE_JSON_FOLDER}/expected/onboardings_management'
-BODY_JSON_FOLDER = f'{BASE_JSON_FOLDER}/body_request/onboardings_management'
+EXPECTED_JSON_PATH = f'{BASE_JSON_FOLDER}/expected/employee_documents_management'
+BODY_JSON_FOLDER = f'{BASE_JSON_FOLDER}/body_request/employee_documents_management'
 
 
 @patch("data_models.models.get_collation_ids", mock_get_collation_ids)
 @patch("data_models.models.get_tinyint_class", mock_get_tinyint_class)
 @patch("api_services.utils.database_utils.DataBase.generate_uuid", MockDatabase.mock_generate_uuid)
 @patch("api_services.utils.database_utils.DataBase.get_now", MockDatabase.mock_now)
-class TestOnboardings:
+class TestEmployeesDocuments:
     def setup_method(self, method):
         from api_services.employee_documents.employee_documents_management import (
             get_all_handler, get_single_handler, create_handler, update_handler, delete_single_handler
@@ -41,7 +39,7 @@ class TestOnboardings:
         event = {
             "pathParameters": {
                 "organization_id": "11111111-1111-1111-1111-111111111111",
-                "onboarding_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+                "employee_id": "xxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
             }
         }
         response = self.get_single_handler(event, {})
@@ -54,24 +52,8 @@ class TestOnboardings:
 
     def test_create_handler(self, initialize_db):
         MockDatabase.COUNT_UUID = 0
-        m = MultipartEncoder(
-            fields={
-                'name': 'test_name',
-                'description': 'test_description',
-                'document_file': (
-                'body_create_handler.json', open(f"{BODY_JSON_FOLDER}/body_create_handler.json", 'rb'),
-                'application/pdf')
-            }
-        )
-        event = {
-            "pathParameters": {
-                "organization_id": "11111111-1111-1111-1111-111111111111"
-            },
-            'multiValueHeaders': {
-                key: value for key, value in m.fields.items()
-            },
-            'body': m.to_string()
-        }
+
+        event = json.loads(get_file_content(f"{BODY_JSON_FOLDER}/multipart_create_handler.json"))
         response = self.create_handler(event, {})
 
         assert response["statusCode"] == 201
@@ -85,7 +67,7 @@ class TestOnboardings:
         event = {
             "pathParameters": {
                 "organization_id": "11111111-1111-1111-1111-111111111111",
-                "onboarding_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+                "employee_id": "xxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
             },
             "body": get_file_content(f"{BODY_JSON_FOLDER}/body_update_handler.json")
         }
@@ -101,7 +83,7 @@ class TestOnboardings:
         event = {
             "pathParameters": {
                 "organization_id": "11111111-1111-1111-1111-111111111111",
-                "onboarding_id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+                "employee_id": "xxxxxxx-cccc-cccc-cccc-cccccccccccc"
             }
         }
         response = self.delete_single_handler(event, {})

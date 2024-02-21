@@ -1,0 +1,9 @@
+{
+   // This request should be sent as Form-Data not JSON
+   "document_type_id": "3f4eccd2-c57d-11ee-8592-127af369fb99",
+   "expiry_date": "2023-12-05 09:15:00",
+   "document_number": "48182008",
+   "status": "Awaiting Approval",
+   "approver_id": "aaaaaaaa-1111-1111-1111-111111111111",
+   "file": ""  // file loaded as input file on HTML
+}

@@ -3,15 +3,16 @@ from boto3 import Session
 session = Session()
 s3_client = session.client("s3")
 
-BUCKET_NAME = 'TOLLACRED'
+BUCKET_NAME = 'tollacred'
 
 
-def upload_file_to_s3(path, file):
+def upload_file_to_s3(path, file, content_type):
     try:
         s3_client.put_object(
             Bucket=BUCKET_NAME,
             Key=path,
             Body=file,
+            ContentType=content_type
         )
 
         # Get a temporal URL for download the object

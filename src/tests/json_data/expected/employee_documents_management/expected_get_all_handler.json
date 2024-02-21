@@ -1,0 +1,14 @@
+[
+  {
+      "document_id": "204561cc-a0d5-469b-afaa-3ebfe8b30642",
+      "employee_id": "cc2d12aa-8120-4c07-adc3-553bc9611ac2",
+      "document_type_id": "3f4eccd2-c57d-11ee-8592-127af369fb99",
+      "expiry_date": "2023-12-05 09:15:00",
+      "document_number": "48182008",
+      "status": "Awaiting Approval",
+      "approval_date": null,
+      "approver_id": "aaaaaaaa-1111-1111-1111-111111111111",
+      "s3_path": "dev/app_data/orgs/Organization Test 2024/Ongoing/John CREATED Smith CREATED - Physician CREATED/01 License, Certification and Verification/ceb0c240-e5ff-4c91-9da8-c3a0ef0aae42_pdf_test.pdf",
+      "upload_date": "2024-02-21 21:21:38"
+  }
+]
