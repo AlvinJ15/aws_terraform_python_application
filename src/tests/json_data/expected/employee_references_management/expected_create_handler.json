@@ -1,0 +1,11 @@
+{
+    "reference_id": "_created-0000-0000-0000-000mocked_01",
+    "employee_id": "xxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "referee_name": "John Doe CREATED",
+    "referee_email": "john.doe@example.com",
+    "referee_phone": "+1234567890",
+    "status": "Awaiting Approval",
+    "s3_path": null,
+    "created_date": "2000-01-01 00:00:00",
+    "completion_date": null
+}

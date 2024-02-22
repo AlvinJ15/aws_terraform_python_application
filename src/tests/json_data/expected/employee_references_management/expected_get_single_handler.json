@@ -1,0 +1,11 @@
+{
+    "reference_id": "rrrrrrrr-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "employee_id": "xxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "referee_name": "John Doe",
+    "referee_email": "john.doe@example.com",
+    "referee_phone": "+1234567890",
+    "status": "Awaiting Approval",
+    "s3_path": "s3://bucket/path/to/reference_file.pdf",
+    "created_date": "2024-02-23 10:00:00",
+    "completion_date": null
+}

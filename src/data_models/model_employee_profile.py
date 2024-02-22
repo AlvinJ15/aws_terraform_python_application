@@ -55,3 +55,6 @@ class EmployeeProfile(Base):
             "state": self.state,
             "zip": self.zip,
         }
+
+    def get_name(self):
+        return f"{self.first_name} {self.last_name}"

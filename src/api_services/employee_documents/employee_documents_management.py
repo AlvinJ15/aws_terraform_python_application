@@ -54,9 +54,9 @@ def create_handler(event, context):
             new_document.employee_id = employee_id
             document_type = db.query(DocumentType).filter_by(id=new_document.document_type_id).first()
             path = (f"{stage}/app_data/orgs/{organization.name} {DataBase.get_now().year}/"
-                    f"Ongoing/{employee_profile.first_name} {employee_profile.last_name} - "
+                    f"Ongoing/{employee_profile.get_name()} - "
                     f"{employee_profile.role}/01 License, Certification and Verification/"
-                    f"{employee_profile.first_name} {employee_profile.last_name} - "
+                    f"{employee_profile.get_name()} - "
                     f"{document_type.category} - {document_type.name}.{file.multipart_filename.split('.')[-1]}")
             s3_path = upload_file_to_s3(path, file.value, file.multipart_content_type)
             new_document.s3_path = s3_path
@@ -95,9 +95,9 @@ def update_handler(event, context):
             set_fields_from_dict(document, data, date_fields)
             document_type = db.query(DocumentType).filter_by(id=document.document_type_id).first()
             path = (f"{stage}/app_data/orgs/{organization.name} {DataBase.get_now().year}/"
-                    f"Ongoing/{employee_profile.first_name} {employee_profile.last_name} - "
+                    f"Ongoing/{employee_profile.get_name()} - "
                     f"{employee_profile.role}/01 License, Certification and Verification/"
-                    f"{employee_profile.first_name} {employee_profile.last_name} - "
+                    f"{employee_profile.get_name()} - "
                     f"{document_type.category} - {document_type.name}.{file.multipart_filename.split('.')[-1]}")
             s3_path = upload_file_to_s3(path, file.value, file.multipart_content_type)
             document.s3_path = s3_path

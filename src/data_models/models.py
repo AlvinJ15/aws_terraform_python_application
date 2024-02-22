@@ -17,7 +17,7 @@ def update_object_from_dict(data_model, data):
 
 def set_fields_from_dict(data_model, data, date_fields):
     for key, value in data.items():
-        if key in date_fields:
+        if key in date_fields and value is not None:
             # Parse value as datetime if the key is "date_fields" list
             value = datetime.datetime.strptime(value, "%Y-%m-%d %H:%M:%S")  # Adjust format if needed
         setattr(data_model, key, value)

@@ -31,6 +31,7 @@ def initialize_db():
     from data_models.model_employee import Employee
     from data_models.model_employee_profile import EmployeeProfile
     from data_models.model_employee_questionnaire_response import EmployeeQuestionnaireResponse
+    from data_models.model_employee_reference import EmployeeReference
 
     table_insert_data(Role)
     table_insert_data(Organization)
@@ -46,6 +47,7 @@ def initialize_db():
     table_insert_data(Employee)
     table_insert_data(EmployeeProfile)
     table_insert_data(EmployeeQuestionnaireResponse)
+    table_insert_data(EmployeeReference)
 
 
 def table_insert_data(BaseModelClass: object):
@@ -57,4 +59,4 @@ def table_insert_data(BaseModelClass: object):
                 db.add(BaseModelClass(**record))
             db.commit()
         except Exception as err:
-            print(f"ERROR: {err}")
+            print(f"ERROR conftest: {err}")

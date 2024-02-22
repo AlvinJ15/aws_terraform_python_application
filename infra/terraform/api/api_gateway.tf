@@ -23,7 +23,8 @@ resource "aws_api_gateway_deployment" "deployment" {
     module.organization_document_management,
     module.employee_management,
     module.employee_document_management,
-    module.employee_questionnaire_response_management
+    module.employee_questionnaire_response_management,
+    module.employee_reference_management
   ]
   lifecycle {
     create_before_destroy = true
@@ -193,16 +194,39 @@ resource "aws_iam_policy" "lambda_policy_interface" {
 EOF
 }
 
+resource "aws_iam_policy" "lambda_policy_ses" {
+  name = "my-lambda-policy-ses"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ses:SendEmail",
+        "ses:SendRawEmail"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_iam_role_policy_attachment" "lambda_policy_attachment_interface" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = aws_iam_policy.lambda_policy_interface.arn
-
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_policy_attachment_secrets" {
   role       = aws_iam_role.lambda_exec.name
   policy_arn = aws_iam_policy.lambda_policy_secrets.arn
+}
 
+resource "aws_iam_role_policy_attachment" "lambda_policy_attachment_ses" {
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = aws_iam_policy.lambda_policy_ses.arn
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_policy" {

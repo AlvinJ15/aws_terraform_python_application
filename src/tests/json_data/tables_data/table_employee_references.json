@@ -1,0 +1,35 @@
+[
+  {
+    "reference_id": "rrrrrrrr-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "employee_id": "xxxxxxx-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "referee_name": "John Doe",
+    "referee_email": "john.doe@example.com",
+    "referee_phone": "+1234567890",
+    "status": "Awaiting Approval",
+    "s3_path": "s3://bucket/path/to/reference_file.pdf",
+    "created_date": "2024-02-23 10:00:00",
+    "completion_date": null
+  },
+  {
+    "reference_id": "ssssssss-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "employee_id": "xxxxxxx-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+    "referee_name": "Jane Smith",
+    "referee_email": "jane.smith@example.com",
+    "referee_phone": "+9876543210",
+    "status": "Awaiting Approval",
+    "s3_path": null,
+    "created_date": "2024-02-22 15:30:00",
+    "completion_date": "2024-02-23 09:00:00"
+  },
+  {
+    "reference_id": "tttttttt-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+    "employee_id": "xxxxxxx-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+    "referee_name": "Alice Brown",
+    "referee_email": "alice.brown@example.com",
+    "referee_phone": "+5432109876",
+    "status": "Approved",
+    "s3_path": null,
+    "created_date": "2024-02-21 12:00:00",
+    "completion_date": null
+  }
+]
