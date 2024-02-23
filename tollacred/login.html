@@ -131,64 +131,104 @@
     </div>
     <div id="overlay" class="overlay"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-        const baseURL = 'https://p4u9i76s6f.execute-api.us-east-1.amazonaws.com';
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+// const axios = require('axios');
+function getCookie(name) {
+  const cookies = document.cookie.split(';');
+  for (const cookie of cookies) {
+    const [key, value] = cookie.trim().split('=');
+    if (key === name) {
+      return decodeURIComponent(value);
+    }
+  }
+  return undefined; // Cookie not found
+}
 
-        async function makeRequest(method, url, data = null) {
-            try {
-                const response = await axios({
-                    method,
-                    url: `${baseURL}/${url}`,
-                    data
-                });
-                return response.data;
-            } catch (error) {
-                console.error('Error making request:', error.message);
-                throw error;
-            }
-        }
+function setCookie(name, value, options = {}) {
+  // Encode the value for safe cookie storage
+  const encodedValue = encodeURIComponent(value);
 
-        async function loginUser(username, password) {
-            const loginEndpoint = 'auth/login';
+  // Build the cookie string with optional parameters
+  let cookieString = `${name}=${encodedValue}`;
 
-            try {
-                const response = await makeRequest('POST', loginEndpoint, { username, password });
-                console.log('Login successful:', response);
+  // Set expiration time (optional)
+  if (options.expires) {
+    const expirationDate = new Date();
+    expirationDate.setTime(expirationDate.getTime() + options.expires * 1000);
+    cookieString += `; expires=${expirationDate.toUTCString()}`;
+  }
 
-                // Redirect or perform any action upon successful login
-            } catch (error) {
-                console.error('Login failed:', error.message);
-                // Handle login failure, show error message, etc.
-            }
-        }
+  // Set path (optional)
+  if (options.path) {
+    cookieString += `; path=${options.path}`;
+  }
 
-        function submitForm() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+  // Set domain (optional)
+  if (options.domain) {
+    cookieString += `; domain=${options.domain}`;
+  }
 
-            loginUser(username, password);
-        }
+  // Set secure flag (optional)
+  if (options.secure) {
+    cookieString += `; secure`;
+  }
 
-        function openPasswordResetModal() {
-            document.getElementById('passwordResetModal').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-        }
+  // Set SameSite attribute (optional)
+  if (options.sameSite) {
+    cookieString += `; SameSite=${options.sameSite}`;
+  }
 
-        function closePasswordResetModal() {
-            document.getElementById('passwordResetModal').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-        }
+  // Write the cookie to the document
+  document.cookie = cookieString;
+}
 
-        function resetPassword() {
-            const resetEmail = document.getElementById('resetEmail').value;
+function removeCookie(name) {
+  // Set the expiration date to a past date to effectively remove the cookie
+  setCookie(name, "", { expires: -1 });
+}
 
-            // Implement logic to send a reset link to the email
-            console.log('Password reset requested for email:', resetEmail);
+async function getApiToken() {
+    if (getCookie('API_TOKEN') === undefined) {
+        const CLIENT_ID = '7f07uqm098keq2i3k3ljg83hq9';
+        const CLIENT_SECRET = '1gf2no0tbm8f7tk54s76l3v29jf4c4qvcsrpt5h3a38sfsgmep5n';
+        const CODE = '9900347b-97b5-4113-a1a5-c21a508592e5';
+        const COGNITO_DOMAIN = 'https://tollacred.auth.us-east-1.amazoncognito.com';
 
-            // Close the modal
-            closePasswordResetModal();
-        }
+        const credentials = `${CLIENT_ID}:${CLIENT_SECRET}`;
+        const encodedCredentials = btoa(credentials);
+        console.log(encodedCredentials)
+        const body = {
+            grant_type: 'authorization_code',
+            client_id: CLIENT_ID,
+            code: CODE,
+            redirect_uri: 'https://aqqakr76zbjxtqxw36d2fjluue0vkpkz.lambda-url.us-east-1.on.aws/',
+        };
+
+        const headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Basic ${encodedCredentials}`,
+        };
+
+        await axios.post(`${COGNITO_DOMAIN}/oauth2/token`, body, {headers})
+            .then(response => {
+                console.log('Access token:', response.data.id_token);
+                setCookie('API_TOKEN', response.data.id_token)
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    return getCookie('API_TOKEN');
+}
+
+async function test(){
+    const api_token = await getApiToken(); // first time the token will be saved in the cookies, if the token expires we need to call removeCookie('API_TOKEN') and update the code for get a new token
+    console.log('API_TOKEN = ', api_token)
+}
+
+test() // async execution
+
     </script>
 </body>
 </html>
