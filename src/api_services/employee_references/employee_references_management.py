@@ -58,7 +58,7 @@ def create_handler(event, context):
                 path = (f"{stage}/app_data/orgs/{organization.name} {DataBase.get_now().year}/"
                         f"Ongoing/{employee_profile.get_name()} - "
                         f"{employee_profile.role}/References/"
-                        f"{employee_profile.get_name()} - {new_reference.reference_id}."
+                        f"{employee_profile.get_name()} - Reference {new_reference.reference_id}."
                         f"{file.multipart_filename.split('.')[-1]}")
                 s3_path = upload_file_to_s3(path, file.value, file.multipart_content_type)
                 new_reference.s3_path = s3_path
@@ -72,7 +72,8 @@ def create_handler(event, context):
                 new_reference.created_date = DataBase.get_now()
                 query_parameters = {
                     'organization_id': organization_id,
-                    'employee_id': employee_id
+                    'employee_id': employee_id,
+                    'reference_id': new_reference.reference_id
                 }
                 subject = f'Reference request for {employee_profile.get_name()}'
                 body_mail = (f'Please send you reference for {employee_profile.get_name()}\n'
@@ -118,7 +119,7 @@ def update_handler(event, context):
                 path = (f"{stage}/app_data/orgs/{organization.name} {DataBase.get_now().year}/"
                         f"Ongoing/{employee_profile.get_name()} - "
                         f"{employee_profile.role}/References/"
-                        f"{employee_profile.get_name()} - {reference.reference_id}."
+                        f"{employee_profile.get_name()} - Reference {reference.reference_id}."
                         f"{file.multipart_filename.split('.')[-1]}")
                 s3_path = upload_file_to_s3(path, file.value, file.multipart_content_type)
                 reference.s3_path = s3_path
@@ -130,7 +131,8 @@ def update_handler(event, context):
                 update_object_from_dict(reference, data)
                 query_parameters = {
                     'organization_id': organization_id,
-                    'employee_id': employee_id
+                    'employee_id': employee_id,
+                    'reference_id': reference.reference_id
                 }
                 subject = f'Reference request for {employee_profile.get_name()}'
                 body_mail = (f'Please send you reference for {employee_profile.get_name()}\n'

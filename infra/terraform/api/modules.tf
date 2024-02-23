@@ -122,3 +122,8 @@ module "employee_reference_management" {
   lambda_exec              = aws_iam_role.lambda_exec
   id_resource_employee     = module.employee_management.base_employees_id_resource
 }
+
+module "employee_reference_submission" {
+  source                   = "./lambda_functions/process_reference_evaluation_submissions"
+  lambda_exec              = aws_iam_role.lambda_exec
+}

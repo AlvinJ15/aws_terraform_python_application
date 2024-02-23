@@ -13,7 +13,7 @@ class DataBase:
 
     @classmethod
     def create_session(cls):
-        credentials = credentials_utils.retrieve_credentials()
+        credentials = credentials_utils.retrieve_credentials_tollacred()
         connection_string = (
             f"mysql+pymysql://{credentials.get('username')}:"
             f"{credentials.get('password')}"

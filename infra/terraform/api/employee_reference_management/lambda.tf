@@ -24,6 +24,7 @@ resource "aws_lambda_function" "lambda_function_employee_references" {
     ipv6_allowed_for_dual_stack = false
     security_group_ids          = [
       "sg-008841c028d39973f",
+      "sg-0b968023f610eb7be",
     ]
     subnet_ids = [
       "subnet-0328e29f0b95a9e2a",

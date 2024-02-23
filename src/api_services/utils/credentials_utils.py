@@ -4,7 +4,7 @@ import json
 from botocore.exceptions import ClientError
 
 
-def retrieve_credentials():
+def retrieve_credentials_tollacred():
     secret_name = "tollacred_auto"
     region_name = "us-east-1"
 
@@ -31,3 +31,29 @@ def retrieve_credentials():
     except ClientError as e:
         print(e.response)
         raise e
+
+
+def retrieve_credentials_paperform():
+    secret_name = "Paperform_access_token"
+    region_name = "us-east-1"
+
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
+    )
+
+    try:
+        # Get the secret value from Secrets Manager
+        get_secret_value_response = client.get_secret_value(SecretId=secret_name)
+        credential_values = json.loads(get_secret_value_response['SecretString'])
+
+        return {
+            'token': credential_values['API Token']
+        }
+
+    except ClientError as e:
+        print(e.response)
+        raise e
+    

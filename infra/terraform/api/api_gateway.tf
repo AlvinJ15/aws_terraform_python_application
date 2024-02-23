@@ -166,7 +166,10 @@ resource "aws_iam_policy" "lambda_policy_secrets" {
       "Action": [
         "secretsmanager:GetSecretValue"
       ],
-      "Resource": "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:${var.secret_manager_name}"
+      "Resource": [
+        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:${var.secret_manager_name}",
+        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:Paperform_access_token-B9wnrv"
+      ]
     }
   ]
 }
