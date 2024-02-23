@@ -1,103 +1,127 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<title>Document Types</title>
-		<title>Document Types</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-	</head>
-	<body class="is-preload">
-		<!-- Wrapper -->
-			<div id="wrapper">
-				<!-- Main -->
-					<div id="main">
-						<div class="inner">
-							<!-- Header -->
-								<header id="header">
-									<a href="dashboard.html" class="logo"><strong>BPO Credentialing</strong> by Tollanis</a>
-								</header>
-							<!-- Banner -->
-							<section id="banner">
-								<div class="content">
-                                <header>
-                                    <h3>Document Type<br /></h3>
-                                    <a href="documenttypecreation.html" style="float: right;"><button>Add New Document type</button></a>
-                                </header>
-                                <p>Here you can create new documents and edit existing ones.</p>
-                                </div>
-                            </section>
-                        <section id="table">
-                            <style>
-                                table {
-                                    width: 100%;
-                                    border-collapse: collapse;
-                                }
-                            
-                                th, td {
-                                    border: 1px solid #ddd;
-                                    padding: 8px;
-                                    text-align: left;
-                                    max-width: 400px;
-                                    word-wrap: break-word;
-                                    overflow-wrap: break-word;
-                                }
-                            
-                                th {
-                                    background-color: #f2f2f2;
-                                }
-                            </style>
-                            <title>HTML Grid</title>
-                            <body>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                            <th>Category</th>
-                                            <th>Expires</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Add your data rows here -->
-                                        <tr>
-                                            <td>BLS</td>
-                                            <td>Basic Life Support</td>
-                                            <td>Certificate</td>
-                                            <td>Yes</td>
-                                            <td>Edit | Delete</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Photo ID</td>
-                                            <td>Current/valid ID is required inc. front and back. State issued driver’s licence, valid passport or other state issued ID is acceptable</td>
-                                            <td>Personal</td>
-                                            <td>Yes</td>
-                                            <td>Edit | Delete</td>
-                                        </tr>
-                                        <tr>
-                                            <!-- Add more rows as needed -->
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </body>
-                        </section>
+<head>
+    <title>Document Types</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Main -->
+        <div id="main">
+            <div class="inner">
+                <!-- Header -->
+                <header id="header">
+                    <a href="dashboard.html" class="logo"><strong>TollanisCred</strong> Credentialing by Tollanis</a>
+                </header>
+                <!-- Banner - Document Type -->
+                <section id="banner">
+                    <div class="content">
+                        <header>
+                            <h3>Document Type<br /></h3>
+                            <a href="documenttypecreation.html" style="float: right;"><button>Add New Document type</button></a>
+                        </header>
+                        <p>Here, you can create new documents and edit existing ones.</p>
                     </div>
-            </div>
+                </section>
+                <!-- Banner - Document List -->
+                <section id="banner">
+                    <div class="content">
+                        <header>
+							<h3>Document List<br /></h3>
+							<button onclick="getList()" style="float: right;">Get List</button>
+						</header>
+                        <p>Here, you can get the actual document list. Please add the organization Id below and click on "Get list" button.</p>
+                        <input type="text" id="organizationIdInput" style="width: 300px;" required placeholder="Organization Id">
+                    </div>
+                </section>
+                <!-- Table Section -->
+                <section id="table">
+                    <style>
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                        }
                     
-				<!-- Sidebar -->
-					<div id="sidebar">
-						<div class="inner">
-								<span class="image object">
-   								 	<img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
-								</span>
-							
-							<!-- Search -->
-								<section id="search" class="alt">
-									<form method="post" action="#">
-										<input type="text" name="query" id="query" placeholder="Search" />
-									</form>
-								</section>
+                        th, td {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                            text-align: left;
+                            max-width: 400px;
+                            word-wrap: break-word;
+                            overflow-wrap: break-word;
+                        }
+                    
+                        th {
+                            background-color: #f2f2f2;
+                        }
+                    </style>
+                    <table id="documentTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Expires</th>
+                            </tr>
+                        </thead>
+                        <tbody id="documentTableBody">
+                            <!-- Table content will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </div>
+                    
+			 <!-- Sidebar -->
+			 <div id="sidebar">
+				<div class="inner">
+					<span class="image object">
+						<img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
+					</span>
+					<br />
+					<meta charset="UTF-8">
+					<meta name="viewport" content="width=device-width, initial-scale=1.0">
+					<link rel="stylesheet" href="styles.css">
+					<title>User Button</title>
+				</head>
+				<body>
+					<div class="sidebar">
+						<button class="user-button" onclick="showAccountSettings()">LS</button>
+						User Settings
+					
+						<!-- Account Settings Modal -->
+						<div id="accountSettingsModal" class="modal">
+							<div class="modal-content">
+								<span class="close" onclick="closeAccountSettingsModal()">&times;</span>
+								<h2>Account Settings</h2>
+								
+								<!-- Default Options -->
+								<label for="username">Username:</label>
+								<input type="text" id="username" value="User123" readonly>
+					
+								<label for="email">Email:</label>
+								<input type="email" id="email" value="user@example.com" readonly>
+					
+								<label for="password">Password:</label>
+								<input type="password" id="password" value="********" readonly>
+							</div>
+						</div>
+					
+						<script src="script.js"></script>
+						<div id="accountSettingsModal" class="modal">
+						</div>
+					</div>
+						
+						<!-- Search -->
+							<section id="search" class="alt">
+								<form method="post" action="#">
+									<input type="text" name="query" id="query" placeholder="Search" />
+								</form>
+							</section>
 
 							<!-- Menu -->
 								<nav id="menu">
@@ -114,7 +138,6 @@
 												<li><a href="compliancerequirements.html">Compliance Requirements</a></li>
 												<li><a href="organizationdocuments.html">Organization Documents</a></li>
 												<li><a href="questionnaires.html">Questionnaires</a></li>
-												<li><a href="onboarding.html">Onboarding</a></li>
 											</ul>
 										</li>
 										<li>
