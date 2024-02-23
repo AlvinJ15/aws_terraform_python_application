@@ -3,7 +3,7 @@ import urllib
 import boto3
 
 ses_client = boto3.client('ses')
-SENDER = 'credentialing@tollanis.com '
+SENDER = 'refevals@tollaniscred.com'
 
 
 def urlencode_dict(data):

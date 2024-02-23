@@ -77,7 +77,7 @@ def create_handler(event, context):
                 }
                 subject = f'Reference request for {employee_profile.get_name()}'
                 body_mail = (f'Please send you reference for {employee_profile.get_name()}\n'
-                             f'https://tollacred.paperform.co/?{urlencode_dict(query_parameters)}')
+                             f'https://tollaniscred.paperform.co/?{urlencode_dict(query_parameters)}')
                 mail_result = SES.send_email(new_reference.referee_email, subject, body_mail)
             if new_reference.status == 'Approved':
                 new_reference.completion_date = DataBase.get_now()
@@ -136,7 +136,7 @@ def update_handler(event, context):
                 }
                 subject = f'Reference request for {employee_profile.get_name()}'
                 body_mail = (f'Please send you reference for {employee_profile.get_name()}\n'
-                             f'https://tollacred.paperform.co/?{urlencode_dict(query_parameters)}')
+                             f'https://tollaniscred.paperform.co/?{urlencode_dict(query_parameters)}')
                 mail_result = SES.send_email(reference.referee_email, subject, body_mail)
             if reference.status == 'Approved':
                 reference.completion_date = DataBase.get_now()
