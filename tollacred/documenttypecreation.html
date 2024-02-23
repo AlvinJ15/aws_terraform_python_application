@@ -1,100 +1,115 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-        <title>Document Type Creation</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-	</head>
-	<body class="is-preload">
-		<!-- Wrapper -->
-			<div id="wrapper">
-				<!-- Main -->
-                <div id="main">
-                    <div class="inner">
-                        <!-- Header -->
-                            <header id="header">
-                                <a href="dashboard.html" class="logo"><strong>BPO Credentialing</strong> by Tollanis</a>
-                            </header>
-                        <!-- Banner -->
-                        <section id="banner">
-                            <div class="content">
-                                <header>
-                                    <h3 style="margin-left: 50px;">Document Type Creation<br /></h3>
-                                </header>
-                            </div>
-                        </section>
-                            <div class="form-group" style="margin-left: 50px;">
-                                <label for="role-name" style="margin-top: 15px;">Document Name*</label>
-                                <div class="input-container">
-                                    <input type="text" id="role-name" name="role-name" class="textbox" placeholder="Enter new role name" style="width: 500px;" required>
-                                </div>
-                            </div>
-                            <div class="form-group" style="margin-left: 50px;">
-								<label for="role-name" style="margin-top: 15px;">Document Description</label>
-								<div class="input-container">
-									<input type="text" id="role-name" name="role-name" class="textbox" placeholder="Enter new role name" style="width: 500px;" required>
-								</div>
-							</div>
-                            <div class="box-selection-group" style="margin-left: 50px;">
-								<div class="box-selection">
-									<label for="category" style="margin-top: 15px;">Category:</label>
-									<input type="checkbox" id="personal" name="category" value="personal">
-									<label for="personal">Personal</label>
-									<input type="checkbox" id="certification" name="category" value="certification">
-									<label for="certification">Certification</label>
-								</div>
-							</div>
-								<div class="box-selection" style="margin-left: 50px;">
-									<label for="expiration" style="margin-top: 15px;">Expiration:</label>
-									<input type="checkbox" id="expiration" name="expiration" value="expires">
-									<label for="expiration">This document expires.</label>
-								</div>
-						        <div class="box-selection-group" style="margin-left: 50px;">
-								    <label for="access" style="margin-top: 15px;">Access:</label>
-								    <input type="checkbox" id="all-roles" name="access" value="all-roles">
-								    <label for="all-roles">All roles have access</label>
-								    <input type="checkbox" id="selected-roles" name="access" value="selected-roles">
-								    <label for="selected-roles">Selected roles have access</label>
-							    </div>
-                            <div id="role-selection" style="display: none; margin-left: 50px; margin-top: 15px;">
-								<h3>Select roles:</h3>
-								<br>
-								<input type="checkbox" id="role1" name="roles" value="role1">
-								<label for="role1">Role 1</label>
-								<br>
-								<input type="checkbox" id="role2" name="roles" value="role2">
-								<label for="role2">Role 2</label>
-								<br>
-								<input type="checkbox" id="role3" name="roles" value="role3">
-								<label for="role3">Role 3</label>
-								<br>
-								<input type="checkbox" id="role4" name="roles" value="role4">
-								<label for="role4">Role 4</label>
-							</div>
-                            <div class="form-group" style="margin-left: 50px; margin-top: 15px;">
-                                <a href="#" class="button primary default" id="save-button" disabled>Save</a>
-                                <a href="#" class="button secondary" id="cancel-button">Cancel</a>  
-                            </div>
-                            <br></br>
-                            <br></br>
-                        </body>
+<head>
+    <title>Document Type Creation</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Main -->
+        <div id="main">
+            <div class="inner">
+                <!-- Header -->
+                <header id="header">
+                    <a href="dashboard.html" class="logo"><strong>TollanisCred</strong> Credentialing by Tollanis</a>
+                </header>
+                <!-- Banner -->
+                <section id="banner">
+                    <div class="content">
+                        <header>
+                            <h3 style="margin-left: 50px;">Document Type Creation<br /></h3>
+                        </header>
+                    </div>
+                </section>
+                <div class="form-group" style="margin-left: 50px;">
+                    <label for="organization-id" style="margin-top: 15px;">Organization ID*</label>
+                    <div class="input-container">
+                        <input type="text" id="organization-id" name="organization-id" class="textbox" placeholder="Enter organization ID" style="width: 200px;" required>
+                    </div>
                 </div>
+                <div class="form-group" style="margin-left: 50px;">
+                    <label for="document-name" style="margin-top: 15px;">Document Name*</label>
+                    <div class="input-container">
+                        <input type="text" id="document-name" name="document-name" class="textbox" placeholder="Enter document name" style="width: 500px;" required>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-left: 50px;">
+                    <label for="document-description" style="margin-top: 15px;">Document Description</label>
+                    <div class="input-container">
+                        <input type="text" id="document-description" name="document-description" class="textbox" placeholder="Enter document description" style="width: 500px;">
+                    </div>
+                </div>
+                <div class="box-selection-group" style="margin-left: 50px;">
+                    <div class="box-selection">
+                        <label for="document-category" style="margin-top: 15px;">Category:</label>
+                        <input type="radio" id="personal" name="document-category" value="Personal" required>
+                        <label for="personal">Personal</label>
+                        <input type="radio" id="certification" name="document-category" value="Certification" required>
+                        <label for="certification">Certification</label>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-left: 50px;">
+                    <label for="document-expiration" style="margin-top: 15px;">Expiration (in months):</label>
+                    <input type="number" id="document-expiration" name="document-expiration" min="0" max="120" style="width: 80px;">
+                </div>
+                <div class="form-group" style="margin-left: 50px; margin-top: 15px;">
+                    <a href="#" class="button primary default" id="save-button" onclick="createDocument()" disabled>Save</a>
+                    <a href="#" class="button secondary" id="cancel-button">Cancel</a>  
+                </div>
+                <br></br>
+                <br></br>
             </div>
-				  
-				<!-- Sidebar -->
-                <div id="sidebar">
-                    <div class="inner">
-                            <span class="image object">
-                                    <img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
-                            </span>
-                        
-                        <!-- Search -->
-                            <section id="search" class="alt">
-                                <form method="post" action="#">
-                                    <input type="text" name="query" id="query" placeholder="Search" />
-                                </form>
-                            </section>
+        </div>
+    </div>
+				 <!-- Sidebar -->
+				 <div id="sidebar">
+					<div class="inner">
+						<span class="image object">
+							<img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
+						</span>
+						<br />
+						<meta charset="UTF-8">
+						<meta name="viewport" content="width=device-width, initial-scale=1.0">
+						<link rel="stylesheet" href="styles.css">
+						<title>User Button</title>
+					</head>
+					<body>
+						<div class="sidebar">
+							<button class="user-button" onclick="showAccountSettings()">LS</button>
+							User Settings
+						
+							<!-- Account Settings Modal -->
+							<div id="accountSettingsModal" class="modal">
+								<div class="modal-content">
+									<span class="close" onclick="closeAccountSettingsModal()">&times;</span>
+									<h2>Account Settings</h2>
+									
+									<!-- Default Options -->
+									<label for="username">Username:</label>
+									<input type="text" id="username" value="User123" readonly>
+						
+									<label for="email">Email:</label>
+									<input type="email" id="email" value="user@example.com" readonly>
+						
+									<label for="password">Password:</label>
+									<input type="password" id="password" value="********" readonly>
+								</div>
+							</div>
+						
+							<script src="script.js"></script>
+							<div id="accountSettingsModal" class="modal">
+							</div>
+						</div>
+							
+							<!-- Search -->
+								<section id="search" class="alt">
+									<form method="post" action="#">
+										<input type="text" name="query" id="query" placeholder="Search" />
+									</form>
+								</section>
 
                         <!-- Menu -->
                             <nav id="menu">
@@ -111,8 +126,7 @@
 												<li><a href="compliancerequirements.html">Compliance Requirements</a></li>
 												<li><a href="organizationdocuments.html">Organization Documents</a></li>
 												<li><a href="questionnaires.html">Questionnaires</a></li>
-												<li><a href="onboarding.html">Onboarding</a></li>
-                                        </ul>
+											    </ul>
                                     </li>
                                     <li>
                                         <span class="opener">Staff</span>
@@ -147,6 +161,8 @@
         <script src="assets/js/breakpoints.min.js"></script>
         <script src="assets/js/util.js"></script>
         <script src="assets/js/main.js"></script>
+		<script src="documentmanagement.js" defer></script>
+
 
     </body>
 </html>
