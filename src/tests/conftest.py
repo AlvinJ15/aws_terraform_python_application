@@ -33,8 +33,8 @@ def initialize_db():
     from data_models.model_employee_questionnaire_response import EmployeeQuestionnaireResponse
     from data_models.model_employee_reference import EmployeeReference
 
-    table_insert_data(Role)
     table_insert_data(Organization)
+    table_insert_data(Role)
     table_insert_data(DocumentType)
     table_insert_data(Onboarding)
     table_insert_data(OnboardingStep)

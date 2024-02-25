@@ -5,7 +5,7 @@ from data_models.model_employee import Employee
 from data_models.model_questionnaire import Questionnaire
 from data_models.models import Base, get_collation_ids, set_fields_from_dict
 
-STATUS = ['Completed', 'Draft']
+STATUS = ['Completed', 'Not Completed', 'Draft']
 
 
 class EmployeeQuestionnaireResponse(Base):
