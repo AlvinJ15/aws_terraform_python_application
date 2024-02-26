@@ -57,7 +57,7 @@ classes_list = [
     Onboarding,
     OnboardingStep,
     StepRole,
-    Administrator,
+        Administrator,
     Employee,
     EmployeeProfile,
     EmployeeDocument,

@@ -1,162 +1,161 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 	<head>
-		<title>Add Staffe</title>
+		<title>Add Staff</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 	</head>
 	<body class="is-preload">
 		<!-- Wrapper -->
-			<div id="wrapper">
-				<!-- Main -->
-					<div id="main">
-						<div class="inner">
-							<!-- Header -->
-								<header id="header">
-									<a href="dashboard.html" class="logo"><strong>BPO Credentialing</strong> by Tollanis</a>
-								</header>
-							<!-- Banner -->
-							<section id="banner">
-								<div class="content">
-                                <header>
-								<h2 style="margin-left: 50px;">Add Staff<br /></h2>
-                                </header>
-                                </div>
-                            </section>
-							<div class="form-group" style="margin-left: 50px;">
-								<label for="firstname">First Name</label>
-								<div class="input-container">
-									<input type="text" id="firstname" name="firstname" class="textbox mandatory" placeholder="Enter first name" style="width: 500px;" required>
-								</div>
-							</div>
-							<div class="form-group" style="margin-top: 15px; margin-left: 50px;">
-								<label for="lastname">Last Name</label>
-								<div class="input-container">
-									<input type="text" id="lastname" name="lastname" class="textbox mandatory" placeholder="Enter last name" style="width: 500px;" required>
-								</div>
-							</div>
-							<div class="form-group" style="margin-top: 15px; margin-left: 50px;">
-								<label for="email">Email*</label>
-								<div class="input-container">
-									<input type="email" id="email" name="email" class="textbox mandatory" placeholder="Enter email" style="width: 500px;" required>
-								</div>
-							</div>
-							<div class="form-group" style="margin-top: 15px; margin-left: 50px;">
-								<label for="personnel-type">Personnel Type*</label>
-								<div class="input-container" style="width: 500px;">
-									<select id="personnel-type" name="personnel-type" class="dropdown mandatory" required>
-										<option value="" disabled selected>Select personnel type</option>
-										<option value="Administrator">Administrator</option>
-										<option value="errn">ER RN</option>
-										<option value="Dermatologist">Dermatologist</option>
-										<option value="nurseca">Nurse California</option>
-										<option value="OT-kaiserpermanent">OT Kaiser Permanent</option>
-										<option value="physicaltherapist">Physical Therapist</option>
-										<option value="RN-Telemetry">RN Telemetry</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group" style="margin-top: 15px; margin-left: 50px;">
-								<div class="form-group">
-									<label for="skiponboarding">Onboarding:</label>
-								</div>
-							</div>
-							<div class="input-container">
-								<div style="margin-left: 50px;">
-								<input type="checkbox" id="skiponboarding" name="onboarding" value="value1">
-								<label for="Skip">Skip Onboarding</label>
-								</div>
-							</div>
-							<div class="form-group" style="margin-top: 20px; margin-left: 50px;">
-								<div class="form-group"></div>
-								<br>
-									<label for="invitemail">Invite Mail:</label>
-								<div class="input-container" style="margin-top: 20px;">
-									<input type="checkbox" id="sendnow" name="invitemail" value="invitenow">
-									<label for="sendnow">Send Invite mail now</label>
-						
-									<input type="checkbox" id="sendlater" name="invitemail" value="invitelater">
-									<label for="sendlater">Invite them later</label>
-								</div>
-							</div>
-							<div class="form-group" style="margin-top: 20px; margin-left: 50px;">
-								<a href="#" class="button primary default" id="addstaff-button" disabled>Add Staff Member </a>
-								<span style="margin-right: 10px;"></span>
-								<a href="staff.html" class="button default" id="cancel-button" onclick="window.location.href='dashboard.html'">Cancel</a>
-							</div>
-							<br></br>
-							<br></br>
-							<br></br>
+		<div id="wrapper">
+			<!-- Main -->
+			<div id="main">
+				<div class="inner">
+					<!-- Header -->
+					<header id="header">
+						<a href="dashboard.html" class="logo"><strong>TollanisCred</strong> Credentialing by Tollanis</a>
+					</header>
+					<!-- Banner -->
+					<section id="banner">
+						<div class="content">
+							<header>
+								<h2>Add New Staff<br /></h2>
+							</header>
 						</div>
-			</div>
-	</body>
-
-				<!-- Sidebar -->
-					<div id="sidebar">
-						<div class="inner">
-								<span class="image object">
-   								 	<img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
-								</span>
-							
-							<!-- Search -->
-								<section id="search" class="alt">
-									<form method="post" action="#">
-										<input type="text" name="query" id="query" placeholder="Search" />
-									</form>
-								</section>
-
-							<!-- Menu -->
-								<nav id="menu">
-									<header class="major">
-										<h2>Menu</h2>
-									</header>
-									<ul>
-										<li><a href="dashboard.html">Homepage</a></li>
-										<li>
-											<span class="opener">Organization Settings</span>
-											<ul>
-												<li><a href="organizationdetails.html">Organization Details</a></li>
-												<li><a href="documenttypes.html">Document Types</a></li>
-												<li><a href="compliancerequirements.html">Compliance Requirements</a></li>
-												<li><a href="organizationdocuments.html">Organization Documents</a></li>
-												<li><a href="questionnaires.html">Questionnaires</a></li>
-												<li><a href="onboarding.html">Onboarding</a></li>
-											</ul>
-										</li>
-										<li>
-											<span class="opener">Staff</span>
-											<ul>
-												<li><a href="staff.html">Staff</a></li>
-												<li><a href="staffapproval.html">Staff needing approval</a></li>
-											</ul>
-										</li>
-										
-									</ul>
-								</nav>
-
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>Get in touch</h2>
-									</header>
-									<p>We're here to help! If you're experiencing any issues or have questions, please don't hesitate to reach out to us at help@tollanis.com. Our dedicated support team is ready to assist you and ensure you have a smooth experience with our new product. Your satisfaction is our priority.</p>
-									<ul class="contact">
-										<li class="icon solid fa-envelope"><a href="#">help@tollanis.com</a></li>
-									</ul>
-								</section>
-
+					</section>
+					<div class="form-group" style="margin-left: 50px;">
+						<label for="first-name" style="margin-top: 15px;">First Name</label>
+						<div class="input-container">
+							<input type="text" id="first-name" name="first-name" class="textbox" placeholder="Enter first name" style="width: 500px;" required>
 						</div>
 					</div>
-					
+					<div class="form-group" style="margin-left: 50px;">
+						<label for="last-name" style="margin-top: 15px;">last Name</label>
+						<div class="input-container">
+							<input type="text" id="last-name" name="last-name" class="textbox" placeholder="Enter last name" style="width: 500px;" required>
+						</div>
+					</div>
+					<div class="form-group" style="margin-top: 15px; margin-left: 50px;">
+                        <label for="email">Email*</label>
+                        <div class="input-container">
+                            <input type="email" id="email" name="email" class="textbox mandatory" placeholder="Enter email" style="width: 500px;" required>
+                        </div>
+                    </div>
+					<div class="form-group" style="margin-top: 15px; margin-left: 50px;">
+                        <label for="role">Personnel Type</label>
+                        <div class="input-container">
+                            <select id="role" name="role" class="textbox" style="width: 500px;">
+                                <option value="1">Option 1</option>
+                                <option value="2">Option 2</option>
+                                <option value="3">Option 3</option>
+                                <option value="4">Option 4</option>
+                                <option value="5">Option 5</option>
+                                <option value="6">Option 6</option>
+                                <option value="7">Option 7</option>
+							</select>
+                        </div>
+                    </div>
+				</div>
+				<div class="button" style="margin-left: 50px; margin-top: 15px;">
+					<a href="#" class="button primary default" id="save-button" onclick="createEmployee()" disabled>Add Staff</a>
+					<a href="staff.html" class="button secondary" id="cancel-button">Cancel</a>
+					<a href="#" class="button light" id="add-new-staff" style="display: none;">Add New Staff</a>
+				</div>
 			</div>
+				<br>
+			<!-- Sidebar -->
+			<div id="sidebar">
+				<a href="profile.html" style="display: flex; align-items: center;">
+					<div style="border-radius: 50%; width: 40px; height: 40px; background-color: #00125B; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
+					</div>
+					<span>User Settings</span>
+				</a>
+			   
+			</div>
+				<div class="inner">
+					<span class="image object">
+						<img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
+					</span>
+					<br />
+					<meta charset="UTF-8">
+					<meta name="viewport" content="width=device-width, initial-scale=1.0">
+					<link rel="stylesheet" href="styles.css">
+					<title>User Button</title>
+				</head>
+				<body>
+					<div class="sidebar">
+						<a href="#" onclick="handleButtonClick()" style="display: flex; align-items: center;">
+							<div style="border-radius: 50%; width: 40px; height: 40px; background-color: #00125B; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
+							</div>
+							<span>User Settings</span>
+						</a>
+					   
+					</div>
+					<!-- Search -->
+					<section id="search" class="alt">
+						<form method="post" action="#">
+							<input type="text" name="query" id="query" placeholder="Search" />
+						</form>
+					</section>
+					<!-- Menu -->
+					<nav id="menu">
+						<header class="major">
+							<h2>Menu</h2>
+						</header>
+						<ul>
+							<li><a href="dashboard.html">Homepage</a></li>
+							<li>
+								<span class="opener">Organization Settings</span>
+								<ul>
+									<li><a href="organizationdetails.html">Organization Details</a></li>
+									<li><a href="documenttypes.html">Document Types</a></li>
+									<li><a href="compliancerequirements.html">Compliance Requirements</a></li>
+									<li><a href="organizationdocuments.html">Organization Documents</a></li>
+									<li><a href="questionnaires.html">Questionnaires</a></li>
+									<li><a href="onboarding.html">Onboarding</a></li>
+								</ul>
+							</li>
+							<li>
+								<span class="opener">Staff</span>
+								<ul>
+									<li><a href="staff.html">Staff</a></li>
+									<li><a href="staffapproval.html">Staff needing approval</a></li>
+								</ul>
+							</li>
+						</ul>
+					</nav>
+					
+			<!-- Section -->
+			<section>
+				<header class="major">
+					<h2>Get in touch</h2>
+				</header>
+				<p>We're here to help! If you're experiencing any issues or have questions, please don't hesitate to reach out to us at <a href="mailto:help@tollanis.com">help@tollanis.com</a>. Our dedicated support team is ready to assist you and ensure you have a smooth experience with our new product. Your satisfaction is our priority.</p>
+				<ul class="contact">
+					<li class="icon solid fa-envelope"><a href="mailto:help@tollanis.com">help@tollanis.com</a></li>
+				</ul>
+			</section>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+		</div>
+	</div>
 
-	</body>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/index.js"></script>
+<script src="assets/js/apis.js"></script>
+<script src="assets/js/roles.js"></script>
+<script src="assets/js/documentmanagement.js"></script>
+<script src="assets/js/comppkgmngmt.js"></script>
+<script src="assets/js/employeemanagement.js"></script>
+
+</body>
+
 </html>

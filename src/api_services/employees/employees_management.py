@@ -26,7 +26,9 @@ def get_single_handler(event, context):
         try:
             employee = db.query(Employee).filter_by(employee_id=employee_id).first()
             if employee:
-                return {"statusCode": 200, "body": json.dumps(employee.to_dict())}
+                json_object = employee.to_dict()
+                json_object['compliance_packages'] = [package.to_dict() for package in employee.compliance_packages]
+                return {"statusCode": 200, "body": json.dumps(json_object)}
             else:
                 return {"statusCode": 404, "body": "Employee not found"}
         except Exception as err:
@@ -95,8 +97,11 @@ def delete_single_handler(event, context):
 
     with DataBase.get_session() as db:
         try:
+            profile = db.query(EmployeeProfile).filter_by(employee_id=employee_id).first()
             employee = db.query(Employee).filter_by(employee_id=employee_id).first()
             if employee:
+                db.delete(profile)
+                db.flush()
                 db.delete(employee)
                 db.commit()  # Commit the deletion to the database
                 return {"statusCode": 200, "body": json.dumps({"deleted_id": employee.employee_id})}

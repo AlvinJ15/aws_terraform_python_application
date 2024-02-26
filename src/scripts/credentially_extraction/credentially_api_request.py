@@ -90,7 +90,7 @@ class CredentiallyApiRequest:
         return response
 
     def get_employees_list(self, page=0) -> dict:
-        api_url = f'mp/api/organisations/{self.organization_id}/employees'
+        api_url = f'mp/api/organisations/{self.organization_id}/employees?page={page}'
         response = self.__made_request(api_url)
         self.__save_request(response, f'employees/employees_{page}.json')
         return response

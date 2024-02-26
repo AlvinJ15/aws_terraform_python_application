@@ -10,7 +10,7 @@ class Administrator(Base):
     admin_id = Column(String(36, collation=get_collation_ids()), primary_key=True)
     first_name = Column(String(255), nullable=False)
     last_name = Column(String(255), nullable=False)
-    email = Column(String(255), nullable=False, unique=True)
+    email = Column(String(255), nullable=False)
     created = Column(DateTime, nullable=False)
 
     def __init__(self, **kwargs):

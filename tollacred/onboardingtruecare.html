@@ -23,151 +23,481 @@
         <div id="main">
             <div class="inner">
 
-              <!-- Header -->
-<header id="header" style="display: flex; align-items: center;">
-    <a href="dashboard.html" class="logo"><strong>BPO Credentialing</strong> by Tollanis</a>
-    <img src="images/truecarebutton.png" alt="True Care instance" style="max-width: 40px; max-height: 40px; margin-left: 10px;" />
-</header>
-
+                <!-- Header -->
+                <header id="header" style="display: flex; align-items: center;">
+                    <a href="dashboard.html" class="logo"><strong>TollanisCred</strong> Credentialing by Tollanis</a>
+                    <img src="images/truecarebutton.png" alt="True Care instance"
+                        style="max-width: 40px; max-height: 40px; margin-left: 10px;" />
+                </header>
 
                 <!-- Banner -->
                 <section id="banner">
                     <div class="content">
-                            <!-- Page 1 -->
-       				 <div class="page" id="page1">
-                        <div class="container">
-                              <img src="images/welcome.png" alt="Welcome Image" style="float: left; margin-right: 20px;">
-                          <h2>Welcome to the Onboarding True Care page</h2>
+                        <!-- Page 1 -->
+                        <div class="page" id="page1">
+                            <div class="container">
+                                <img src="images/welcome.png" alt="Welcome Image" style="float: left; margin-right: 20px;">
+                                <h2>Welcome to the Onboarding True Care</h2>
                           <p>Our mission is to enable our internal corporate team members to efficiently credential healthcare providers for our platform, ensuring seamless integration into our network.</p>
                           <p>We explore innovative approaches to enhance the onboarding experience for our team and the successful inclusion of healthcare providers.</p>
                           <p>We believe in providing our team and the organization with flexibility, transparency, and choice throughout the credentialing process.</p>
                           <p>We have carefully designed the onboarding process to facilitate the smooth addition of healthcare providers to our platform.</p>
-                          <button onclick="showPage('page2')">Next</button>
-                          <br></br>
-                          <br></br>
-                          <br></br>
+                            <p>Let's get started!</p>
+                          </div>
+                          <p>Did you receive the Travel Confirmation Sheet?</p>
+                                <button onclick="showPopup()">No</button>
+                                <button onclick="showPage('page2')">Yes</button>
+                            </div>
                         </div>
-                  </div>
-                  <!-- Page 2 -->
-					<div class="page" id="page2">
-						<div class="container">
-							<img src="images/emergencycontact.png" alt="Emergency Image" style="float: right; margin-left: 20px;">
-							<h2>Emergency Contact Information</h2>
-							<p>As part of our commitment to ensuring the safety and well-being of our team, we kindly request that you provide us with your emergency contact information.</p>
-							<p>This information will be kept confidential and will only be used in case of an emergency situation. Please take a moment to fill out the emergency contact form in your onboarding portal.</p>
-							<p>If you have any questions or concerns, feel free to reach out to our HR department. Thank you for your cooperation!</p>
-								<div style="max-width: 500px; display: flex; flex-wrap: wrap; gap: 10px;">
-									<label for="emergency-contact">Emergency Contact Name:</label>
-									<input type="text" id="emergency-contact" name="Emergency Contact" style="float: left;">
-									<label for="phone-number">Phone Number:</label>
-									<input type="text" id="phone-number" name="Phone Number" style="float: left;">
-									<label for="email">Email:</label>
-									<input type="text" id="email" name="Email" style="float: left;">
-								</div>
-									<button onclick="showPage('page1')" style="margin-top: 10px;">Previous</button>
-									<button onclick="showPage('page3')" style="margin-top: 10px;">Next</button>
-									<br></br>
-									<br></br>
-									<br></br>
-						</div>
-					</div>
-                    <!-- Page 3 -->
-					<div class="page" id="page3">
-						<div class="container">
-							<img src="images/mandatoryuploads.png" alt="mandatory uploads" style="float: right; margin-left: 20px;">
-								<h2>Mandatory documents upload</h2>
-								<p>1. License or Certification<br>
-									<input type="file" id="fileCert"></p>
-								<p>2. Verification of License or Certification<br><input type="file" id="fileLicCertVer"></p>
-								<p>3. Education Verification (online verification required)<br><input type="file" id="fileedu"></p>
-								<p>4.a Reference1 <br><input type="file" id="fileref1"></p>
-								<p>4.b Reference2 <br><input type="file" id="fileref2"></p>
-								<p>5. Experience (resume is sufficient)<br><input type="file" id="filexp"></p>
-								<p>6. Competency Evaluation (specialty) - must be done annually<br><input type="file" id="fileCompEv"></p>
-								<p>7. Skills Checklist - must be done annually<br><input type="file" id="fileskillckl"></p>
-								<p>8. Performance Evaluation - annually after one year of work<br><input type="file" id="filepfev"></p>
-								<p>9. Criminal Background Check<br><input type="file" id="fileBGcheck"></p>
-								<p>10. Company Orientation Attestation (acknowledgment of the handbook is sufficient)<br><input type="file" id="fileCOA"></p>
-								<p>11. BLS <br><input type="file" id="fileBLS"></p>
-								<p>12. ACLS <br><input type="file" id="fileACLS"></p>
-								<p>13. Covid* <br><input type="file" id="fileCovid"></p>
-								<p>14. Flu* <br><input type="file" id="fileFlu"></p>
-								<p>15. Varicella* <br><input type="file" id="fileVaricella"></p>
-								<p>16. MMR* <br><input type="file" id="fileMMR"></p>
-								<p>17. HepB* <br><input type="file" id="fileHepB"></p>
-								<p>18. TB* <br><input type="file" id="fileTB"></p>
-								<p>19. Health Statement <br><input type="file" id="fileHealthStatement"></p>
-								<p>20. Drug Screening <br><input type="file" id="fileDrugScreening"></p>
-								<button onclick="showPage('page2')" style="margin-top: 10px;">Previous</button>
-								<button id="submitButton" onclick="submitFiles()" style="margin-top: 10px;">Submit</button>
-								<button id="nextButtonPage3" style="display:none; margin-top: 10px;" onclick="showPage(4)">Next</button>
-								<br></br>
-								<br></br>
-								<br></br>
-						</div>
-					</div>
-                    <!-- Page 4 -->
-						<div class="page" id="page4">
-							<div class="container">
-								<h2>Read and Download Organization’s Documents</h2>
-								<img src="images/readdownload.png" alt="Read download" style="float: right; margin-left: 20px;">
-								<p>Specialty 1 - <button class="button icon solid fa-download" id="downloadSpecialty1">Download</button></p>
-								<p>Specialty 2 - <button class="button icon solid fa-download" id="downloadSpecialty2">Download</button></p>
-								<p>Specialty 3 - <button class="button icon solid fa-download" id="downloadSpecialty3">Download</button></p>
-								<p>Specialty 4 - <button class="button icon solid fa-download" id="downloadSpecialty4">Download</button></p>
-								<p>Specialty 5 - <button class="button icon solid fa-download" id="downloadSpecialty5">Download</button></p>
-								<p>Specialty 6 - <button class="button icon solid fa-download" id="downloadSpecialty6">Download</button></p>
-								<p>Specialty 7 - <button class="button icon solid fa-download" id="downloadSpecialty7">Download</button></p>
-								<p>Specialty 8 - <button class="button icon solid fa-download" id="downloadSpecialty8">Download</button></p>
-								<button onclick="showPage('page3')">Previous</button>
-								<button onclick="showPage('page5')">Next</button>
-								<br></br>
-								<br></br>
-								<br></br>
-							</div>
-						</div>
-
-					<!-- Page 5 -->
-					<div class="page" id="page5">
-						<div class="container">
-						<img src="images/docupload.png" alt="Doc upload" style="float: right; margin-left: 20px;">
-						<h2>Documents Upload</h2>
-						<p>Choose which documents Tollanis will ask Staff Members to upload at this step.
-							You can ask Staff Members to upload other files at the other ‘Documents upload’ steps.</p>
-						<label for="rolesDropdown" style="width: 400px;">Roles:</label>
-						<select id="rolesDropdown" onchange="updateDocumentList()" style="width: 400px;">
-							<option value="" disabled selected>Select Role</option>
-							<option value="Role1">Role1</option>
-							<option value="Role2">Role2</option>
-							<option value="Role3">Role3</option>
-							<option value="Role4">Role4</option>
-							<option value="Role5">Role5</option>
-							<option value="Role6">Role6</option>
-							<option value="Role7">Role7</option>
-							<option value="Role8">Role8</option>
-							<option value="Role9">Role9</option>
-							<option value="Role10">Role10</option>
-						</select>
-							<div id="documentList" style="margin-top: 10px;"></div>
-							<button onclick="showPage('page4')">Previous</button>
-							<button onclick="showPage('page6')">Next</button>
-							<br></br>
-							<br></br>
-							<br></br>
-							</div>
-						</div>
                 </section>
+                        <!-- Page 2 -->
+                        <div class="page" id="page2" style="margin-left: auto; margin-right: 20px; display: none;">
+                            <div class="container">
+                                <label for="folder-created">Did you create the candidate folder in the shared mailbox?</label>
+                                <input type="radio" id="folder-created-yes" name="folder-created" value="yes">
+                                <label for="folder-created-yes">Yes</label>
+                                <input type="radio" id="folder-created-no" name="folder-created" value="no">
+                                <label for="folder-created-no">No</label>
+                                <br></br>
+                                <label for="first-name" style="margin-top: 10px;">Candidate First Name:</label>
+                                <input type="text" id="first-name" name="first-name" style="width: 400px;">
+    
+                                <label for="middle-name" style="margin-top: 10px;">Candidate Middle Name:</label>
+                                <input type="text" id="middle-name" name="middle-name" style="width: 400px;">
+    
+                                <label for="last-name" style="margin-top: 10px;">Candidate Last Name:</label>
+                                <input type="text" id="last-name" name="last-name" style="width: 400px;">
+    
+                                <label for="address-line1" style="margin-top: 10px;">Address line 1</label>
+                                <input type="text" id="address-line1" name="address-line1" style="width: 400px;">
+    
+                                <label for="address-line2" style="margin-top: 10px;">Address line 2</label>
+                                <input type="text" id="address-line2" name="address-line2" style="width: 400px;">
+    
+                                <label for="city" style="margin-top: 10px;">City</label>
+                                <input type="text" id="city" name="city" style="width: 400px;">
+    
+                                <label for="state" style="margin-top: 10px;">State</label>
+                                <input type="text" id="state" name="state" style="width: 400px;">
+    
+                                <label for="country" style="margin-top: 10px;">Country</label>  
+                                    <select id="country" name="country" class="form-control" style="width: 400px;">
+                                        <option value="Select a country" disabled>Select a Country</option>
+                                        <option value="United States">United States</option>
+                                        <option value="Afghanistan">Afghanistan</option>
+                                        <option value="Åland Islands">Åland Islands</option>
+                                        <option value="Albania">Albania</option>
+                                        <option value="Algeria">Algeria</option>
+                                        <option value="American Samoa">American Samoa</option>
+                                        <option value="Andorra">Andorra</option>
+                                        <option value="Angola">Angola</option>
+                                        <option value="Anguilla">Anguilla</option>
+                                        <option value="Antarctica">Antarctica</option>
+                                        <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                                        <option value="Argentina">Argentina</option>
+                                        <option value="Armenia">Armenia</option>
+                                        <option value="Aruba">Aruba</option>
+                                        <option value="Australia">Australia</option>
+                                        <option value="Austria">Austria</option>
+                                        <option value="Azerbaijan">Azerbaijan</option>
+                                        <option value="Bahamas">Bahamas</option>
+                                        <option value="Bahrain">Bahrain</option>
+                                        <option value="Bangladesh">Bangladesh</option>
+                                        <option value="Barbados">Barbados</option>
+                                        <option value="Belarus">Belarus</option>
+                                        <option value="Belgium">Belgium</option>
+                                        <option value="Belize">Belize</option>
+                                        <option value="Benin">Benin</option>
+                                        <option value="Bermuda">Bermuda</option>
+                                        <option value="Bhutan">Bhutan</option>
+                                        <option value="Bolivia">Bolivia</option>
+                                        <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                                        <option value="Botswana">Botswana</option>
+                                        <option value="Bouvet Island">Bouvet Island</option>
+                                        <option value="Brazil">Brazil</option>
+                                        <option value="British Indian Ocean Territory">British Indian Ocean Territory</option>
+                                        <option value="Brunei Darussalam">Brunei Darussalam</option>
+                                        <option value="Bulgaria">Bulgaria</option>
+                                        <option value="Burkina Faso">Burkina Faso</option>
+                                        <option value="Burundi">Burundi</option>
+                                        <option value="Cambodia">Cambodia</option>
+                                        <option value="Cameroon">Cameroon</option>
+                                        <option value="Canada">Canada</option>
+                                        <option value="Cape Verde">Cape Verde</option>
+                                        <option value="Cayman Islands">Cayman Islands</option>
+                                        <option value="Central African Republic">Central African Republic</option>
+                                        <option value="Chad">Chad</option>
+                                        <option value="Chile">Chile</option>
+                                        <option value="China">China</option>
+                                        <option value="Christmas Island">Christmas Island</option>
+                                        <option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option>
+                                        <option value="Colombia">Colombia</option>
+                                        <option value="Comoros">Comoros</option>
+                                        <option value="Congo">Congo</option>
+                                        <option value="Congo, The Democratic Republic of The">Congo, The Democratic Republic of The</option>
+                                        <option value="Cook Islands">Cook Islands</option>
+                                        <option value="Costa Rica">Costa Rica</option>
+                                        <option value="Cote D'ivoire">Cote D'ivoire</option>
+                                        <option value="Croatia">Croatia</option>
+                                        <option value="Cuba">Cuba</option>
+                                        <option value="Cyprus">Cyprus</option>
+                                        <option value="Czech Republic">Czech Republic</option>
+                                        <option value="Denmark">Denmark</option>
+                                        <option value="Djibouti">Djibouti</option>
+                                        <option value="Dominica">Dominica</option>
+                                        <option value="Dominican Republic">Dominican Republic</option>
+                                        <option value="Ecuador">Ecuador</option>
+                                        <option value="Egypt">Egypt</option>
+                                        <option value="El Salvador">El Salvador</option>
+                                        <option value="Equatorial Guinea">Equatorial Guinea</option>
+                                        <option value="Eritrea">Eritrea</option>
+                                        <option value="Estonia">Estonia</option>
+                                        <option value="Ethiopia">Ethiopia</option>
+                                        <option value="Falkland Islands (Malvinas)">Falkland Islands (Malvinas)</option>
+                                        <option value="Faroe Islands">Faroe Islands</option>
+                                        <option value="Fiji">Fiji</option>
+                                        <option value="Finland">Finland</option>
+                                        <option value="France">France</option>
+                                        <option value="French Guiana">French Guiana</option>
+                                        <option value="French Polynesia">French Polynesia</option>
+                                        <option value="French Southern Territories">French Southern Territories</option>
+                                        <option value="Gabon">Gabon</option>
+                                        <option value="Gambia">Gambia</option>
+                                        <option value="Georgia">Georgia</option>
+                                        <option value="Germany">Germany</option>
+                                        <option value="Ghana">Ghana</option>
+                                        <option value="Gibraltar">Gibraltar</option>
+                                        <option value="Greece">Greece</option>
+                                        <option value="Greenland">Greenland</option>
+                                        <option value="Grenada">Grenada</option>
+                                        <option value="Guadeloupe">Guadeloupe</option>
+                                        <option value="Guam">Guam</option>
+                                        <option value="Guatemala">Guatemala</option>
+                                        <option value="Guernsey">Guernsey</option>
+                                        <option value="Guinea">Guinea</option>
+                                        <option value="Guinea-bissau">Guinea-bissau</option>
+                                        <option value="Guyana">Guyana</option>
+                                        <option value="Haiti">Haiti</option>
+                                        <option value="Heard Island and Mcdonald Islands">Heard Island and Mcdonald Islands</option>
+                                        <option value="Holy See (Vatican City State)">Holy See (Vatican City State)</option>
+                                        <option value="Honduras">Honduras</option>
+                                        <option value="Hong Kong">Hong Kong</option>
+                                        <option value="Hungary">Hungary</option>
+                                        <option value="Iceland">Iceland</option>
+                                        <option value="India">India</option>
+                                        <option value="Indonesia">Indonesia</option>
+                                        <option value="Iran, Islamic Republic of">Iran, Islamic Republic of</option>
+                                        <option value="Iraq">Iraq</option>
+                                        <option value="Ireland">Ireland</option>
+                                        <option value="Isle of Man">Isle of Man</option>
+                                        <option value="Israel">Israel</option>
+                                        <option value="Italy">Italy</option>
+                                        <option value="Jamaica">Jamaica</option>
+                                        <option value="Japan">Japan</option>
+                                        <option value="Jersey">Jersey</option>
+                                        <option value="Jordan">Jordan</option>
+                                        <option value="Kazakhstan">Kazakhstan</option>
+                                        <option value="Kenya">Kenya</option>
+                                        <option value="Kiribati">Kiribati</option>
+                                        <option value="Korea, Democratic People's Republic of">Korea, Democratic People's Republic of</option>
+                                        <option value="Korea, Republic of">Korea, Republic of</option>
+                                        <option value="Kuwait">Kuwait</option>
+                                        <option value="Kyrgyzstan">Kyrgyzstan</option>
+                                        <option value="Lao People's Democratic Republic">Lao People's Democratic Republic</option>
+                                        <option value="Latvia">Latvia</option>
+                                        <option value="Lebanon">Lebanon</option>
+                                        <option value="Lesotho">Lesotho</option>
+                                        <option value="Liberia">Liberia</option>
+                                        <option value="Libyan Arab Jamahiriya">Libyan Arab Jamahiriya</option>
+                                        <option value="Liechtenstein">Liechtenstein</option>
+                                        <option value="Lithuania">Lithuania</option>
+                                        <option value="Luxembourg">Luxembourg</option>
+                                        <option value="Macao">Macao</option>
+                                        <option value="Macedonia, The Former Yugoslav Republic of">Macedonia, The Former Yugoslav Republic of</option>
+                                        <option value="Madagascar">Madagascar</option>
+                                        <option value="Malawi">Malawi</option>
+                                        <option value="Malaysia">Malaysia</option>
+                                        <option value="Maldives">Maldives</option>
+                                        <option value="Mali">Mali</option>
+                                        <option value="Malta">Malta</option>
+                                        <option value="Marshall Islands">Marshall Islands</option>
+                                        <option value="Martinique">Martinique</option>
+                                        <option value="Mauritania">Mauritania</option>
+                                        <option value="Mauritius">Mauritius</option>
+                                        <option value="Mayotte">Mayotte</option>
+                                        <option value="Mexico">Mexico</option>
+                                        <option value="Micronesia, Federated States of">Micronesia, Federated States of</option>
+                                        <option value="Moldova, Republic of">Moldova, Republic of</option>
+                                        <option value="Monaco">Monaco</option>
+                                        <option value="Mongolia">Mongolia</option>
+                                        <option value="Montenegro">Montenegro</option>
+                                        <option value="Montserrat">Montserrat</option>
+                                        <option value="Morocco">Morocco</option>
+                                        <option value="Mozambique">Mozambique</option>
+                                        <option value="Myanmar">Myanmar</option>
+                                        <option value="Namibia">Namibia</option>
+                                        <option value="Nauru">Nauru</option>
+                                        <option value="Nepal">Nepal</option>
+                                        <option value="Netherlands">Netherlands</option>
+                                        <option value="Netherlands Antilles">Netherlands Antilles</option>
+                                        <option value="New Caledonia">New Caledonia</option>
+                                        <option value="New Zealand">New Zealand</option>
+                                        <option value="Nicaragua">Nicaragua</option>
+                                        <option value="Niger">Niger</option>
+                                        <option value="Nigeria">Nigeria</option>
+                                        <option value="Niue">Niue</option>
+                                        <option value="Norfolk Island">Norfolk Island</option>
+                                        <option value="Northern Mariana Islands">Northern Mariana Islands</option>
+                                        <option value="Norway">Norway</option>
+                                        <option value="Oman">Oman</option>
+                                        <option value="Pakistan">Pakistan</option>
+                                        <option value="Palau">Palau</option>
+                                        <option value="Palestinian Territory, Occupied">Palestinian Territory, Occupied</option>
+                                        <option value="Panama">Panama</option>
+                                        <option value="Papua New Guinea">Papua New Guinea</option>
+                                        <option value="Paraguay">Paraguay</option>
+                                        <option value="Peru">Peru</option>
+                                        <option value="Philippines">Philippines</option>
+                                        <option value="Pitcairn">Pitcairn</option>
+                                        <option value="Poland">Poland</option>
+                                        <option value="Portugal">Portugal</option>
+                                        <option value="Puerto Rico">Puerto Rico</option>
+                                        <option value="Qatar">Qatar</option>
+                                        <option value="Reunion">Reunion</option>
+                                        <option value="Romania">Romania</option>
+                                        <option value="Russian Federation">Russian Federation</option>
+                                        <option value="Rwanda">Rwanda</option>
+                                        <option value="Saint Helena">Saint Helena</option>
+                                        <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                                        <option value="Saint Lucia">Saint Lucia</option>
+                                        <option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option>
+                                        <option value="Saint Vincent and The Grenadines">Saint Vincent and The Grenadines</option>
+                                        <option value="Samoa">Samoa</option>
+                                        <option value="San Marino">San Marino</option>
+                                        <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                                        <option value="Saudi Arabia">Saudi Arabia</option>
+                                        <option value="Senegal">Senegal</option>
+                                        <option value="Serbia">Serbia</option>
+                                        <option value="Seychelles">Seychelles</option>
+                                        <option value="Sierra Leone">Sierra Leone</option>
+                                        <option value="Singapore">Singapore</option>
+                                        <option value="Slovakia">Slovakia</option>
+                                        <option value="Slovenia">Slovenia</option>
+                                        <option value="Solomon Islands">Solomon Islands</option>
+                                        <option value="Somalia">Somalia</option>
+                                        <option value="South Africa">South Africa</option>
+                                        <option value="South Georgia and The South Sandwich Islands">South Georgia and The South Sandwich Islands</option>
+                                        <option value="Spain">Spain</option>
+                                        <option value="Sri Lanka">Sri Lanka</option>
+                                        <option value="Sudan">Sudan</option>
+                                        <option value="Suriname">Suriname</option>
+                                        <option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option>
+                                        <option value="Swaziland">Swaziland</option>
+                                        <option value="Sweden">Sweden</option>
+                                        <option value="Switzerland">Switzerland</option>
+                                        <option value="Syrian Arab Republic">Syrian Arab Republic</option>
+                                        <option value="Taiwan">Taiwan</option>
+                                        <option value="Tajikistan">Tajikistan</option>
+                                        <option value="Tanzania, United Republic of">Tanzania, United Republic of</option>
+                                        <option value="Thailand">Thailand</option>
+                                        <option value="Timor-leste">Timor-leste</option>
+                                        <option value="Togo">Togo</option>
+                                        <option value="Tokelau">Tokelau</option>
+                                        <option value="Tonga">Tonga</option>
+                                        <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                                        <option value="Tunisia">Tunisia</option>
+                                        <option value="Turkey">Turkey</option>
+                                        <option value="Turkmenistan">Turkmenistan</option>
+                                        <option value="Turks and Caicos Islands">Turks and Caicos Islands</option>
+                                        <option value="Tuvalu">Tuvalu</option>
+                                        <option value="Uganda">Uganda</option>
+                                        <option value="Ukraine">Ukraine</option>
+                                        <option value="United Arab Emirates">United Arab Emirates</option>
+                                        <option value="United Kingdom">United Kingdom</option>
+                                        <option value="United States">United States</option>
+                                        <option value="United States Minor Outlying Islands">United States Minor Outlying Islands</option>
+                                        <option value="Uruguay">Uruguay</option>
+                                        <option value="Uzbekistan">Uzbekistan</option>
+                                        <option value="Vanuatu">Vanuatu</option>
+                                        <option value="Venezuela">Venezuela</option>
+                                        <option value="Viet Nam">Viet Nam</option>
+                                        <option value="Virgin Islands, British">Virgin Islands, British</option>
+                                        <option value="Virgin Islands, U.S.">Virgin Islands, U.S.</option>
+                                        <option value="Wallis and Futuna">Wallis and Futuna</option>
+                                        <option value="Western Sahara">Western Sahara</option>
+                                        <option value="Yemen">Yemen</option>
+                                        <option value="Zambia">Zambia</option>
+                                        <option value="Zimbabwe">Zimbabwe</option>
+                                    </select>
+    
+                                <label for="zip" style="margin-top: 10px;">Zip</label>
+                                <input type="text" id="zip" name="zip" style="width: 400px;">
+    
+                                <label for="phone" style="margin-top: 10px;">Phone</label>
+                                <input type="text" id="phone" name="phone" style="width: 400px;">
+    
+                                <label for="email" style="margin-top: 10px;">Email</label>
+                                <input type="text" id="email" name="email" style="width: 400px;">
+    
+                                <label for="dob" style="margin-top: 10px;">Date of Birth</label>
+                                <input type="date" id="dob" name="dob" style="width: 400px;">
+    
+                                <label for="ssn" style="margin-top: 10px;">SSN</label>
+                                <input type="text" id="ssn" name="ssn" style="width: 400px;" pattern="\d{3}-\d{3}-\d{4}" title="Please enter SSN in the format xxx-xxx-xxxx" required placeholder="Enter SSN (e.g., 123-456-7890)">
+                                <br></br>
+                                <button onclick="showPage('page1')" style="margin-top: 10px;">Previous</button>
+                                <button onclick="showPage('page3')" style="margin-top: 10px;">Next</button>
+                                <br></br>
+                                <br></br>
+                                <br></br>
+                            </div>
+                        </div>
+                        <!-- Page 3 -->
+                        <div class="page" id="page3" style="display: none;">
+                            <div class="container">
+                                <img src="images/mandatoryuploads.png" alt="mandatory uploads" style="float: right; margin-left: 20px;">
+                                    <h2>Mandatory documents upload</h2>
+                                    <p>1. License or Certification<br>
+                                        <input type="file" id="fileCert"></p>
+                                    <p>2. Verification of License or Certification<br><input type="file" id="fileLicCertVer"></p>
+                                    <p>3. Education Verification (online verification required)<br><input type="file" id="fileedu"></p>
+                                    <p>4.a Reference1 <br><input type="file" id="fileref1"></p>
+                                    <p>4.b Reference2 <br><input type="file" id="fileref2"></p>
+                                    <p>5. Experience (resume is sufficient)<br><input type="file" id="filexp"></p>
+                                    <p>6. Competency Evaluation (specialty) - must be done annually<br><input type="file" id="fileCompEv"></p>
+                                    <p>7. Skills Checklist - must be done annually<br><input type="file" id="fileskillckl"></p>
+                                    <p>8. Performance Evaluation - annually after one year of work<br><input type="file" id="filepfev"></p>
+                                    <p>9. Criminal Background Check<br><input type="file" id="fileBGcheck"></p>
+                                    <p>10. Company Orientation Attestation (acknowledgment of the handbook is sufficient)<br><input type="file" id="fileCOA"></p>
+                                    <p>11. BLS <br><input type="file" id="fileBLS"></p>
+                                    <p>12. ACLS <br><input type="file" id="fileACLS"></p>
+                                    <p>13. Covid* <br><input type="file" id="fileCovid"></p>
+                                    <p>14. Flu* <br><input type="file" id="fileFlu"></p>
+                                    <p>15. Varicella* <br><input type="file" id="fileVaricella"></p>
+                                    <p>16. MMR* <br><input type="file" id="fileMMR"></p>
+                                    <p>17. HepB* <br><input type="file" id="fileHepB"></p>
+                                    <p>18. TB* <br><input type="file" id="fileTB"></p>
+                                    <p>19. Health Statement <br><input type="file" id="fileHealthStatement"></p>
+                                    <p>20. Drug Screening <br><input type="file" id="fileDrugScreening"></p>
+                                    <button onclick="showPage('page2')" style="margin-top: 10px;">Previous</button>
+                                    <button id="submitButton" onclick="submitFiles()" style="margin-top: 10px;">Submit</button>
+                                    <button id="nextButtonPage3" style="display:none; margin-top: 10px;" onclick="showPage(4)">Next</button>
+                                    <br></br>
+                                <br></br>
+                                <br></br>
+                            </div>
+                        </div>
+                        <!-- Page 4 -->
+                        <div class="page" id="page4" style="display: none;">
+                            <div class="container">
+                                <img src="images/docupload.png" alt="Doc upload" style="float: right; margin-left: 20px;">
+                                <h2>Documents Upload</h2>
+                                <p>Choose which documents Tollanis will ask Staff Members to upload at this step.
+                                    You can ask Staff Members to upload other files at the other ‘Documents upload’ steps.</p>
+                                <label for="rolesDropdown" style="width: 400px;">Roles:</label>
+                                <select id="rolesDropdown" onchange="updateDocumentList()" style="width: 400px;">
+                                    <option value="" disabled selected>Select Role</option>
+                                    <option value="Role1">Role1</option>
+                                    <option value="Role2">Role2</option>
+                                    <option value="Role3">Role3</option>
+                                    <option value="Role4">Role4</option>
+                                    <option value="Role5">Role5</option>
+                                    <option value="Role6">Role6</option>
+                                    <option value="Role7">Role7</option>
+                                    <option value="Role8">Role8</option>
+                                    <option value="Role9">Role9</option>
+                                    <option value="Role10">Role10</option>
+                                </select>
+        
+                                <label for="documentUpload" style="width: 400px;">Select Documents:</label>
+                    <input type="file" id="documentUpload" name="documentUpload" multiple style="width: 400px;">
+                                <button onclick="showPage('page3')" style="margin-top: 10px;">Previous</button>
+                                <button onclick="showPage('page5')" style="margin-top: 10px;">Next</button>
+                                <br></br>
+                                <br></br>
+                                <br></br>
+                            </div>
+                        </div>
+                        <!-- Page 5 -->
+                        <div class="page" id="page5" style="display: none;">
+                            <div class="container">
+                                <h2>Employee Approval</h2>
+                                <form id="employeeApprovalForm">
+                                    <label for="employeeName">Employee Name:</label>
+                                    <input type="text" id="employeeName" name="employeeName" required style="width: 500px;">
+
+                                    <label for="confirmationStatement" style="margin-top: 15px;">Confirmation Statement:</label>
+                                      <h5> I have done the entire process and confirm all documents uploaded were reviewed and all information provided is according to what was received from the candidate.</h5> 
+                                        
+                                    </textarea>
+                    
+                                    <label for="employeeInitials" style="width: 150px;">Employee Initials:</label>
+                                    <input type="text" id="employeeInitials" name="employeeInitials" maxlength="3" required style="width: 150px;">
+                    
+                                    <button type="button" onclick="submitApproval()" style="margin-top: 20px;">Submit Approval</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Page 6 -->
+                <div class="page" id="page6" style="display: none;">
+                <div class="container">
+                <h2>The onboarding was completed.</h2>
+                <button onclick="window.location.href='dashboard.html'" style="margin-top: 10px;">Click here to return to the Main Dashboard</button>
+                <br></br>
+                <br></br>
+                <br></br>
+            </div>
+        </div>
+                </section>
+
                 <script>
-                    function showPage(pageId) {
-                      // Hide all pages
-                      document.querySelectorAll('.page').forEach(function (page) {
-                        page.style.display = 'none';
-                      });
+
+function submitApproval() {
+        // Fetch values from the form
+        var employeeName = document.getElementById('employeeName').value;
+        var confirmationStatement = document.getElementById('confirmationStatement').value;
+        var employeeInitials = document.getElementById('employeeInitials').value;
+
+        // Process the data (you can include your logic for handling employee approval)
+        console.log("Employee Name:", employeeName);
+        console.log("Confirmation Statement:", confirmationStatement);
+        console.log("Employee Initials:", employeeInitials);
+
+        // Include your logic for submitting the approval to the server or other actions
+        alert("Employee approval submitted successfully!");
+
+        // Redirect to Page 6
+        window.location.href = "#page6"; // This will not work in the code sandbox
+    }
+                    
+                        // Validate if all fields are filled
+                        //if (employeeName === "" || confirmationStatement === "" || employeeInitials === "") {
+                        // alert("Please fill in all fields before submitting.");
+                        //  return;
+                        // }
                 
-                      // Show the selected page
+                        // Process the data (you can include your logic for handling employee approval)
+                        console.log("Employee Name:", employeeName);
+                        console.log("Confirmation Statement:", confirmationStatement);
+                        console.log("Employee Initials:", employeeInitials);
+                
+                        // Include your logic for submitting the approval to the server or other actions
+                        alert("Employee approval submitted successfully!");
+                
+                        // Redirect to Page 6
+                        window.location.href = "#page6"; // This will not work in the code sandbox
+                   // }
+                
+                    function showPage(pageId) {
+                        // Hide all pages
+                        document.querySelectorAll('.page').forEach(function (page) {
+                            page.style.display = 'none';
+                        });
+                        // Show the selected page
                       document.getElementById(pageId).style.display = 'block';
                     }
-                
+            
                     function submitFiles() {
                       // Implement file submission logic here
                       alert("Files submitted successfully!");
@@ -211,119 +541,12 @@
                       showPage('page1');
                     });
                   </script>
-            </div>
-        </div>
-
-        <!-- Sidebar -->
-        <div id="sidebar">
-            <div class="inner">
-                <span class="image object">
-                    <img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
-                </span>
-                <br />
-                <section>
-                    <header class="major">
-                        <h2>Quick Access</h2>
-                    </header>
-                    <a href="dashboardelite.html">
-                        <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; margin-bottom: 20px;">
-                            <li style="margin-right: 10px; display: flex; align-items: center;">
-                                <img src="images/elitebutton.png" alt="Elite 365 instance" style="width: 40px; height: 40px; margin-right: 10px;" />
-                                <span style="font-weight: bold; color: #00125B;" spellcheck="false">Elite 365 instance</span>
-                            </li>
-                        </ul>
-                    </a>
-                    <a href="dashboardelitelocums.html">
-                        <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; margin-bottom: 20px;">
-                            <li style="margin-right: 10px; display: flex; align-items: center;">
-                                <img src="images/elitebutton.png" alt="Elite 365 Locums instance" style="width: 40px; height: 40px; margin-right: 10px;" />
-                                <span style="font-weight: bold; color: #00125B;" spellcheck="false">Elite 365 Locums instance</span>
-                            </li>
-                        </ul>
-                    </a>
-                    <a href="dashboardgenevive.html">
-                        <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; margin-bottom: 20px;">
-                            <li style="margin-right: 10px; display: flex; align-items: center;">
-                                <img src="images/genevivebutton.png" alt="Genevive instance" style="width: 40px; height: 40px; margin-right: 10px;" />
-                                <span style="font-weight: bold; color: #00125B;" spellcheck="false">Genevive instance</span>
-                            </li>
-                        </ul>
-                    </a>
-                    <a href="dashboardpulse.html">
-                        <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; margin-bottom: 20px;">
-                            <li style="margin-right: 10px; display: flex; align-items: center;">
-                                <img src="images/pulsebutton.png" alt="Pulse instance" style="width: 40px; height: 40px; margin-right: 10px;" />
-                                <span style="font-weight: bold; color: #00125B;" spellcheck="false">Pulse instance</span>
-                            </li>
-                        </ul>
-                    </a>
-                    <a href="tollanistraining.html">
-                        <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center; display: flex; align-items: center; margin-bottom: 20px;">
-                            <li style="margin-right: 10px; display: flex; align-items: center;">
-                                <img src="images/tollanisbutton.png" alt="Tollanis Training instance" style="width: 40px; height: 40px; margin-right: 10px;" />
-                                <span style="font-weight: bold; color: #00125B;" spellcheck="false">Tollanis Training instance</span>
-                            </li>
-                        </ul>
-                    </a>
-                </section>
-
-                <!-- Search -->
-                <section id="search" class="alt">
-                    <form method="post" action="#">
-                        <input type="text" name="query" id="query" placeholder="Search" />
-                    </form>
-                </section>
-
-                <!-- Menu -->
-                <nav id="menu">
-                    <header class="major">
-                        <h2>Menu</h2>
-                    </header>
-                    <ul>
-                        <li><a href="dashboard.html">Homepage</a></li>
-                        <li>
-                            <span class="opener">Organization Settings</span>
-                            <ul>
-                                <li><a href="organizationdetails.html">Organization Details</a></li>
-                                <li><a href="documenttypes.html">Document Types</a></li>
-                                <li><a href="compliancerequirements.html">Compliance Requirements</a></li>
-                                <li><a href="organizationdocuments.html">Organization Documents</a></li>
-                                <li><a href="questionnaires.html">Questionnaires</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span class="opener">Staff</span>
-                            <ul>
-                                <li><a href="staff.html">Staff</a></li>
-                                <li><a href="staffapproval.html">Staff needing approval</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-
-                <!-- Section -->
-                <section style="margin-top: 20px;">
-                    <header class="major">
-                        <h2>Get in touch</h2>
-                    </header>
-                    <p>We're here to help! If you're experiencing any issues or have questions, please don't hesitate to reach out to us at <a href="mailto:help@tollanis.com">help@tollanis.com</a>. Our dedicated support team is ready to assist you and ensure you have a smooth experience with our new product. Your satisfaction is our priority.</p>
-                    <ul class="contact">
-                        <li class="icon solid fa-envelope"><a href="mailto:help@tollanis.com">help@tollanis.com</a></li>
-                    </ul>
-                </section>
+                </script>
 
             </div>
         </div>
-
     </div>
-
-    <!-- Scripts -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
-
 </body>
 
 </html>
+

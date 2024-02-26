@@ -17,7 +17,7 @@
 
 							<!-- Header -->
 								<header id="header">
-									<a href="dashboard.html" class="logo"><strong>BPO Credentialing</strong> by Tollanis</a>
+									<a href="dashboard.html" class="logo"><strong>TollanisCred</strong> Credentialing by Tollanis</a>
 								</header>
 
 							<!-- Banner -->
@@ -27,20 +27,24 @@
 										<h2 style="margin-left: 50px;">Organization Details</h2>
 									</header>
 										<div class="container">
-											<div class="content">
-												<div class="form-group" style="margin-left: 50px;">
-												<label for="organization-type">Organization Type*</label>
+											<div class="form-group" style="margin-top: 15px; margin-left: 50px;">
+												<label for="organization-id">Organization ID*</label>
+												<div class="input-container">
+													<input type="text" id="organization-id" name="organization-id" class="textbox" placeholder="Enter organization ID" style="width: 500px;" required>
+												</div>
+											</div>
+												<div class="form-group" style="margin-top: 15px; margin-left: 50px;">
+													<label for="organization-type">Organization Type*</label>
 													<div class="input-container">
-														<select id="organization-type" name="organization-type" class="dropdown" required>
-														<option value="" disabled selected>Select your Organization Type</option>
-														<option value="GP">GP</option>
-														<option value="Hospital">Hospital</option>
-														<option value="Private Company">Private Company</option>
+														<select id="organization-type" name="organization-type" class="dropdown" style="width: 500px;" required>
+															<option value="" disabled selected>Select your Organization Type</option>
+															<option value="GP">GP</option>
+															<option value="Hospital">Hospital</option>
+															<option value="Private Company">Private Company</option>
 														</select>
 													</div>
 												</div>
 											</div>
-										</div>
 										<div class="form-group" style="margin-top: 15px; margin-left: 50px;">
 											<label for="organization-name">Organization Name*</label>
 											<div class="input-container">
@@ -302,22 +306,32 @@
 												<input type="text" id="state-province" name="state-province" class="textbox" placeholder="State / Province" style="width: 500px;">
 												</div>
 											</div>
-											<div class="form-group" style="margin-top: 15px; margin-left: 50px;">
-											<a href="#" class="button primary default" id="save-button" disabled>Save</a>
-											<a href="#" class="button secondary" id="cancel-button">Cancel</a>
-											</div>
 								</div>
 							</section>
 						</div>
 					</div>
 
-				<!-- Sidebar -->
-					<div id="sidebar">
-						<div class="inner">
-								<span class="image object">
-   								 	<img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
-								</span>
-							
+				  <!-- Sidebar -->
+				  <div id="sidebar">
+					<div class="inner">
+						<span class="image object">
+							<img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
+						</span>
+						<br />
+						<meta charset="UTF-8">
+						<meta name="viewport" content="width=device-width, initial-scale=1.0">
+						<link rel="stylesheet" href="styles.css">
+						<title>User Button</title>
+					</head>
+					<body>
+                        <div class="sidebar">
+                            <a href="#" onclick="handleButtonClick()" style="display: flex; align-items: center;">
+                                <div style="border-radius: 50%; width: 40px; height: 40px; background-color: #00125B; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
+                                </div>
+                                <span>User Settings</span>
+                            </a>
+                           
+                        </div>
 							<!-- Search -->
 								<section id="search" class="alt">
 									<form method="post" action="#">
@@ -340,8 +354,7 @@
 												<li><a href="compliancerequirements.html">Compliance Requirements</a></li>
 												<li><a href="organizationdocuments.html">Organization Documents</a></li>
 												<li><a href="questionnaires.html">Questionnaires</a></li>
-												<li><a href="onboarding.html">Onboarding</a></li>
-											</ul>
+												</ul>
 										</li>
 										<li>
 											<span class="opener">Staff</span>
@@ -371,11 +384,14 @@
 			</div>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/documentmanagement.js"></script>
+<script src="assets/js/comppkgmngmt.js"></script>
+
 
 	</body>
 </html>

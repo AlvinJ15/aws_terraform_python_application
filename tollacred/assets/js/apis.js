@@ -1,20 +1,34 @@
-const axios = require('axios');
-
 // Base URL for API requests
-const baseURL = 'https://p4u9i76s6f.execute-api.us-east-1.amazonaws.com';
+const baseURL = 'https://1ojxaw0pa6.execute-api.us-east-1.amazonaws.com';
 
-// Function to handle common request logic
-async function makeRequest(method, url, data = null) {
+async function makeRequest(method, url, data = null, is_json=true) {
     try {
-        const response = await axios({
-            method,
-            url: `${baseURL}/${url}`,
-            data
+        let headers = {}
+        if (is_json){
+            headers = {
+                Authorization: await getApiToken(),
+                'Content-Type': 'application/json',
+            }
+        }else {
+            headers = {
+                Authorization: await getApiToken(),
+            }
+        }
+
+        let api_url = `${baseURL}/${url}`
+        const response = await fetch(api_url,{
+            method:method,
+            headers: headers,
+            body: (data && is_json) ? JSON.stringify(data) : data
         });
-        return response.data;
+        if(response.status === 200 || response.status === 201){
+            return response.json();
+        }
+        return null;
     } catch (error) {
         handleRequestError(url, error);
         throw error;
+    }
 }
 
 // Function to handle errors and log relevant information
@@ -91,12 +105,3 @@ async function updateQuestionnaire(organizationId, questionnaireId, questionnair
 async function getRoles(organizationId) {
     return makeRequest('GET', `organizations/${organizationId}/roles`);
 }
-
-// Example Usage:
-const organizationId = 'your_organization_id';
-
-//add function to get documents
-getDocuments(organizationId)
-    .then(console.log)
-    .catch(console.error);
-} 

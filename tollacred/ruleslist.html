@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi select tag dropdown</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/1dropdowntest.css">
+</head>
+<body>
+    <div class="container" style="width: 600px;">
+        <div class="custom-select open">
+            <div class="select-box">
+                <input type="text" class="tags_input" name="tags" hidden/>
+                <div class="selected-options"></div>
+                <div class="arrow">
+                    <i class="fa fa-angle-down"></i>
+                </div>
+            </div>
+            <div class="options">
+                <div class="option-search-tags">
+                    <input type="text" class="search-tags" placeholder="Search tags"/>
+                    <button type="button" class="clear"><i class="fa fa-close"></i></button>
+                </div>
+                <div class="option active" data-value="Option 1">Option 1</div>
+                <div class="option active" data-value="Option 2">Option 2</div>
+                <div class="option" data-value="Option 3">Option 3</div>
+                <div class="option" data-value="Option 4">Option 4</div>
+                <div class="option" data-value="Option 5">Option 5</div>
+                <div class="option" data-value="Option 6">Option 6</div>
+                <div class="option" data-value="Option 7">Option 7</div>
+                <div class="option" data-value="Option 8">Option 8</div>
+                <div class="option" data-value="Option 9">Option 9</div>
+                <div class="option" data-value="Option 10">Option 10</div>
+                <div class="no result-message"> No result match</div>
+            </div>
+            <span class="tag_error_msg error">This field is required</span>
+        </div>
+    </div>
+    <script src="assets/js/dropdown.js"></script>
+</body>
+</html>

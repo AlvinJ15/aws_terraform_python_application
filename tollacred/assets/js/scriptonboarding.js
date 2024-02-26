@@ -1,4 +1,6 @@
-	  function showPage(pageId) {
+	  
+	 
+	 function showPage(pageId) {
 		// Hide all pages
 		document.querySelectorAll('.page').forEach(function (page) {
 		  page.style.display = 'none';

@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Packages Management - Manage Single Package</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Main -->
+        <div id="main">
+            <div class="inner">
+                <!-- Header -->
+                <header id="header">
+                    <a href="dashboard.html" class="logo"><strong>TollanisCred</strong> Credentialing by Tollanis</a>
+                </header>
+                <!-- Banner - Package Management -->
+                <section id="banner">
+                    <div class="content">
+                        <header>
+                            <h3>Package Management<br /></h3>
+                            <a href="#" style="float: right;" onclick="openManagePackageForm()"><h4>Manage Single Package</h4></a>
+                        </header>
+                    </div>
+                </section>
+
+                <div id="managePackageForm" style="display: none;">
+                    <h4>Manage Single Package</h4>
+                    <form id="manageForm">
+                        <label for="managePackageId">Package ID:</label>
+                        <input type="text" id="managePackageId" name="managePackageId" required><br>
+
+                        <label for="managePackageName">Package Name:</label>
+                        <input type="text" id="managePackageName" name="managePackageName" required><br>
+
+                        <label for="managePackageOrgId">Organization ID:</label>
+                        <input type="text" id="managePackageOrgId" name="managePackageOrgId" required><br>
+
+                        <label for="managePackageDescription">Description:</label>
+                        <input type="text" id="managePackageDescription" name="managePackageDescription"><br>
+
+                        <label for="managePackageCategory">Category:</label>
+                        <input type="text" id="managePackageCategory" name="managePackageCategory"><br>
+
+                        <button type="button" onclick="confirmPackageChanges()">Confirm Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <script src="packagemanagement.js"></script>
+    <script>
+        function openManagePackageForm() {
+            document.getElementById('managePackageForm').style.display = 'block';
+        }
+
+        function confirmPackageChanges() {
+            // Include logic to gather changes and show confirmation pop-up
+            var confirmationMessage = "Please review the changes below before confirming:\n\n" +
+                                     "Package ID: " + document.getElementById('managePackageId').value + "\n" +
+                                     "Package Name: " + document.getElementById('managePackageName').value + "\n" +
+                                     "Organization ID: " + document.getElementById('managePackageOrgId').value + "\n" +
+                                     "Description: " + document.getElementById('managePackageDescription').value + "\n" +
+                                     "Category: " + document.getElementById('managePackageCategory').value + "\n\n" +
+                                     "Do you want to proceed with these changes?";
+            showPackageConfirmationPopup(confirmationMessage);
+        }
+
+        function showPackageConfirmationPopup(message, isDelete = false) {
+            document.getElementById('confirmationMessage').innerText = message;
+            document.getElementById('confirmationPopup').style.display = 'block';
+            // Store the type of action (update or delete) in a data attribute
+            document.getElementById('confirmationPopup').setAttribute('data-is-delete', isDelete);
+        }
+
+        function confirmPackageAction() {
+            var isDelete = document.getElementById('confirmationPopup').getAttribute('data-is-delete') === 'true';
+
+            if (isDelete) {
+                // Include logic to delete package
+                deleteCompliancePackage(document.getElementById('deletePackageId').value /* add other necessary parameters */);
+            } else {
+                // Include logic to update package
+                updateCompliancePackage(document.getElementById('managePackageId').value /* add other necessary parameters */);
+            }
+
+            // Hide the confirmation pop-up after confirmation
+            document.getElementById('confirmationPopup').style.display = 'none';
+        }
+    </script>
+
+
+
+              <!-- Sidebar -->
+				 <div id="sidebar">
+					<div class="inner">
+						<span class="image object">
+							<img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
+						</span>
+						<br />
+						<meta charset="UTF-8">
+						<meta name="viewport" content="width=device-width, initial-scale=1.0">
+						<link rel="stylesheet" href="styles.css">
+						<title>User Button</title>
+					</head>
+					<body>
+                        <div class="sidebar">
+                            <a href="#" onclick="handleButtonClick()" style="display: flex; align-items: center;">
+                                <div style="border-radius: 50%; width: 40px; height: 40px; background-color: #00125B; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
+                                </div>
+                                <span>User Settings</span>
+                            </a>
+                           
+                        </div>
+                        <!-- Search -->
+                        <section id="search" class="alt">
+                            <form method="post" action="#">
+                                <input type="text" name="query" id="query" placeholder="Search" />
+                            </form>
+                        </section>
+                        <!-- Menu -->
+                        <nav id="menu">
+                            <header class="major">
+                                <h2>Menu</h2>
+                            </header>
+                            <ul>
+                                <li><a href="dashboard.html">Homepage</a></li>
+                                <li>
+                                    <span class="opener">Organization Settings</span>
+                                    <ul>
+                                        <li><a href="organizationdetails.html">Organization Details</a></li>
+                                        <li><a href="documenttypes.html">Document Types</a></li>
+                                        <li><a href="compliancerequirements.html">Compliance Requirements</a></li>
+                                        <li><a href="organizationdocuments.html">Organization Documents</a></li>
+                                        <li><a href="questionnaires.html">Questionnaires</a></li>
+                                        <li><a href="onboarding.html">Onboarding</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <span class="opener">Staff</span>
+                                    <ul>
+                                        <li><a href="staff.html">Staff</a></li>
+                                        <li><a href="staffapproval.html">Staff needing approval</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                        
+                <!-- Section -->
+                <section>
+                    <header class="major">
+                        <h2>Get in touch</h2>
+                    </header>
+                    <p>We're here to help! If you're experiencing any issues or have questions, please don't hesitate to reach out to us at <a href="mailto:help@tollanis.com">help@tollanis.com</a>. Our dedicated support team is ready to assist you and ensure you have a smooth experience with our new product. Your satisfaction is our priority.</p>
+                    <ul class="contact">
+                        <li class="icon solid fa-envelope"><a href="mailto:help@tollanis.com">help@tollanis.com</a></li>
+                    </ul>
+                </section>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/documentmanagement.js"></script>
+<script src="assets/js/comppkgmngmt.js"></script>
+
+</body>
+
+</html>

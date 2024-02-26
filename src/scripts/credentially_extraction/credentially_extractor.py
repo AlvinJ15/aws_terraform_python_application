@@ -153,9 +153,17 @@ class CredentiallyExtractor:
             db.add(new_questionnaire)
         db.flush()
 
-    def create_compliance_packages(self, db):
-        # TODO pagination more than 100 records
-        data = self.cred_api_request.get_compliance_package_list()
+    def create_compliance_packages(self, db, page=0):
+        data = {
+            'content': []
+        }
+        while True:
+            req = self.cred_api_request.get_compliance_package_list(page)
+            data['content'] = data['content'] + req['content']
+            page += 1
+            if req.get('last'):
+                break
+
         for cred_package in data['content']:
             new_package = CompliancePackage()
             new_package.package_id = DataBase.generate_uuid()
@@ -191,8 +199,18 @@ class CredentiallyExtractor:
                     new_package_document.document_type_id = self.document_type_id_map[document_type['id']]
                     db.add(new_package_document)
 
-    def create_employees(self, db):
-        data = self.cred_api_request.get_employees_list()
+
+    def create_employees(self, db, page=0):
+        data = {
+            'content': []
+        }
+        while True:
+            req = self.cred_api_request.get_employees_list(page)
+            data['content'] = data['content'] + req['content']
+            page += 1
+            if req.get('last'):
+                break
+
         admin_list = []
         employees_list = []
         for employee in data['content']:
@@ -214,15 +232,22 @@ class CredentiallyExtractor:
                 admin_list.append((new_employee.employee_id, employee))
             employees_list.append(new_employee)
 
-        for new_employee_id, employee in admin_list:
-            new_admin = Administrator()
-            new_admin.admin_id = new_employee_id
-            new_admin.first_name = employee.get('firstName')
-            new_admin.last_name = employee.get('lastName')
-            new_admin.email = employee.get('email')
-            new_admin.created = DataBase.get_now()
-            db.add(new_admin)
+        try:
+            for new_employee_id, employee in admin_list:
+                new_admin = Administrator()
+                new_admin.admin_id = new_employee_id
+                new_admin.first_name = employee.get('firstName')
+                new_admin.last_name = employee.get('lastName')
+                new_admin.email = employee.get('email')
+                new_admin.created = DataBase.get_now()
+                db.add(new_admin)
+                print(f'Inserted ADMIN CRED_ID={employee["id"]}')
             db.flush()
+
+        except Exception as e:
+            print(f'Error with Administrator: CRED_ID={employee["id"]}')
+            print(f'Error: {e}')
+
 
         for new_employee, employee in zip(employees_list, data['content']):
             try:
@@ -238,6 +263,7 @@ class CredentiallyExtractor:
             except Exception as e:
                 print(f'Error with Employee: CRED_ID={employee["id"]}')
                 print(f'Error: {e}')
+
 
     def create_employee_profile(self, new_employee, employee):
         employee_info = self.cred_api_request.get_employee_personal_info(employee['id'])

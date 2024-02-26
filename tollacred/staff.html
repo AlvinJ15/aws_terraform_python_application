@@ -14,81 +14,81 @@
 						<div class="inner">
 							<!-- Header -->
 								<header id="header">
-									<a href="dashboard.html" class="logo"><strong>BPO Credentialing</strong> by Tollanis</a>
+									<a href="dashboard.html" class="logo"><strong>TollanisCred</strong> Credentialing by Tollanis</a>
 								</header>
 							<!-- Banner -->
 							<section id="banner">
 								<div class="content">
                                 <header>
-                                    <h3>Document Type<br /></h3>
+                                    <h3>Staff Memebers<br /></h3>
                                     <a href="addstaff.html" style="float: right;"><button>Add Staff Member</button></a>
                                 </header>
-                                <p>Here you can create new roles and edit existing ones.</p>
+                                <p>Here you you can Add/Edit Staff members</p>
                                 </div>
                             </section>
-                        <section id="table">
-                            <style>
-                                table {
-                                    width: 100%;
-                                    border-collapse: collapse;
-                                }
-                            
-                                th, td {
-                                    border: 1px solid #ddd;
-                                    padding: 8px;
-                                    text-align: left;
-                                    max-width: 400px;
-                                    word-wrap: break-word;
-                                    overflow-wrap: break-word;
-                                }
-                            
-                                th {
-                                    background-color: #f2f2f2;
-                                }
-                            </style>
-                            <title>HTML Grid</title>
-                            <body>
-                                <table>
-									<thead>
-										<tr>
-											<th>Staff Member</th>
-											<th>Role</th>
-											<th>Assigned</th>
-											<th>Compliance Packages</th>
-											<th>Compliance</th>
-											<th>Tags</th>
-											<th>Signed off</th>
-											<th>Active</th>
-										</tr>
-									</thead>
-									<tbody>
-										<!-- Add your data rows here -->
-										<tr>
-											<td>Staff Name</td>
-											<td>ER Nurse</td>
-											<td>Agent assigned</td>
-											<td>Core Nurse</td>
-											<td>Compliant/Non Compliant</td>
-											<td>Docs Expired / References OK</td>
-											<td>Not Signed off/Signed off</td>
-											<td>Active/Inactive/Invited</td>
-										</tr>
-										<tr>
-											<!-- Add more rows as needed -->
-										</tr>
-									</tbody>
-								</table>
+<!-- Banner - Staff Members List -->
+<section id="bannerList">
+    <div class="content">
+        <header>
+            <script>
+                window.addEventListener('DOMContentLoaded', (event) => {
+                    getAllEmployees(localStorage.getItem('organization_id'));
+                });
+            </script>
+            <h3>Staff Member List<br /></h3>
+        </header>
+        <p>Here you can see the actual Staff Members.</p>
+    </div>
+</section>
+
+<!-- Employee table -->
+<table>
+    <thead>
+        <tr>
+			<th>Staff Member</th>
+			<th>Role</th>
+			<th>Assigned</th>
+			<th>Compliance Packages</th>
+			<th>Compliance</th>
+			<th>Tags</th>
+			<th>Signed off</th>
+			<th>Active</th>
+			<th>Edit</th>
+        </tr>
+    </thead>
+    <tbody id="employeeTableBody">
+        <!-- Table rows will be populated dynamically using JavaScript -->
+    </tbody>
+</table>
                             </body>
                         </section>
                     </div>
-            </div>
+                            </body>
+                        </section>
+                    </div>
+
                     
-				<!-- Sidebar -->
-					<div id="sidebar">
-						<div class="inner">
-								<span class="image object">
-   								 	<img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
-								</span>
+				  <!-- Sidebar -->
+				  <div id="sidebar">
+					<div class="inner">
+						<span class="image object">
+							<img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
+						</span>
+						<br />
+						<meta charset="UTF-8">
+						<meta name="viewport" content="width=device-width, initial-scale=1.0">
+						<link rel="stylesheet" href="styles.css">
+						<title>User Button</title>
+					</head>
+					<body>
+                        <div id="sidebar">
+							<a href="profile.html" style="display: flex; align-items: center;">
+								<div style="border-radius: 50%; width: 40px; height: 40px; background-color: #00125B; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
+								</div>
+								<span>User Settings</span>
+							</a>
+						   
+						</div>
 							
 							<!-- Search -->
 								<section id="search" class="alt">
@@ -112,8 +112,7 @@
 												<li><a href="compliancerequirements.html">Compliance Requirements</a></li>
 												<li><a href="organizationdocuments.html">Organization Documents</a></li>
 												<li><a href="questionnaires.html">Questionnaires</a></li>
-												<li><a href="onboarding.html">Onboarding</a></li>
-											</ul>
+												</ul>
 										</li>
 										<li>
 											<span class="opener">Staff</span>
@@ -143,11 +142,18 @@
 			</div>
 
 		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/index.js"></script>
+<script src="assets/js/apis.js"></script>
+<script src="assets/js/documentmanagement.js"></script>
+<script src="assets/js/comppkgmngmt.js"></script>
+<script src="assets/js/employeemanagement.js"></script>
+
 
 	</body>
 </html>

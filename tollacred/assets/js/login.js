@@ -2,20 +2,6 @@
 
 const baseURL = 'https://p4u9i76s6f.execute-api.us-east-1.amazonaws.com';
 
-async function makeRequest(method, url, data = null) {
-    try {
-        const response = await axios({
-            method,
-            url: `${baseURL}/${url}`,
-            data
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error making request:', error.message);
-        throw error;
-    }
-}
-
 async function loginUser(username, password) {
     const loginEndpoint = 'auth/login';
 

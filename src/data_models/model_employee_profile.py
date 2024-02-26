@@ -19,7 +19,7 @@ class EmployeeProfile(Base):
     first_name = Column(String(255))
     last_name = Column(String(255))
     gender = Column(String(255))
-    email = Column(String(255), nullable=False, unique=True)
+    email = Column(String(255), nullable=False)
     role = Column(String(255))
     grade = Column(String(255))
     medical_category = Column(String(255))

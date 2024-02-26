@@ -49,6 +49,8 @@ def create_handler(event, context):
             stage = event.get('requestContext', {}).get('stage')
             data = get_data_from_multipart(event)
             file = data.pop('file')
+            if not data.get('approver_id'):
+                data['approver_id'] = None
             new_document = EmployeeDocument(**data)
             new_document.document_id = DataBase.generate_uuid()
             new_document.employee_id = employee_id
