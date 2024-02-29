@@ -23,8 +23,29 @@ function createReviewButton(employeeDocument){
     return reviewButton;
 }
 
-function downloadEmployeeDocument(employeeDocument){
-    alert(employeeDocument.s3_path);
+function getFileName(path) {
+  const parts = path.split('/'); // Split the path into an array of path segments
+  return parts[parts.length - 1]; // Access the last element (filename)
+}
+
+async function downloadEmployeeDocument(employeeDocument) {
+    const employeeId = new URLSearchParams(window.location.search).get('employee_id');
+    let organizationId = localStorage.getItem('organization_id')
+    let endpoint = `dev/organizations/${organizationId}/employees/${employeeId}/documents/${employeeDocument.document_id}`;
+    let response =  await makeRequest('GET', endpoint);
+    // Get the download URL from the API call (replace with your actual API call logic)
+
+    const downloadUrl = response.download_url
+
+    // Create a new anchor element (link)
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+
+    // Set the download attribute to force download behavior
+    link.setAttribute("download", getFileName(response.s3_path)); // Change the filename if needed
+
+    // Simulate a click on the link to trigger download
+    link.click();
 }
 
 let documentTypeSaved = null;

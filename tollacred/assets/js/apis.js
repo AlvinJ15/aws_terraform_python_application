@@ -1,7 +1,8 @@
 // Base URL for API requests
-const baseURL = 'https://1ojxaw0pa6.execute-api.us-east-1.amazonaws.com';
+const baseURL = 'https://api.tollaniscred.com';
 
 async function makeRequest(method, url, data = null, is_json=true) {
+    showLoading();
     try {
         let headers = {}
         if (is_json){
@@ -22,10 +23,20 @@ async function makeRequest(method, url, data = null, is_json=true) {
             body: (data && is_json) ? JSON.stringify(data) : data
         });
         if(response.status === 200 || response.status === 201){
+            hideLoading();
             return response.json();
         }
+        if(response.status === 401) {
+            deleteCookie('API_TOKEN');
+            alert('Session token expired');
+            hideLoading();
+            redirectToLogin();
+        }
+        hideLoading();
+        console.log(response);
         return null;
     } catch (error) {
+        hideLoading();
         handleRequestError(url, error);
         throw error;
     }
@@ -48,60 +59,4 @@ function handleRequestError(url, error) {
     }
 
     // Additional logging or monitoring can be added here
-}
-
-// Documents
-async function getDocuments(organizationId) {
-    return makeRequest('GET', `organizations/${organizationId}/documents`);
-}
-
-async function createDocument(organizationId, documentData) {
-    return makeRequest('POST', `organizations/${organizationId}/documents`, documentData);
-}
-
-async function getDocument(organizationId, documentId) {
-    return makeRequest('GET', `organizations/${organizationId}/documents/${documentId}`);
-}
-
-async function updateDocument(organizationId, documentId, documentData) {
-    return makeRequest('UPDATE', `organizations/${organizationId}/documents/${documentId}`, documentData);
-}
-
-// Compliance Packages
-async function getCompliancePackages(organizationId) {
-    return makeRequest('GET', `organizations/${organizationId}/compliancePackages`);
-}
-
-async function createCompliancePackage(organizationId, packageData) {
-    return makeRequest('POST', `organizations/${organizationId}/compliancePackages`, packageData);
-}
-
-async function getCompliancePackage(organizationId, packageId) {
-    return makeRequest('GET', `organizations/${organizationId}/compliancePackages/${packageId}`);
-}
-
-async function updateCompliancePackage(organizationId, packageId, packageData) {
-    return makeRequest('UPDATE', `organizations/${organizationId}/compliancePackages/${packageId}`, packageData);
-}
-
-// Questionnaires
-async function getQuestionnaires(organizationId) {
-    return makeRequest('GET', `organizations/${organizationId}/questionnaires`);
-}
-
-async function createQuestionnaire(organizationId, questionnaireData) {
-    return makeRequest('POST', `organizations/${organizationId}/questionnaires`, questionnaireData);
-}
-
-async function getQuestionnaire(organizationId, questionnaireId) {
-    return makeRequest('GET', `organizations/${organizationId}/questionnaires/${questionnaireId}`);
-}
-
-async function updateQuestionnaire(organizationId, questionnaireId, questionnaireData) {
-    return makeRequest('UPDATE', `organizations/${organizationId}/questionnaires/${questionnaireId}`, questionnaireData);
-}
-
-// Roles
-async function getRoles(organizationId) {
-    return makeRequest('GET', `organizations/${organizationId}/roles`);
 }

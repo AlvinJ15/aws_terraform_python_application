@@ -1,52 +1,140 @@
-const querystring = require('querystring');
-
-exports.handler = async (event) => {
-    try {
-        // Extract client ID and client secret from the query parameters
-        const clientId = event.queryStringParameters.client_id;
-        const clientSecret = event.queryStringParameters.client_secret;
-
-        // Extract code from the query parameters
-        const code = event.queryStringParameters.code;
-
-        // Validate the client ID and client secret
-        const isValidClient = validateClient(clientId, clientSecret);
-
-        if (isValidClient) {
-            // Your logic to authenticate the user using the provided code
-            const isAuthenticated = authenticateUser(code);
-
-            if (isAuthenticated) {
-                // Redirect the user to the specified Cognito login page
-                const redirectUrl = `https://tollacred.auth.us-east-1.amazoncognito.com/login?${querystring.stringify({
-                    client_id: clientId,
-                    response_type: 'code',
-                    scope: 'email openid phone',
-                    redirect_uri: 'https://tollacred-app-dev.s3-website-us-east-1.amazonaws.com/dashboard.html'
-                })}`;
-
-                return {
-                    statusCode: 302,
-                    headers: {
-                        Location: redirectUrl,
-                    },
-                };
-            } else {
-                return {
-                    statusCode: 401,
-                    body: JSON.stringify({ message: 'Authentication failed' }),
-                };
-            }
-        } else {
-            return {
-                statusCode: 401,
-                body: JSON.stringify({ message: 'Unauthorized - Invalid client ID or client secret' }),
-            };
-        }
-    } catch (error) {
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ message: 'Internal server error', error: error.message }),
-        };
-    }
-};
+Inserted Employee CRED_ID=9c2aee50-057a-4600-8095-40c357b2c2ab
+Inserted Employee CRED_ID=5a4597c3-45fc-4bd9-ab28-8783bdd0a20a
+Inserted Employee CRED_ID=e645d4d1-383a-4d17-ab26-5a8b51af4b46
+Inserted Employee CRED_ID=a0ccb8ac-665c-471a-8e99-801522158913
+Inserted Employee CRED_ID=b80ef774-4f32-4ac9-be6d-22b06456c563
+Inserted Employee CRED_ID=2d1cf60b-2ce4-4e19-9b3e-0b865aa8b123
+Inserted Employee CRED_ID=d6af199e-c19e-4b04-8f4c-46840e8e38ed
+Inserted Employee CRED_ID=b265c8d8-93fa-4f82-a4b4-4d7b919d6ae4
+Inserted Employee CRED_ID=02030b37-8b97-420c-8d0c-bf212484c228
+Inserted Employee CRED_ID=9b7fc0f1-d6c3-433f-95a9-07ace2bcb8df
+Inserted Employee CRED_ID=d33236a3-e550-4735-8589-011e999544a7
+Inserted Employee CRED_ID=6c190e54-b79b-48bc-94d8-e7908917c6cc
+Inserted Employee CRED_ID=e74fa724-f7fa-403c-a446-38def8842032
+Inserted Employee CRED_ID=52a205fb-d261-45d6-ac9a-ee61752235b9
+Inserted Employee CRED_ID=27094761-ccd9-4e8c-8375-e6884b7e95e4
+Inserted Employee CRED_ID=7a5caba0-3170-4139-9c1a-b6a77ac2a29b
+Inserted Employee CRED_ID=ab671116-e4f8-40ef-a938-a12bcf294665
+Inserted Employee CRED_ID=35142373-2fd2-4837-b224-c2ab48dec2ec
+Inserted Employee CRED_ID=7dfea1dc-6ce7-4807-a024-89b1b4172666
+Inserted Employee CRED_ID=62850ae5-652f-4f81-990b-d6805bcd12fb
+Inserted Employee CRED_ID=88bb7bf2-d0dd-466d-b4b7-a0f37f0bd227
+Inserted Employee CRED_ID=83f5e7d8-a473-4e76-bdda-60ea9649fdf5
+Inserted Employee CRED_ID=21d6005c-13e7-48f3-bc1b-ae3bb65135da
+Inserted Employee CRED_ID=47cac122-67c1-4bc7-aae6-10b750b230cd
+Inserted Employee CRED_ID=d3993492-912a-4ee5-9a5b-4d792fb07287
+Inserted Employee CRED_ID=6a89b394-b355-4279-83b2-3efe122a91b3
+Inserted Employee CRED_ID=20a78081-2173-426c-a15a-061e904582c1
+Inserted Employee CRED_ID=3fbfcd3f-db4b-445e-82ce-ca8b1811ae8c
+Inserted Employee CRED_ID=63f962e2-5e42-4469-9e4f-9224f6e30410
+Inserted Employee CRED_ID=8c6c238c-e8f0-427c-94f1-79f8642ef842
+Inserted Employee CRED_ID=1aa8cc7d-f800-4f7d-8e8e-e7a486479027
+Enter the new ACCESS_TOKEN: >? Uu0H9ZXXU1mxIeh9nyPbyi93h2I
+Inserted Employee CRED_ID=0e7a354f-b338-441d-b7c9-86fe01c2f2d2
+Inserted Employee CRED_ID=c27ef78f-5285-416d-86e3-8966702acbea
+Inserted Employee CRED_ID=d02290c6-6126-4e85-9bf5-9771a18eca05
+Inserted Employee CRED_ID=b9eb0ff2-ba14-4d99-9f8c-ef6a33c39667
+Inserted Employee CRED_ID=92f8187c-f538-4047-8f09-2a4b3007b15d
+Inserted Employee CRED_ID=d978c56d-c73e-44ea-98ae-148e3492c6f9
+Inserted Employee CRED_ID=3f68f265-11b2-4ada-903d-2bc32b7dde47
+Inserted Employee CRED_ID=7f0eccd6-557f-41bb-958f-7f5d13fda66c
+Inserted Employee CRED_ID=db8e1348-bf61-4cb2-9281-a0de660cbe03
+Inserted Employee CRED_ID=7866c9bc-1b44-42c4-b905-af916cb62e6d
+Inserted Employee CRED_ID=f9310489-5593-4fc4-815d-6eb071e362ab
+Inserted Employee CRED_ID=324aa616-3247-4c9b-ac2a-2235d71c5ea6
+Inserted Employee CRED_ID=69af9865-fe6f-4d8d-b6e2-b2f844ac082d
+Inserted Employee CRED_ID=a1969be7-0872-4506-8fd4-df5d13a89190
+Inserted Employee CRED_ID=1b347d4a-d6a3-4dab-99de-48bde22221ed
+Inserted Employee CRED_ID=b1a7427a-c2cb-4ae4-9ea7-535b869829f3
+Inserted Employee CRED_ID=292c64b2-d297-40df-821f-b54d0687d1a8
+Inserted Employee CRED_ID=435b4167-ca88-4a79-99ea-1f732644fe41
+Inserted Employee CRED_ID=1ddac7da-5384-4488-a43b-88504ed25a15
+Inserted Employee CRED_ID=564b5594-766e-4d5e-acba-db7ab47185d5
+Inserted Employee CRED_ID=7b6a341c-5d93-4948-80c2-78c6efe509e3
+Inserted Employee CRED_ID=39af71e9-73d3-4b3c-9ef0-bf68f48f42b4
+Inserted Employee CRED_ID=f2dfdfc6-ac74-470c-9108-ce8e5216cc9b
+Inserted Employee CRED_ID=cb03d866-695f-4456-8975-59d4876b0ef0
+Inserted Employee CRED_ID=145ef9fc-65b5-48a0-a095-2d955c6a192a
+Inserted Employee CRED_ID=e173bac3-fc15-4f32-b7a6-ac3fa09ec87e
+Inserted Employee CRED_ID=1d9cc850-e8ad-4dcd-9d9c-e8cfcc50486e
+Inserted Employee CRED_ID=da64380f-6b2b-4b68-9fab-ff0accfe916d
+Inserted Employee CRED_ID=b743af21-f44c-4907-b700-460e3bf00e0f
+Inserted Employee CRED_ID=5d60d226-2bcb-44ba-97ae-283db81ff276
+Inserted Employee CRED_ID=81685e63-a98b-46a5-9da7-f742ce784a84
+Inserted Employee CRED_ID=716dd3d8-702e-4797-9df4-63e7c6f5f634
+Inserted Employee CRED_ID=719927fa-a298-4f01-a73b-6e4e319e7936
+Inserted Employee CRED_ID=e1940942-7c8d-42d4-90ed-8cebcad54d16
+Inserted Employee CRED_ID=b3b12292-9781-473a-980a-354ca33fe177
+Inserted Employee CRED_ID=399659c4-f43f-44f0-b4fb-5f5d6412032f
+Inserted Employee CRED_ID=ac41d27e-5c88-4c50-a413-a4aa0ffee4bd
+Inserted Employee CRED_ID=1413f247-a7a5-4011-ba09-873f974544f4
+Inserted Employee CRED_ID=abb43333-7550-4b01-a1d1-0bcd0cc1638f
+Inserted Employee CRED_ID=789ac22e-8cdf-4bac-936d-4ba0c02e9274
+Inserted Employee CRED_ID=5260f54c-61e4-42e5-ab27-defe18a6cc84
+Inserted Employee CRED_ID=8e0baf88-7f0c-4a7a-98a0-c5c41ddc0226
+Inserted Employee CRED_ID=b2650759-c4be-49ea-bf54-2c954640e64d
+Inserted Employee CRED_ID=e89f8421-91a5-402f-acf8-6fdfb16608f9
+Inserted Employee CRED_ID=25e32add-bd5e-4d24-a045-636dfceb68b7
+Inserted Employee CRED_ID=c0fd478c-58cc-43d1-87e6-7929749fcc07
+Inserted Employee CRED_ID=55da8890-3b2a-46b2-a15c-88a13076aa85
+Inserted Employee CRED_ID=4393f0ef-8a61-42f1-a0a2-c733838a19cc
+Inserted Employee CRED_ID=768f9e9d-fe38-45f5-be3d-d5d1c19837c5
+Inserted Employee CRED_ID=a0d0f221-9361-498b-aaa4-7bf0ad8ff915
+Inserted Employee CRED_ID=a24f7fcd-75c1-49c6-b7e1-e0079a0bca8c
+Inserted Employee CRED_ID=e29fd3fa-3075-4a81-ae05-5f71fd0eefb9
+Inserted Employee CRED_ID=f8effa56-acef-4af3-bce1-74a72fa07d6d
+Inserted Employee CRED_ID=59b7e8df-b964-4cd2-b763-1b1ffd8b46f6
+Inserted Employee CRED_ID=5320291d-a9f8-49ea-8991-d3aa116b401e
+Inserted Employee CRED_ID=68274c97-2b48-4442-9d26-c79a489d6190
+Inserted Employee CRED_ID=4f0aa9ff-43bb-46db-bb49-244a6f8eb014
+Inserted Employee CRED_ID=9dd852bb-a5b3-419f-be9c-9c902158486c
+Inserted Employee CRED_ID=16974858-cc6f-441e-9982-b4cca93c1849
+Inserted Employee CRED_ID=60ca46f4-a9af-4e03-a46e-1a5e216fbc38
+Inserted Employee CRED_ID=31697031-73cc-4b48-ae4c-1f2c08eb6731
+Inserted Employee CRED_ID=c59fb6e2-f405-4e37-a86c-4de960efb7c0
+Inserted Employee CRED_ID=dbbc87d7-441e-4eaf-94c6-547d27340ec4
+Inserted Employee CRED_ID=876a08f6-b550-455e-af32-ef11ba270398
+Inserted Employee CRED_ID=3594fd79-de9d-4d91-b15b-2d730db9cd90
+Inserted Employee CRED_ID=6777c966-48f4-4995-b203-31742c9f198a
+Inserted Employee CRED_ID=d3c83b59-3e42-4f67-9ea6-b98319849b91
+Inserted Employee CRED_ID=411f7fef-ffe5-4aad-b26c-d590b261b187
+Inserted Employee CRED_ID=39efac35-a39a-4cf1-8d7d-e6512e8fdc00
+Inserted Employee CRED_ID=dc378008-ad93-4d52-9687-5701784a5de7
+Inserted Employee CRED_ID=7b8a71d6-8b85-4f0b-b865-ecfa4cedfec1
+Inserted Employee CRED_ID=256dec86-a2b9-41cc-ba78-42d5c8acf964
+Inserted Employee CRED_ID=00df992a-e86e-4109-9c12-c1f94cc2a2a9
+Inserted Employee CRED_ID=bb6e935a-7cad-47e2-8cb9-f1cc4de8c861
+Inserted Employee CRED_ID=a465e350-c841-47b6-9168-5031d6f3d796
+Inserted Employee CRED_ID=4ae4ecd8-c42f-42f1-b4ef-b4a7f04e3181
+Inserted Employee CRED_ID=7e6350b6-5380-44f4-9b6e-6372873c5582
+Inserted Employee CRED_ID=21f7528f-b535-4075-ad39-25bb29959f3d
+Inserted Employee CRED_ID=66eeb002-a9ef-45d6-a273-8ba3fe324a22
+Inserted Employee CRED_ID=8a7de94d-0962-4553-85b4-f00255a2035b
+Inserted Employee CRED_ID=d6b1fe38-d29a-4d8a-a680-7307087b7efb
+Inserted Employee CRED_ID=0eaf11a2-9253-4e8f-a732-9d2e6d9951f1
+Inserted Employee CRED_ID=f9fdab73-c3c9-4c6c-baa4-b5487ed91ec5
+Inserted Employee CRED_ID=18ef9a74-0746-462f-8e81-149d20f941ca
+Inserted Employee CRED_ID=76113d73-42ed-4db4-a3a6-7ae20b7b9c28
+Inserted Employee CRED_ID=2d9abefc-64ff-47a0-bd01-b938c4ec06bf
+Inserted Employee CRED_ID=eea3c182-aa62-4dc7-ba4a-409d1e856ec1
+Inserted Employee CRED_ID=1a9c9bd5-3281-46d5-9a6f-39518d98273f
+Inserted Employee CRED_ID=97b9a350-833c-4b63-9d8b-ec133fc00164
+Inserted Employee CRED_ID=224e5e7e-d6c1-4320-a21c-4a2b57508c6e
+Inserted Employee CRED_ID=d78d6522-18b4-4167-a1a0-5c1d0fe13b9b
+Inserted Employee CRED_ID=51337d6a-b3a3-42fe-b834-6362abfafa1a
+Inserted Employee CRED_ID=fe52f398-dfbc-4656-9cc9-7578bfd899ea
+Inserted Employee CRED_ID=959febd5-9ee0-4acd-beb6-ef4da983f432
+Inserted Employee CRED_ID=ba786c15-5199-4989-a216-9f7718df9894
+Inserted Employee CRED_ID=22963653-dba2-450a-981c-0bc7510b43b0
+Inserted Employee CRED_ID=3e40d3a8-5633-4f16-bb2a-76234b9f0301
+Inserted Employee CRED_ID=4dc7e622-cbcf-43b0-b417-cd83ee2bdfd0
+Inserted Employee CRED_ID=d66d349a-5f4e-4744-9a47-6fca7006e3b5
+Inserted Employee CRED_ID=83191a0b-da7e-44dd-8c78-6badc33bcab9
+Inserted Employee CRED_ID=9cb3753f-9dc3-439b-958e-a74ac302b79f
+Inserted Employee CRED_ID=5d85e4cd-c32c-4da2-bc9b-4144ed8be527
+Inserted Employee CRED_ID=101088b5-6c6c-4405-9c16-1cc2637da5c3
+Inserted Employee CRED_ID=922d308a-ebfa-4bf1-88ec-791996ec494c
+Inserted Employee CRED_ID=28699a26-60b9-40b6-8aac-c4732f8690ca
+Inserted Employee CRED_ID=262726b7-eed1-4b40-af37-208a75c9c6cc
+Inserted Employee CRED_ID=bbeb144f-bd69-4568-9018-110846b681cd
+Inserted Employee CRED_ID=d5da0062-85a5-460d-b84f-ac9b284e964d

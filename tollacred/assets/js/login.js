@@ -1,21 +1,5 @@
 // login.js
 
-const baseURL = 'https://p4u9i76s6f.execute-api.us-east-1.amazonaws.com';
-
-async function loginUser(username, password) {
-    const loginEndpoint = 'auth/login';
-
-    try {
-        const response = await makeRequest('POST', loginEndpoint, { username, password });
-        console.log('Login successful:', response);
-
-        // Redirect or perform any action upon successful login
-    } catch (error) {
-        console.error('Login failed:', error.message);
-        // Handle login failure, show error message, etc.
-    }
-}
-
 function submitForm() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;

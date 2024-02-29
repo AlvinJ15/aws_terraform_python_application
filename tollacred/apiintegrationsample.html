@@ -9,41 +9,8 @@
 
     <h1>API Interaction Example</h1>
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         // JavaScript code for API interaction
-
-        class DocumentService {
-            constructor(baseURL) {
-                this.baseURL = baseURL;
-            }
-
-            async getDocuments(organizationId) {
-                const url = `${this.baseURL}/dev/organizations/${organizationId}/documents`;
-                const response = await axios.get(url);
-                return response.data;
-            }
-
-            async createDocument(organizationId, documentData) {
-                const url = `${this.baseURL}/dev/organizations/${organizationId}/documents`;
-                const response = await axios.post(url, documentData);
-                return response.data;
-            }
-
-            // Implement other methods similarly
-        }
-
-        // Example usage:
-        const baseApiURL = "https://your-api-base-url";
-        const documentService = new DocumentService(baseApiURL);
-
-        const organizationId = "your_organization_id";
-        const documentData = { key: "value" }; // Replace with actual document data
-
-        documentService.getDocuments(organizationId)
-            .then(documents => console.log("All Documents:", documents))
-            .catch(error => console.error(error));
-
         // Implement other method calls similarly
     </script>
 </body>

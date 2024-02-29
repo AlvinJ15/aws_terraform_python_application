@@ -1,63 +1,76 @@
-// const axios = require('axios');
-function getCookie(name) {
-  const cookies = document.cookie.split(';');
-  for (const cookie of cookies) {
-    const [key, value] = cookie.trim().split('=');
-    if (key === name) {
-      return decodeURIComponent(value);
+const CODE_LOCAL = 'c97df63d-8058-4a7b-9e92-d65b26378942'
+
+let loadingScreen;
+window.addEventListener("DOMContentLoaded", async () => {
+    const body = document.body;
+    loadingScreen = createLoadingScreen();
+    body.appendChild(loadingScreen);
+
+    // Function to show the loading screen
+
+    let token = await getApiToken()
+    if (!token) {
+        redirectToLogin();
     }
-  }
-  return undefined; // Cookie not found
+});
+
+function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (const cookie of cookies) {
+        const [key, value] = cookie.trim().split('=');
+        if (key === name) {
+            return decodeURIComponent(value);
+        }
+    }
+    return undefined; // Cookie not found
 }
 
 function setCookie(name, value, options = {}) {
-  // Encode the value for safe cookie storage
-  const encodedValue = encodeURIComponent(value);
+    // Encode the value for safe cookie storage
+    const encodedValue = encodeURIComponent(value);
 
-  // Build the cookie string with optional parameters
-  let cookieString = `${name}=${encodedValue}`;
+    // Build the cookie string with optional parameters
+    let cookieString = `${name}=${encodedValue}`;
 
-  // Set expiration time (optional)
-  if (options.expires) {
-    const expirationDate = new Date();
-    expirationDate.setTime(expirationDate.getTime() + options.expires * 1000);
-    cookieString += `; expires=${expirationDate.toUTCString()}`;
-  }
+    // Set expiration time (optional)
+    if (options.expires) {
+        const expirationDate = new Date();
+        expirationDate.setTime(expirationDate.getTime() + options.expires * 1000);
+        cookieString += `; expires=${expirationDate.toUTCString()}`;
+    }
 
-  // Set path (optional)
-  if (options.path) {
-    cookieString += `; path=${options.path}`;
-  }
+    // Set path (optional)
+    if (options.path) {
+        cookieString += `; path=${options.path}`;
+    }
 
-  // Set domain (optional)
-  if (options.domain) {
-    cookieString += `; domain=${options.domain}`;
-  }
+    // Set domain (optional)
+    if (options.domain) {
+        cookieString += `; domain=${options.domain}`;
+    }
 
-  // Set secure flag (optional)
-  if (options.secure) {
-    cookieString += `; secure`;
-  }
+    // Set secure flag (optional)
+    if (options.secure) {
+        cookieString += `; secure`;
+    }
 
-  // Set SameSite attribute (optional)
-  if (options.sameSite) {
-    cookieString += `; SameSite=${options.sameSite}`;
-  }
+    // Set SameSite attribute (optional)
+    if (options.sameSite) {
+        cookieString += `; SameSite=${options.sameSite}`;
+    }
 
-  // Write the cookie to the document
-  document.cookie = cookieString;
+    // Write the cookie to the document
+    document.cookie = cookieString;
 }
 
-function removeCookie(name) {
-  // Set the expiration date to a past date to effectively remove the cookie
-  setCookie(name, "", { expires: -1 });
+function deleteCookie(name) {
+  document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
-
 async function getApiToken() {
     if (getCookie('API_TOKEN') === undefined) {
         const CODE = new URLSearchParams(window.location.search).get('code');
-        const CLIENT_ID = '7f07uqm098keq2i3k3ljg83hq9';
-        const CLIENT_SECRET = '1gf2no0tbm8f7tk54s76l3v29jf4c4qvcsrpt5h3a38sfsgmep5n';
+        const CLIENT_ID = '7593fortb60sr1uj283op0icda';
+        const CLIENT_SECRET = 'ie32n7dqdrfls1j66fklokfrj25kq0kfkbc9e0i102k3dbq42jd';
         const COGNITO_DOMAIN = 'https://tollacred.auth.us-east-1.amazoncognito.com';
 
         const credentials = `${CLIENT_ID}:${CLIENT_SECRET}`;
@@ -67,7 +80,7 @@ async function getApiToken() {
             grant_type: 'authorization_code',
             client_id: CLIENT_ID,
             code: CODE,
-            redirect_uri: 'https://aqqakr76zbjxtqxw36d2fjluue0vkpkz.lambda-url.us-east-1.on.aws/',
+            redirect_uri: 'https://app-dev.tollaniscred.com/dashboard.html',
         };
 
         const headers = {
@@ -75,21 +88,75 @@ async function getApiToken() {
             'Authorization': `Basic ${encodedCredentials}`,
         };
 
-        await axios.post(`${COGNITO_DOMAIN}/oauth2/token`, body, {headers})
-            .then(response => {
-                console.log('Access token:', response.data.id_token);
-                setCookie('API_TOKEN', response.data.id_token, {expires: 86400})
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        let response = await makeTokenRequest('POST', `${COGNITO_DOMAIN}/oauth2/token`, body, headers);
+        if (response == null) {
+            alert('Error retrieving the API TOKEN');
+            return undefined;
+        }
+        setCookie('API_TOKEN', response.id_token, {
+            expires: 86400,
+            path: '/'
+        })
     }
     return getCookie('API_TOKEN');
 }
 
-async function test(){
-    const api_token = await getApiToken(); // first time the token will be saved in the cookies, if the token expires we need to call removeCookie('API_TOKEN') and update the code for get a new token
-    console.log('API_TOKEN = ', api_token)
+async function makeTokenRequest(method, url, data = null, headers = null, is_json = true) {
+    try {
+        const urlSearchParams = new URLSearchParams(data);
+        const bodyString = urlSearchParams.toString();
+
+        const response = await fetch(url, {
+            method: method,
+            headers: headers,
+            body: bodyString
+        });
+        if (response.status === 200 || response.status === 201) {
+            return response.json();
+        }
+        console.log(response);
+        return null;
+    } catch (error) {
+        handleRequestError(url, error);
+        throw error;
+    }
 }
 
-test() // async execution
+function createLoadingScreen() {
+  const loadingScreen = document.createElement('div');
+  loadingScreen.id = 'loading-screen';
+  loadingScreen.classList.add('hidden');
+
+  const loadingIcon = document.createElement('div');
+  loadingIcon.classList.add('loading-icon');
+  loadingIcon.style.animation = 'spin 2s linear infinite'; // Add animation style directly
+
+  const spinner = document.createElement('div');
+  spinner.classList.add('spinner');
+  spinner.style.animation = 'spin 2s linear infinite reverse'; // Add animation style directly
+
+  loadingIcon.appendChild(spinner);
+  loadingScreen.appendChild(loadingIcon);
+
+  const loadingText = document.createElement('p');
+  loadingText.textContent = 'Loading...';
+  loadingScreen.appendChild(loadingText);
+
+  return loadingScreen;
+}
+
+function redirectToLogin(){
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+        window.location.href = `dashboard.html?code=${CODE_LOCAL}`
+    } else {
+        window.location.href = 'https://tollacred.auth.us-east-1.amazoncognito.com/oauth2/authorize?client_id=7593fortb60sr1uj283op0icda&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fapp-dev.tollaniscred.com%2Fdashboard.html'
+    }
+}
+    function showLoading() {
+        loadingScreen.classList.add('show'); // Add the hidden class
+    }
+
+    // Function to hide the loading screen
+    function hideLoading() {
+        loadingScreen.classList.remove('show'); // Remove the hidden class
+    }

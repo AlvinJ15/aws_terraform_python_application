@@ -1,0 +1,103 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.container {
+    position: relative;
+    width: 200px; /* Adjust the width as needed */
+    margin: 50px auto;
+}
+
+.custom-select {
+    position: relative;
+    cursor: pointer;
+}
+
+.select-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tags_input {
+    width: 100%;
+}
+
+.selected-options {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background-color: #F6B53B;
+    color: #fff;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 3px;
+    display: flex;
+    align-items: center;
+}
+
+.remove-tag {
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.arrow {
+    margin-left: 10px;
+}
+
+.options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+.option, .result-message {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background: #F6B53B;
+    color: #fff;
+}
+
+.result-message {
+    display: none;
+    text-align: center;
+    color: #FF0000;
+}
+
+.option-search-tags {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.search-tags {
+    flex: 1;
+    padding: 5px;
+}
+
+.clear {
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.clear i {
+    color: #FF0000;
+}
