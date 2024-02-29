@@ -87,12 +87,10 @@ def insert_organization(creds):
 
 
 if __name__ == "__main__":
-
-    with ThreadPoolExecutor(max_workers=6) as executor:
-        #executor.submit(insert_organization, get_tollanis_training_creds())
-        #executor.submit(insert_organization, get_genevive_creds())
-        #executor.submit(insert_organization, get_tollanis_payor_creds())
-        executor.submit(insert_organization, get_truecarenursing_creds())
-        #executor.submit(insert_organization, get_elite365_creds())
-        #executor.submit(insert_organization, get_elite365locums_creds())
-        executor.shutdown(wait=True)
+    #insert_organization(get_tollanis_training_creds())
+    #insert_organization(get_genevive_creds())
+    #insert_organization(get_tollanis_payor_creds())
+    #insert_organization(get_truecarenursing_creds())
+    #insert_organization(get_elite365_creds())
+    #insert_organization(get_elite365locums_creds())
+    insert_organization(get_pulse_creds())

@@ -38,7 +38,7 @@ connection_string = (
 #
 # connection_string = f"mysql+pymysql://{os.getenv('DB_USERNAME')}:" \
 #                    f"{quote(os.getenv('DB_PASSWORD'))}@" \
-#                    f"{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_DATABASE')}"
+#                    f"{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
 #
 
 engine = create_engine(connection_string, echo=True)

@@ -1,5 +1,11 @@
 let loadingScreen;
 window.addEventListener("DOMContentLoaded", async () => {
+    let titles = document.getElementsByClassName('org_title');
+    if (titles && titles.length > 0) {
+        for (let i = 0; i < titles.length; i++) {
+            titles[i].textContent = localStorage.getItem('organization_name');
+        }
+    }
     const body = document.body;
     loadingScreen = createLoadingScreen();
     body.appendChild(loadingScreen);
@@ -11,7 +17,9 @@ window.addEventListener("DOMContentLoaded", async () => {
         redirectToLogin();
     }
 });
-
+function goToLogin(){
+    window.location.href = LOGIN_URL;
+}
 function getCookie(name) {
     const cookies = document.cookie.split(';');
     for (const cookie of cookies) {

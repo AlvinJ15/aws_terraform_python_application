@@ -34,7 +34,10 @@ class CredentiallyApiRequest:
                 self.token = self.ask_for_new_token()
             if response.status_code == 200:
                 if is_json:
-                    return json.loads(response.text)
+                    if len(response.text) > 0:
+                        return json.loads(response.text)
+                    else:
+                        return {}
                 else:
                     return response.content
             else:
@@ -115,7 +118,7 @@ class CredentiallyApiRequest:
     def get_organization_document(self, org_doc_id, file_extension):
         api_url = f'mp/api/organisations/{self.organization_id}/documents/{org_doc_id}/preview'
         response = self.__made_request(api_url, is_json=False)
-        self.__save_request(response, f'organization_documents/{org_doc_id}.{file_extension}')
+        self.__save_request(response, f'organization_documents/{org_doc_id}{file_extension}')
         return response
 
     def get_employees_list(self, page) -> dict:
@@ -187,13 +190,17 @@ class CredentiallyApiRequest:
         self.__save_request(response, f'employees/{employee_id}/references.json')
         return response
 
-    def get_employee_reference(self, employee_id, reference_id, file):
+    def get_employee_reference_file(self, employee_id, reference_id, file):
         api_url = f'mp/api/employees/{employee_id}/references/{reference_id}/file/preview'
         response = self.__made_request(api_url, is_json=False)
         self.__save_request(response, f'employees/{employee_id}/references/{reference_id}/{file["originName"]}')
         return response
 
-
+    def get_employee_reference_answers(self, employee_id, reference_id):
+        api_url = f'mp/api/employees/{employee_id}/references/{reference_id}/answers'
+        response = self.__made_request(api_url)
+        self.__save_request(response, f'employees/{employee_id}/references/{reference_id}.json')
+        return response
 
     def ask_for_new_token(self):
         new_token = input('Enter the new ACCESS_TOKEN: ')

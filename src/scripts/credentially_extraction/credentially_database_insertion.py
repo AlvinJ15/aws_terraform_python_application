@@ -24,7 +24,7 @@ from scripts.credentially_extraction.credentially_api_request import Credentiall
 from scripts.credentially_extraction.database_utils_local import DataBase
 from scripts.credentially_extraction.s3_utils_local import upload_file_to_s3
 
-STAGE = 'dev'
+STAGE = 'prod'
 
 
 class CredentiallyDatabaseInsertion:

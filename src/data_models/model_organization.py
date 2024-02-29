@@ -24,3 +24,17 @@ class Organization(Base):
     city = Column(String(255))
     state = Column(String(255))
     zip = Column(String(12))
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "type": self.type,
+            "name": self.name,
+            "legal_name": self.legal_name,
+            "country": self.country,
+            "address1": self.address1,
+            "address2": self.address2,
+            "city": self.city,
+            "state": self.state,
+            "zip": self.zip
+        }

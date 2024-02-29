@@ -1,11 +1,23 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>TollanisCred</title>
+		<title id="org_title">TollanisCred</title>
 		<meta charset="utf-8" />
 		<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://www.google.com">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+		<script src="assets/js/env_config.js"></script>
+		<script src="assets/js/index.js"></script>
+		<script src="assets/js/documentmanagement.js"></script>
+		<script src="assets/js/comppkgmngmt.js"></script>
+
 	</head>
 	<body class="is-preload">
 
@@ -18,7 +30,7 @@
 
 							<!-- Header -->
 							<header id="header">
-								<class="logo"><strong>TollanisCred</strong> Credentialing by Tollanis</a>
+								<class="logo"><strong class="org_title">TollanisCred</strong> Credentialing by Tollanis</a>
 							  </header>
 								<span class="image object">
 									<img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
@@ -31,7 +43,7 @@
 									</header>
 									<p>A comprehensive onboarding and compliance solution tailored to meet the requirements of cross-state travel nursing professionals and the organizations that engage their services.</p>
 									<ul class="actions">
-										<li><a href="https://tollacred.auth.us-east-1.amazoncognito.com/oauth2/authorize?client_id=7593fortb60sr1uj283op0icda&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fapp-dev.tollaniscred.com%2Fdashboard.html" class="button big">Login</a></li>
+										<li><a id="login_link" href="#" class="button big" onclick="goToLogin()">Login</a></li>
 									</ul>
 								</div>
 									<span class="image object">
@@ -41,16 +53,6 @@
 						</div>
 					</div>
 			</div>
-		
-		<!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
-<script src="assets/js/documentmanagement.js"></script>
-<script src="assets/js/comppkgmngmt.js"></script>
-
 	</body>
 </html>
 

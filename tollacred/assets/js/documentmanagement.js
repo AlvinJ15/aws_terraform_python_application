@@ -1,13 +1,13 @@
 function createDocument() {
     // Get values from form
-    var organizationId = document.getElementById("organization-id").value;
-    var documentName = document.getElementById("document-name").value;
-    var documentDescription = document.getElementById("document-description").value;
-    var documentCategory = document.querySelector('input[name="document-category"]:checked').value;
-    var documentExpiration = document.getElementById("document-expiration").value;
+    let organizationId = document.getElementById("organization-id").value;
+    let documentName = document.getElementById("document-name").value;
+    let documentDescription = document.getElementById("document-description").value;
+    let documentCategory = document.querySelector('input[name="document-category"]:checked').value;
+    let documentExpiration = document.getElementById("document-expiration").value;
 
     // Create JSON object
-    var jsonRequestBody = {
+    let jsonRequestBody = {
         "organization_id": organizationId,
         "name": documentName,
         "description": documentDescription,
@@ -16,11 +16,11 @@ function createDocument() {
     };
 
     // Convert JSON to string
-    var jsonString = JSON.stringify(jsonRequestBody);
+    let jsonString = JSON.stringify(jsonRequestBody);
 
     // Replace these URLs with your actual endpoints
-    var createEndpoint = 'https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/body_request/document_types_management/body_create_handler.json';
-    var expectedResponseEndpoint = 'https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/expected/document_types_management/expected_create_handler.json';
+    let createEndpoint = 'https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/body_request/document_types_management/body_create_handler.json';
+    let expectedResponseEndpoint = 'https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/expected/document_types_management/expected_create_handler.json';
 
     // Make a POST request using fetch API
     fetch(createEndpoint, {
@@ -55,50 +55,45 @@ function createDocument() {
     console.log('Body Request Endpoint:', createEndpoint);
     console.log('Expected Response Endpoint:', expectedResponseEndpoint);
 }
-function getList() {
-    var organizationId = document.getElementById("organizationIdInput").value;
-
-    // Replace with your actual endpoint
-    var endpoint = `https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/expected/document_types_management/expected_get_all_handler.json`;
-
-    fetch(endpoint)
-        .then(response => response.json())
-        .then(data => {
-            // Process the data and populate the table
-            populateTable(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            // Handle error (replace with your actual error handling logic)
-            alert("Error fetching document types. Please try again.");
-        });
+async function getList() {
+    let organizationId = localStorage.getItem('organization_id');
+    let endpoint = `organizations/${organizationId}/documents`;
+    let response = await makeRequest('GET', endpoint);
+    if (response){
+        populateTable(response);
+    }
+    else {
+        console.error('Error:');
+        // Handle error (replace with your actual error handling logic)
+        alert("Error fetching document types. Please try again.");
+    }
 }
 
 function populateTable(data) {
-    var tableBody = document.getElementById("documentTableBody");
+    let tableBody = document.getElementById("documentTableBody");
 
     // Clear existing rows
     tableBody.innerHTML = "";
 
     // Iterate through the data and add rows to the table
     data.forEach(documentType => {
-        var row = tableBody.insertRow();
-        var cellName = row.insertCell(0);
-        var cellDescription = row.insertCell(1);
-        var cellCategory = row.insertCell(2);
-        var cellExpires = row.insertCell(3);
+        let row = tableBody.insertRow();
+        let cellName = row.insertCell(0);
+        let cellDescription = row.insertCell(1);
+        let cellCategory = row.insertCell(2);
+        let cellExpires = row.insertCell(3);
 
         cellName.textContent = documentType.name || "";
         cellDescription.textContent = documentType.description || "";
         cellCategory.textContent = documentType.category || "";
-        cellExpires.textContent = documentType.expires || "";
+        cellExpires.textContent = documentType.expiration || "";
     });
 }
 
 
 function getSingleDocument(documentId) {
     // Replace with your actual endpoint
-    var endpoint = `https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/expected/document_types_management/expected_get_single_handler.json`;
+    let endpoint = `https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/expected/document_types_management/expected_get_single_handler.json`;
 
     fetch(endpoint)
         .then(response => response.json())
@@ -115,7 +110,7 @@ function getSingleDocument(documentId) {
 
 function updateDocument(documentId, updatedData) {
     // Replace with your actual endpoint and update the request body accordingly
-    var updateEndpoint = 'https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/body_request/document_types_management/body_update_handler.json';
+    let updateEndpoint = 'https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/body_request/document_types_management/body_update_handler.json';
 
     // Make a PUT request using fetch API
     fetch(updateEndpoint, {
@@ -140,7 +135,7 @@ function updateDocument(documentId, updatedData) {
 
 function deleteDocument(documentId) {
     // Replace with your actual endpoint
-    var deleteEndpoint = 'https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/expected/document_types_management/expected_delete_single_handler.json';
+    let deleteEndpoint = 'https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/expected/document_types_management/expected_delete_single_handler.json';
 
     // Make a DELETE request using fetch API
     fetch(deleteEndpoint, {

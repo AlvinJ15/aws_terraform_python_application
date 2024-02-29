@@ -69,29 +69,27 @@ function populateEmployeeTable(data) {
     // Clear existing rows
     tableBody.innerHTML = "";
 
-    let id_names_map = new Map()
-    data.forEach(employee => {
-        id_names_map.set(employee.employee_id, employee.profile.first_name);
-    });
     data.forEach(employee => {
         let row = tableBody.insertRow();
         let cellStaffMember = row.insertCell(0);
         let cellRole = row.insertCell(1);
         let cellAssigned = row.insertCell(2);
         let cellCompliancePackages = row.insertCell(3);
-        let cellCompliance = row.insertCell(4);
-        let cellTags = row.insertCell(5);
-        let cellSignedOff = row.insertCell(6);
-        let cellActive = row.insertCell(7);
+        let cellSpecialty = row.insertCell(4);
+        let cellCompliance = row.insertCell(5);
+        let cellTags = row.insertCell(6);
+        let cellSignedOff = row.insertCell(7);
+        let cellActive = row.insertCell(8);
 
         cellStaffMember.textContent = `${employee.profile.first_name} ${employee.profile.last_name}`  || "";
         cellRole.textContent = employee.profile.role || "";
-        cellAssigned.textContent = id_names_map.get(employee.assignee_id, "");
-        cellCompliancePackages.textContent = employee.compliance_tags || "";
+        cellAssigned.textContent = employee.assignee || "";
+        cellCompliancePackages.outerHTML = employee.compliance_packages_names.join(',') || "";
+        cellSpecialty.textContent = employee.profile.specialty;
         cellCompliance.textContent = employee.status || "";
-        cellTags.textContent = employee.user_tags || "";
-        cellSignedOff.textContent = employee.signedOff || "";
-        cellActive.textContent = employee.active || "";
+        cellTags.outerHTML = employee.compliance_tags.split(',').join(',') || "";
+        cellSignedOff.textContent = "";
+        cellActive.textContent = "";
 
         // Add "Manage" and "Delete" buttons under the "Edit" column
         let editCell = createEditButtons(employee.employee_id);

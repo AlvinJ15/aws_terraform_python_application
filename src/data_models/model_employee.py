@@ -38,6 +38,7 @@ class Employee(Base):
         CompliancePackage, secondary="employee_compliance_packages", backref="employee_questionnaire_responses",
         lazy="select", viewonly=True, cascade="all, delete-orphan"
     )
+    admin = relationship("Administrator", backref="assigned_users")
 
     def __init__(self, **kwargs):
         date_fields = ['created']
@@ -52,5 +53,7 @@ class Employee(Base):
             "user_tags": self.user_tags,
             "status": self.status,
             "created": self.created.strftime("%Y-%m-%d %H:%M:%S"),
-            "profile": self.profile.to_dict()
+            "profile": self.profile.to_dict(),
+            "assignee": self.admin.email if self.admin else '',
+            "compliance_packages_names": [package.name for package in self.compliance_packages]
         }

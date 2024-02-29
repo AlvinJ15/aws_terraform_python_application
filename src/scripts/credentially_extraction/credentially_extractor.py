@@ -14,6 +14,7 @@ class CredentiallyExtractor:
         self.cred_api_request = CredentiallyApiRequest(token, app_name, cred_organization_id)
 
     def begin_extraction(self):
+        #print(f'START FOR: {self.bucket_folder_name}')
         #self.extract_organization_details()
         #print('organization_details extraction finished')
         #self.extract_organization_roles()
@@ -104,7 +105,7 @@ class CredentiallyExtractor:
         #tasks = [self.extract_single_employee(employee) for employee in data['content']]
         #await gather(*tasks)
 
-        with ThreadPoolExecutor(max_workers=12) as executor:
+        with ThreadPoolExecutor(max_workers=20) as executor:
             for employee in data['content']:
                 executor.submit(self.extract_single_employee, employee)
             executor.shutdown(wait=True)
@@ -142,7 +143,9 @@ class CredentiallyExtractor:
         references = self.cred_api_request.get_employee_references_list(employee['id'])
         for reference in references:
             if reference.get('file'):
-                self.cred_api_request.get_employee_reference(employee['id'], reference['id'], reference.get('file'))
+                self.cred_api_request.get_employee_reference_file(employee['id'], reference['id'], reference.get('file'))
+            else:
+                self.cred_api_request.get_employee_reference_answers(employee['id'], reference['id'])
 
     def extract_employee_questionnaires(self, employee):
         self.cred_api_request.get_employee_questionnaires_list(employee['id'])
