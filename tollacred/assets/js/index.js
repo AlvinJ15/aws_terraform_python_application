@@ -1,5 +1,3 @@
-const CODE_LOCAL = 'c97df63d-8058-4a7b-9e92-d65b26378942'
-
 let loadingScreen;
 window.addEventListener("DOMContentLoaded", async () => {
     const body = document.body;
@@ -69,10 +67,6 @@ function deleteCookie(name) {
 async function getApiToken() {
     if (getCookie('API_TOKEN') === undefined) {
         const CODE = new URLSearchParams(window.location.search).get('code');
-        const CLIENT_ID = '7593fortb60sr1uj283op0icda';
-        const CLIENT_SECRET = 'ie32n7dqdrfls1j66fklokfrj25kq0kfkbc9e0i102k3dbq42jd';
-        const COGNITO_DOMAIN = 'https://tollacred.auth.us-east-1.amazoncognito.com';
-
         const credentials = `${CLIENT_ID}:${CLIENT_SECRET}`;
         const encodedCredentials = btoa(credentials);
         // console.log(encodedCredentials)
@@ -80,7 +74,7 @@ async function getApiToken() {
             grant_type: 'authorization_code',
             client_id: CLIENT_ID,
             code: CODE,
-            redirect_uri: 'https://app-dev.tollaniscred.com/dashboard.html',
+            redirect_uri: REDIRECT_URI,
         };
 
         const headers = {
@@ -146,11 +140,7 @@ function createLoadingScreen() {
 }
 
 function redirectToLogin(){
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-        window.location.href = `dashboard.html?code=${CODE_LOCAL}`
-    } else {
-        window.location.href = 'https://tollacred.auth.us-east-1.amazoncognito.com/oauth2/authorize?client_id=7593fortb60sr1uj283op0icda&response_type=code&scope=email+openid+phone&redirect_uri=https%3A%2F%2Fapp-dev.tollaniscred.com%2Fdashboard.html'
-    }
+    window.location.href = LOGIN_URL
 }
     function showLoading() {
         loadingScreen.classList.add('show'); // Add the hidden class

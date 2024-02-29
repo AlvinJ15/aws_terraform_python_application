@@ -3,6 +3,7 @@ import json
 from api_services.utils.database_utils import DataBase
 from api_services.utils.s3_utils import create_path_to_s3
 from data_models.model_employee import Employee
+from data_models.model_employee_compliance_package import EmployeeCompliancePackage
 from data_models.model_employee_profile import EmployeeProfile
 from data_models.model_organization import Organization
 from data_models.models import update_object_from_dict, set_fields_from_dict
@@ -14,6 +15,11 @@ def get_all_handler(event, context):
         try:
             employees = db.query(Employee).filter_by(organization_id=organization_id).limit(100)
             return {"statusCode": 200,
+                    "headers": {
+                        'Access-Control-Allow-Headers': 'Content-Type',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                    },
                     "body": json.dumps([employee.to_dict() for employee in employees])}
         except Exception as err:
             return {"statusCode": 500, "body": f"Error retrieving Employee: {err}"}
@@ -28,7 +34,13 @@ def get_single_handler(event, context):
             if employee:
                 json_object = employee.to_dict()
                 json_object['compliance_packages'] = [package.to_dict() for package in employee.compliance_packages]
-                return {"statusCode": 200, "body": json.dumps(json_object)}
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                        },
+                        "body": json.dumps(json_object)}
             else:
                 return {"statusCode": 404, "body": "Employee not found"}
         except Exception as err:
@@ -63,7 +75,13 @@ def create_handler(event, context):
                     f"Ongoing/{new_employee_profile.first_name} {new_employee_profile.last_name} - "
                     f"{new_employee_profile.role}")
             create_path_to_s3(path)
-            return {"statusCode": 201, "body": json.dumps(new_employee.to_dict())}
+            return {"statusCode": 201,
+                    "headers": {
+                        'Access-Control-Allow-Headers': 'Content-Type',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                    },
+                    "body": json.dumps(new_employee.to_dict())}
         except Exception as err:  # Handle general exceptions for robustness
             return {"statusCode": 500, "body": f"Error creating Employee: {err}"}
 
@@ -80,12 +98,34 @@ def update_handler(event, context):
             if employee:
                 # employee_id is not an updatable attribute
                 profile = data.get("profile", {})
-                DataBase.pop_non_updatable_fields(["employee_id", "organization_id", "profile", "created"], data)
+                new_packages = data.get("compliance_packages", [])
+                DataBase.pop_non_updatable_fields([
+                    "employee_id", "organization_id", "profile", "created", "compliance_packages"
+                ], data)
                 updated_employee = update_object_from_dict(employee, data)
                 DataBase.pop_non_updatable_fields(["profile_id", "employee_id"], profile)
                 set_fields_from_dict(employee.profile, profile, ['date_of_birth'])
+                current_packages = db.query(EmployeeCompliancePackage).filter_by(employee_id=employee_id)
+                current_packages_id = [package.package_id for package in current_packages]
+                for current_package in current_packages:
+                    if current_package.package_id not in new_packages:
+                        db.delete(current_package)
+                for new_package in new_packages:
+                    if new_package not in current_packages_id:
+                        new_employee_package = EmployeeCompliancePackage()
+                        new_employee_package.package_id = DataBase.generate_uuid()
+                        new_employee_package.employee_id = employee_id
+                        new_employee_package.package_id = new_package
+                        db.add(new_employee_package)
                 db.commit()
-                return {"statusCode": 200, "body": json.dumps(updated_employee.to_dict())}
+                db.refresh(employee)
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                        },
+                        "body": json.dumps(updated_employee.to_dict())}
             else:
                 return {"statusCode": 404, "body": "Employee not found"}
         except Exception as err:
@@ -104,7 +144,13 @@ def delete_single_handler(event, context):
                 db.flush()
                 db.delete(employee)
                 db.commit()  # Commit the deletion to the database
-                return {"statusCode": 200, "body": json.dumps({"deleted_id": employee.employee_id})}
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+                        },
+                        "body": json.dumps({"deleted_id": employee.employee_id})}
             else:
                 return {"statusCode": 404, "body": "Employee not found"}
         except Exception as err:

@@ -1,6 +1,6 @@
 // Function to get a list of all compliance packages associated with organization_id
 function getAllCompliancePackages(organizationId) {
-    var endpoint = `dev/organizations/${organizationId}/compliancePackages`;
+    var endpoint = `organizations/${organizationId}/compliancePackages`;
     
     fetch(endpoint)
         .then(response => response.json())
@@ -17,7 +17,7 @@ function getAllCompliancePackages(organizationId) {
 
 // Function to create a new compliance package
 function createCompliancePackage(organizationId, requestBody) {
-    var createEndpoint = `dev/organizations/${organizationId}/compliancePackages`;
+    var createEndpoint = `organizations/${organizationId}/compliancePackages`;
 
     // Make a POST request using fetch API
     fetch(createEndpoint, {
@@ -42,7 +42,7 @@ function createCompliancePackage(organizationId, requestBody) {
 
 // Function to get a single compliance package with package_id
 function getSingleCompliancePackage(organizationId, packageId) {
-    var endpoint = `dev/organizations/${organizationId}/compliancePackages/${packageId}`;
+    var endpoint = `organizations/${organizationId}/compliancePackages/${packageId}`;
 
     fetch(endpoint)
         .then(response => response.json())
@@ -59,7 +59,7 @@ function getSingleCompliancePackage(organizationId, packageId) {
 
 // Function to update a compliance package with package_id
 function updateCompliancePackage(organizationId, packageId, updatedData) {
-    var updateEndpoint = `dev/organizations/${organizationId}/compliancePackages/${packageId}`;
+    var updateEndpoint = `organizations/${organizationId}/compliancePackages/${packageId}`;
 
     // Make a PUT request using fetch API
     fetch(updateEndpoint, {
@@ -84,7 +84,7 @@ function updateCompliancePackage(organizationId, packageId, updatedData) {
 
 // Function to delete a single compliance package with package_id
 function deleteCompliancePackage(organizationId, packageId) {
-    var deleteEndpoint = `dev/organizations/${organizationId}/compliancePackages/${packageId}`;
+    var deleteEndpoint = `organizations/${organizationId}/compliancePackages/${packageId}`;
 
     // Make a DELETE request using fetch API
     fetch(deleteEndpoint, {

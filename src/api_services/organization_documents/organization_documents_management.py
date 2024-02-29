@@ -15,7 +15,13 @@ def get_all_handler(event, context):
     with DataBase.get_session() as db:
         try:
             organization_documents = db.query(OrganizationDocument).filter_by(organization_id=organization_id)
-            return {"statusCode": 200, "body": json.dumps([document.to_dict() for document in organization_documents])}
+            return {"statusCode": 200,
+                    "headers": {
+                        'Access-Control-Allow-Headers': 'Content-Type',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+                    },
+                    "body": json.dumps([document.to_dict() for document in organization_documents])}
         except Exception as err:
             return {"statusCode": 500, "body": f"Error retrieving OrganizationDocument: {err}"}
 
@@ -27,7 +33,13 @@ def get_single_handler(event, context):
         try:
             organization_document = db.query(OrganizationDocument).filter_by(document_id=document_id).first()
             if organization_document:
-                return {"statusCode": 200, "body": json.dumps(organization_document.to_dict())}
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+                        },
+                        "body": json.dumps(organization_document.to_dict())}
             else:
                 return {"statusCode": 404, "body": "OrganizationDocument not found"}
         except Exception as err:
@@ -89,6 +101,11 @@ def create_handler(event, context):
                 document_id=new_org_document.document_id).first()
         return {
             'statusCode': 201,
+            "headers": {
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+            },
             'body': json.dumps(new_org_document.to_dict())
         }
     except Exception as err:  # Handle general exceptions for robustness
@@ -163,6 +180,11 @@ def update_handler(event, context):
                 db.refresh(org_document)
             return {
                 'statusCode': 201,
+                "headers": {
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+                },
                 'body': json.dumps(org_document.to_dict())
             }
         except Exception as err:  # Handle general exceptions for robustness

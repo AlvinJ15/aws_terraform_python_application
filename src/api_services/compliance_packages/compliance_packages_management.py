@@ -13,7 +13,13 @@ def get_all_handler(event, context):
         try:
             compliance_packages = db.query(CompliancePackage).filter_by(organization_id=organization_id)
             return {
-                "statusCode": 200, "body": json.dumps([compliance_package.to_dict()
+                "statusCode": 200,
+                "headers": {
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+                },
+                "body": json.dumps([compliance_package.to_dict()
                                                        for compliance_package in compliance_packages])
             }
         except Exception as err:
@@ -29,7 +35,13 @@ def get_single_handler(event, context):
                 package_id=compliance_package_id
             ).first()
             if compliance_package:
-                return {"statusCode": 200, "body": json.dumps(compliance_package.to_dict())}
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+                        },
+                        "body": json.dumps(compliance_package.to_dict())}
             else:
                 return {"statusCode": 404, "body": "CompliancePackage not found"}
         except Exception as err:
@@ -64,7 +76,13 @@ def create_handler(event, context):
             new_compliance_package = db.query(CompliancePackage).filter_by(
                 package_id=new_compliance_package.package_id
             ).first()
-            return {"statusCode": 201, "body": json.dumps(new_compliance_package.to_dict())}
+            return {"statusCode": 201,
+                    "headers": {
+                        'Access-Control-Allow-Headers': 'Content-Type',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+                    },
+                    "body": json.dumps(new_compliance_package.to_dict())}
         except Exception as err:  # Handle general exceptions for robustness
             return {"statusCode": 500, "body": f"Error creating CompliancePackage: {err}"}
 
@@ -123,7 +141,13 @@ def update_handler(event, context):
                 compliance_package = db.query(CompliancePackage).filter_by(
                     package_id=compliance_package.package_id
                 ).first()
-                return {"statusCode": 200, "body": json.dumps(compliance_package.to_dict())}
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+                        },
+                        "body": json.dumps(compliance_package.to_dict())}
             else:
                 return {"statusCode": 404, "body": "CompliancePackage not found"}
         except Exception as err:

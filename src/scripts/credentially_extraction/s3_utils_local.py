@@ -19,9 +19,10 @@ def upload_file_to_s3(path, file, bucket_name='tollacred'):
             Key=path,
             Body=file,
         )
+        print(f'File Uploaded: {path}')
         return path
     except Exception as e:
-        print(e)
+        print(f'Error on S3 upload: {e}')
 
 
 def create_path_to_s3(path, bucket_name='tollacred'):
@@ -32,4 +33,4 @@ def create_path_to_s3(path, bucket_name='tollacred'):
         )
         return path
     except Exception as e:
-        print(e)
+        print(f'Error on S3 folder creation: {e}')

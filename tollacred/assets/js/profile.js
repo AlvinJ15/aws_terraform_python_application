@@ -16,7 +16,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 async function updateEmployee(employee_id){
     let organizationId = localStorage.getItem('organization_id')
-    let endpoint = `dev/organizations/${organizationId}/employees/${employee_id}`;
+    let endpoint = `organizations/${organizationId}/employees/${employee_id}`;
     let data = getEmployeeJson();
     let response = await makeRequest('PUT', endpoint, data);
     if(response){
@@ -75,7 +75,7 @@ async function retrieveEmployeeInformation(employeeId){
 
 async function loadEmployee(employeeId){
     let organizationId = localStorage.getItem('organization_id')
-    let endpoint = `dev/organizations/${organizationId}/employees/${employeeId}`;
+    let endpoint = `organizations/${organizationId}/employees/${employeeId}`;
     let response = await makeRequest('GET', endpoint)
     return response
 }

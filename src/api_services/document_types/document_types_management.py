@@ -11,6 +11,11 @@ def get_all_handler(event, context):
         try:
             document_types = db.query(DocumentType).filter_by(organization_id=organization_id)
             return {"statusCode": 200,
+                    "headers": {
+                        'Access-Control-Allow-Headers': 'Content-Type',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+                    },
                     "body": json.dumps([document_type.to_dict() for document_type in document_types])}
         except Exception as err:
             return {"statusCode": 500, "body": f"Error retrieving DocumentType: {err}"}
@@ -23,7 +28,13 @@ def get_single_handler(event, context):
         try:
             document_type = db.query(DocumentType).filter_by(id=document_type_id).first()
             if document_type:
-                return {"statusCode": 200, "body": json.dumps(document_type.to_dict())}
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+                        },
+                        "body": json.dumps(document_type.to_dict())}
             else:
                 return {"statusCode": 404, "body": "DocumentType not found"}
         except Exception as err:
@@ -41,7 +52,13 @@ def create_handler(event, context):
             new_document_type.id = DataBase.generate_uuid()
             db.add(new_document_type)
             db.commit()
-            return {"statusCode": 201, "body": json.dumps(new_document_type.to_dict())}
+            return {"statusCode": 201,
+                    "headers": {
+                        'Access-Control-Allow-Headers': 'Content-Type',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+                    },
+                    "body": json.dumps(new_document_type.to_dict())}
         except Exception as err:  # Handle general exceptions for robustness
             return {"statusCode": 500, "body": f"Error creating DocumentType: {err}"}
 
@@ -62,7 +79,13 @@ def update_handler(event, context):
                     data.pop("id")
                 updated_document_type = update_object_from_dict(document_type, data)
                 db.commit()
-                return {"statusCode": 200, "body": json.dumps(updated_document_type.to_dict())}
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+                        },
+                        "body": json.dumps(updated_document_type.to_dict())}
             else:
                 return {"statusCode": 404, "body": "DocumentType not found"}
         except Exception as err:
@@ -78,7 +101,13 @@ def delete_single_handler(event, context):
             if document_type:
                 db.delete(document_type)
                 db.commit()  # Commit the deletion to the database
-                return {"statusCode": 200, "body": json.dumps({"deleted_id": document_type.id})}
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+                        },
+                        "body": json.dumps({"deleted_id": document_type.id})}
             else:
                 return {"statusCode": 404, "body": "DocumentType not found"}
         except Exception as err:

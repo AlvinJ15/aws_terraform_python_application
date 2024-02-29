@@ -1,5 +1,5 @@
 // Base URL for API requests
-const baseURL = 'https://api.tollaniscred.com';
+const baseURL = `https://api.tollaniscred.com/${ENV}`;
 
 async function makeRequest(method, url, data = null, is_json=true) {
     showLoading();

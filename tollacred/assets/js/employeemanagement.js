@@ -1,6 +1,6 @@
 // Function to get a list of all employees associated with organization_id
 async function getAllEmployees(organizationId) {
-    let endpoint = `dev/organizations/${organizationId}/employees`;
+    let endpoint = `organizations/${organizationId}/employees`;
     let response = await makeRequest('GET', endpoint)
     populateEmployeeTable(response);
 }
@@ -8,7 +8,7 @@ async function getAllEmployees(organizationId) {
 // Function to create a new employee
 async function createEmployee() {
     let organizationId = localStorage.getItem('organization_id');
-    let createEndpoint = `dev/organizations/${organizationId}/employees`;
+    let createEndpoint = `organizations/${organizationId}/employees`;
     let data = getAddStaffJson();
     let response = await makeRequest('POST', createEndpoint, data)
     if(response !== null){
@@ -22,7 +22,7 @@ async function createEmployee() {
 // Function to delete a single employee with employee_id
 async function deleteEmployee(employeeId) {
     let organizationId = localStorage.getItem("organization_id");
-    let deleteEndpoint = `dev/organizations/${organizationId}/employees/${employeeId}`;
+    let deleteEndpoint = `organizations/${organizationId}/employees/${employeeId}`;
     let response = await makeRequest('DELETE', deleteEndpoint)
     if(response){
         alert('Employee Deleted.')

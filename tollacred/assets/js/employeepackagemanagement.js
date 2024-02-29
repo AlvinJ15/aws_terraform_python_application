@@ -27,7 +27,7 @@ function getFileName(path) {
 async function downloadEmployeeDocument(employeeDocument) {
     const employeeId = new URLSearchParams(window.location.search).get('employee_id');
     let organizationId = localStorage.getItem('organization_id')
-    let endpoint = `dev/organizations/${organizationId}/employees/${employeeId}/documents/${employeeDocument.document_id}`;
+    let endpoint = `organizations/${organizationId}/employees/${employeeId}/documents/${employeeDocument.document_id}`;
     let response =  await makeRequest('GET', endpoint);
     // Get the download URL from the API call (replace with your actual API call logic)
 
@@ -47,7 +47,7 @@ async function downloadEmployeeDocument(employeeDocument) {
 async function createEmployeePackage() {
     const employeeId = new URLSearchParams(window.location.search).get('employee_id');
     let organizationId = localStorage.getItem('organization_id');
-    let updateEndpoint = `dev/organizations/${organizationId}/employees/${employeeId}`;
+    let updateEndpoint = `organizations/${organizationId}/employees/${employeeId}`;
     let data = getAddEmployeePackageJson();
     let response = await makeRequest('PUT', updateEndpoint, data)
     if(response !== null){
@@ -74,7 +74,7 @@ function getAddEmployeePackageJson(){
 
 async function loadEmployee(employeeId){
     let organizationId = localStorage.getItem('organization_id')
-    let endpoint = `dev/organizations/${organizationId}/employees/${employeeId}`;
+    let endpoint = `organizations/${organizationId}/employees/${employeeId}`;
     let response = await makeRequest('GET', endpoint)
     return response
 }
@@ -110,7 +110,7 @@ function createDeleteButton(package_id){
 async function deleteEmployeeCompliancePackage(packageIdDeleted) {
     const employeeId = new URLSearchParams(window.location.search).get('employee_id');
     let organizationId = localStorage.getItem('organization_id');
-    let updateEndpoint = `dev/organizations/${organizationId}/employees/${employeeId}`;
+    let updateEndpoint = `organizations/${organizationId}/employees/${employeeId}`;
     let employee = JSON.parse(localStorage.getItem('current_employee'));
     let packages = [];
     employee.compliance_packages.forEach(current_package => {

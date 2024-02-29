@@ -16,7 +16,7 @@ function populateCompliancePackageSelect(data) {
 
 async function loadCompliancePackages() {
   let organizationId = localStorage.getItem('organization_id')
-  let endpoint = `dev/organizations/${organizationId}/compliancePackages`;
+  let endpoint = `organizations/${organizationId}/compliancePackages`;
   let response = await makeRequest('GET', endpoint)
   populateCompliancePackageSelect(response);
 }

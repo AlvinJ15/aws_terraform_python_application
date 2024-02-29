@@ -31,7 +31,7 @@ function getFileName(path) {
 async function downloadEmployeeDocument(employeeDocument) {
     const employeeId = new URLSearchParams(window.location.search).get('employee_id');
     let organizationId = localStorage.getItem('organization_id')
-    let endpoint = `dev/organizations/${organizationId}/employees/${employeeId}/documents/${employeeDocument.document_id}`;
+    let endpoint = `organizations/${organizationId}/employees/${employeeId}/documents/${employeeDocument.document_id}`;
     let response =  await makeRequest('GET', endpoint);
     // Get the download URL from the API call (replace with your actual API call logic)
 
@@ -82,20 +82,20 @@ async function uploadEmployeeDocument(documentType, employeeId, file){
     formData.append('document_type_id', documentType.id);
     formData.append('status', 'Awaiting Approval');
     let organizationId = localStorage.getItem('organization_id')
-    let endpoint = `dev/organizations/${organizationId}/employees/${employeeId}/documents`;
+    let endpoint = `organizations/${organizationId}/employees/${employeeId}/documents`;
     return await makeRequest('POST', endpoint, formData, false)
 }
 
 async function loadEmployeeDocuments(employeeId){
     let organizationId = localStorage.getItem('organization_id')
-    let endpoint = `dev/organizations/${organizationId}/employees/${employeeId}/documents`;
+    let endpoint = `organizations/${organizationId}/employees/${employeeId}/documents`;
     let response = await makeRequest('GET', endpoint)
     return response
 }
 
 async function loadAllDocumentTypes() {
     let organizationId = localStorage.getItem('organization_id')
-    let endpoint = `dev/organizations/${organizationId}/documents`;
+    let endpoint = `organizations/${organizationId}/documents`;
     let response = await makeRequest('GET', endpoint)
     return response
 }
@@ -103,7 +103,7 @@ async function loadAllDocumentTypes() {
 async function loadCompliancePackageDocuments(all_documents){
     const employeeId = new URLSearchParams(window.location.search).get('employee_id');
     let organizationId = localStorage.getItem('organization_id')
-    let endpoint = `dev/organizations/${organizationId}/employees/${employeeId}`;
+    let endpoint = `organizations/${organizationId}/employees/${employeeId}`;
     let response = await makeRequest('GET', endpoint)
     let packages = response.compliance_packages;
     let document_types = []

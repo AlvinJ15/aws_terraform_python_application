@@ -1,6 +1,6 @@
 /// Function to get a list of all questionnaires associated with organization_id
 function getAllQuestionnaires(organizationId) {
-    var endpoint = `dev/organizations/${organizationId}/questionnaires`;
+    var endpoint = `organizations/${organizationId}/questionnaires`;
 
     fetch(endpoint)
         .then(response => response.json())
@@ -17,7 +17,7 @@ function getAllQuestionnaires(organizationId) {
 
 // Function to create a new questionnaire
 function createQuestionnaire(organizationId, requestBody) {
-    var createEndpoint = `dev/organizations/${organizationId}/questionnaires`;
+    var createEndpoint = `organizations/${organizationId}/questionnaires`;
 
     // Make a POST request using fetch API
     fetch(createEndpoint, {
@@ -42,7 +42,7 @@ function createQuestionnaire(organizationId, requestBody) {
 
 // Function to get a single questionnaire with questionnaire_id
 function getSingleQuestionnaire(organizationId, questionnaireId) {
-    var endpoint = `dev/organizations/${organizationId}/questionnaires/${questionnaireId}`;
+    var endpoint = `organizations/${organizationId}/questionnaires/${questionnaireId}`;
 
     fetch(endpoint)
         .then(response => response.json())
@@ -59,7 +59,7 @@ function getSingleQuestionnaire(organizationId, questionnaireId) {
 
 // Function to update a questionnaire with questionnaire_id
 function updateQuestionnaire(organizationId, questionnaireId, updatedData) {
-    var updateEndpoint = `dev/organizations/${organizationId}/questionnaires/${questionnaireId}`;
+    var updateEndpoint = `organizations/${organizationId}/questionnaires/${questionnaireId}`;
 
     // Make a PUT request using fetch API
     fetch(updateEndpoint, {
@@ -84,7 +84,7 @@ function updateQuestionnaire(organizationId, questionnaireId, updatedData) {
 
 // Function to delete a single questionnaire with questionnaire_id
 function deleteQuestionnaire(organizationId, questionnaireId) {
-    var deleteEndpoint = `dev/organizations/${organizationId}/questionnaires/${questionnaireId}`;
+    var deleteEndpoint = `organizations/${organizationId}/questionnaires/${questionnaireId}`;
 
     // Make a DELETE request using fetch API
     fetch(deleteEndpoint, {

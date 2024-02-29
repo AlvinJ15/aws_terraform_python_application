@@ -16,7 +16,7 @@ function populateRoleSelect(data) {
 
 async function loadRoles() {
   let organizationId = localStorage.getItem('organization_id')
-  let endpoint = `dev/organizations/${organizationId}/roles`;
+  let endpoint = `organizations/${organizationId}/roles`;
   let response = await makeRequest('GET', endpoint)
   populateRoleSelect(response);
 }

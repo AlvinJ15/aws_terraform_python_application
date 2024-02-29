@@ -11,7 +11,13 @@ def get_all_handler(event, context):
     with DataBase.get_session() as db:
         try:
             roles = db.query(Role).filter_by(organization_id=organization_id)
-            return {"statusCode": 200, "body": json.dumps([role.to_dict() for role in roles])}
+            return {"statusCode": 200,
+                    "headers": {
+                        'Access-Control-Allow-Headers': 'Content-Type',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                    },
+                    "body": json.dumps([role.to_dict() for role in roles])}
         except Exception as err:
             return {"statusCode": 500, "body": f"Error retrieving roles: {err}"}
 
@@ -23,7 +29,13 @@ def get_single_handler(event, context):
         try:
             role = db.query(Role).filter_by(role_id=role_id).first()
             if role:
-                return {"statusCode": 200, "body": json.dumps(role.to_dict())}
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                        },
+                        "body": json.dumps(role.to_dict())}
             else:
                 return {"statusCode": 404, "body": "Role not found"}
         except Exception as err:

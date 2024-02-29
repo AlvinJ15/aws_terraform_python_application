@@ -6,7 +6,7 @@ from streaming_form_data import StreamingFormDataParser
 from streaming_form_data.targets import ValueTarget
 
 from api_services.utils.database_utils import DataBase
-from api_services.utils.s3_utils import upload_file_to_s3
+from api_services.utils.s3_utils import upload_file_to_s3, generate_file_link
 from data_models.model_document_type import DocumentType
 from data_models.model_employee_profile import EmployeeProfile
 from data_models.model_organization import Organization
@@ -19,7 +19,13 @@ def get_all_handler(event, context):
     with DataBase.get_session() as db:
         try:
             organization_documents = db.query(EmployeeDocument).filter_by(employee_id=employee_id)
-            return {"statusCode": 200, "body": json.dumps([document.to_dict() for document in organization_documents])}
+            return {"statusCode": 200,
+                    "headers": {
+                        'Access-Control-Allow-Headers': 'Content-Type',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET,PUT'
+                    },
+                    "body": json.dumps([document.to_dict() for document in organization_documents])}
         except Exception as err:
             return {"statusCode": 500, "body": f"Error retrieving EmployeeDocument: {err}"}
 
@@ -31,7 +37,15 @@ def get_single_handler(event, context):
         try:
             organization_document = db.query(EmployeeDocument).filter_by(document_id=document_id).first()
             if organization_document:
-                return {"statusCode": 200, "body": json.dumps(organization_document.to_dict())}
+                json_object = organization_document.to_dict()
+                json_object['download_url'] = generate_file_link(organization_document.s3_path)
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET,PUT'
+                        },
+                        "body": json.dumps(json_object)}
             else:
                 return {"statusCode": 404, "body": "EmployeeDocument not found"}
         except Exception as err:
@@ -69,12 +83,18 @@ def create_handler(event, context):
             db.commit()
         return {
             'statusCode': 201,
+            "headers": {
+                'Access-Control-Allow-Headers': 'Content-Type',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+            },
             'body': json.dumps(new_document.to_dict())
         }
     except Exception as err:  # Handle general exceptions for robustness
         string_error = traceback.format_exc()
         print(string_error)
-        return {"statusCode": 500, "body": f"Error creating EmployeeDocument: {err}"}
+        return {"statusCode": 500,
+                "body": f"Error creating EmployeeDocument: {err}"}
 
 
 def update_handler(event, context):
@@ -109,6 +129,11 @@ def update_handler(event, context):
             db.commit()
             return {
                 'statusCode': 201,
+                "headers": {
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
+                },
                 'body': json.dumps(document.to_dict())
             }
         except Exception as err:  # Handle general exceptions for robustness
@@ -124,7 +149,13 @@ def delete_single_handler(event, context):
             if organization_document:
                 db.delete(organization_document)
                 db.commit()  # Commit the deletion to the database
-                return {"statusCode": 200, "body": json.dumps({"deleted_id": organization_document.document_id})}
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                        },
+                        "body": json.dumps({"deleted_id": organization_document.document_id})}
             else:
                 return {"statusCode": 404, "body": "EmployeeDocument not found"}
         except Exception as err:
