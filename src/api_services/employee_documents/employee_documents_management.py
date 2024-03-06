@@ -137,6 +137,8 @@ def update_handler(event, context):
                 'body': json.dumps(document.to_dict())
             }
         except Exception as err:  # Handle general exceptions for robustness
+            string_error = traceback.format_exc()
+            print(string_error)
             return {"statusCode": 500, "body": f"Error creating EmployeeDocument: {err}"}
 
 
@@ -182,7 +184,7 @@ def get_data_from_multipart(event):
     my_data = base64.b64decode(event["body"])
     parser.data_received(my_data)
 
-    return {
+    values = {
         'document_type_id': document_type_id_target.value.decode("utf-8"),
         'expiry_date': expiry_date_target.value.decode("utf-8"),
         'document_number': document_number_target.value.decode("utf-8"),
@@ -190,3 +192,5 @@ def get_data_from_multipart(event):
         'approver_id': approver_id_target.value.decode("utf-8"),
         'file': file_target
     }
+
+    return {key: value for key, value in values.items() if value}

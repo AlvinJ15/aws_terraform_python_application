@@ -1,6 +1,7 @@
 // Function to get a list of all employees associated with organization_id
-async function getAllEmployees(organizationId) {
-    let endpoint = `organizations/${organizationId}/employees`;
+async function getAllEmployees(page) {
+    let organizationId = localStorage.getItem('organization_id')
+    let endpoint = `organizations/${organizationId}/employees?page=${page}`;
     let response = await makeRequest('GET', endpoint)
     populateEmployeeTable(response);
 }

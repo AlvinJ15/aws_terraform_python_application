@@ -1,5 +1,7 @@
 // Employee Documents Management
+let currentDocumentId;
 window.addEventListener("DOMContentLoaded", async () => {
+    configureRightModal();
     const employeeId = new URLSearchParams(window.location.search).get('employee_id');
     try {
         let employeeDocuments = await loadEmployeeDocuments(employeeId)
@@ -86,6 +88,17 @@ async function uploadEmployeeDocument(documentType, employeeId, file){
     return await makeRequest('POST', endpoint, formData, false)
 }
 
+async function updateEmployeeDocument(documentId, employeeId, expiry, documentNumber, file){
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('status', 'Awaiting Approval');
+    formData.append('expiry_date', expiry);
+    formData.append('document_number', documentNumber);
+    let organizationId = localStorage.getItem('organization_id')
+    let endpoint = `organizations/${organizationId}/employees/${employeeId}/documents/${documentId}`;
+    return await makeRequest('PUT', endpoint, formData, false)
+}
+
 async function loadEmployeeDocuments(employeeId){
     let organizationId = localStorage.getItem('organization_id')
     let endpoint = `organizations/${organizationId}/employees/${employeeId}/documents`;
@@ -129,7 +142,7 @@ async function loadCompliancePackageDocuments(all_documents){
 
 function populateMandatoryDocuments(all_documents, employee_documents) {
     const employeeId = new URLSearchParams(window.location.search).get('employee_id');
-    var tableBody = document.getElementById("employeeDocumentsTableMandatory");
+    let tableBody = document.getElementById("employeeDocumentsTableMandatory");
 
     // Clear existing rows
     tableBody.innerHTML = "";
@@ -153,6 +166,7 @@ function populateMandatoryDocuments(all_documents, employee_documents) {
             cellExpiry.textContent  = employeeDocumentsMap.get(documentType.id).expiry_date || "";
             cellApproval.textContent = employeeDocumentsMap.get(documentType.id).approver_id
             cellAction.appendChild(createReviewButton(employeeDocument));
+            cellAction.appendChild(createUpdateButton(employeeDocument));
         }
         else {
             cellStatus.textContent = "Not Uploaded";
@@ -165,7 +179,7 @@ function populateMandatoryDocuments(all_documents, employee_documents) {
 
 function populateNonMandatoryDocuments(all_documents, employee_documents) {
     const employeeId = new URLSearchParams(window.location.search).get('employee_id');
-    var tableBody = document.getElementById("employeeDocumentsTableNonMandatory");
+    let tableBody = document.getElementById("employeeDocumentsTableNonMandatory");
 
     // Clear existing rows
     tableBody.innerHTML = "";
@@ -187,6 +201,7 @@ function populateNonMandatoryDocuments(all_documents, employee_documents) {
             cellStatus.textContent = employeeDocument.status;
             cellApproval.textContent  = employeeDocumentsMap.get(documentType.id).expiry_date || "";
             cellAction.appendChild(createReviewButton(employeeDocument));
+            cellAction.appendChild(createUpdateButton(employeeDocument));
         }
         else {
             cellStatus.textContent = "Not Uploaded";
@@ -211,3 +226,40 @@ tabs.forEach(tab => {
     targetTable.style.display = 'table';  // Show the target table
   });
 });
+
+function createUpdateButton(documentEmployee){
+    let documentId = documentEmployee.document_id;
+    let openModalBtn = document.createElement("button");
+    openModalBtn.innerHTML = "Update";
+    openModalBtn.onclick = function() {
+        const modalContainer = document.getElementById('modal-container');
+        modalContainer.classList.add('active');
+        currentDocumentId = documentId;
+    };
+    return openModalBtn;
+}
+
+function configureRightModal(){
+    const closeModalBtn = document.getElementById('close-modal');
+    const updateBtn = document.getElementById('update-button');
+    const modalContainer = document.getElementById('modal-container');
+
+    closeModalBtn.addEventListener('click', () => {
+        modalContainer.classList.remove('active');
+    });
+    updateBtn.addEventListener('click', () => {
+        updateDocumentEmployee();
+    })
+}
+
+async function updateDocumentEmployee() {
+    let docNumber = document.getElementById('document-number').value;
+    let expiryDate = document.getElementById('expiry').value + ' 00:00:00';
+    const employeeId = new URLSearchParams(window.location.search).get('employee_id');
+    const fileInput = document.getElementById('updated-file');
+    let selectedFile;
+    if (fileInput.files.length > 0) {
+        selectedFile = fileInput.files[0];
+    }
+    await updateEmployeeDocument(currentDocumentId, employeeId, expiryDate, docNumber, selectedFile)
+}

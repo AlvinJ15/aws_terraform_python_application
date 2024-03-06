@@ -2320,3 +2320,71 @@ button,
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/*Table pagination*/
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0; /* Adjust margin as needed */
+}
+
+.pagination-link {
+  display: inline-block;
+  padding: 5px 10px; /* Adjust padding as needed */
+  margin: 0 5px; /* Adjust margin as needed */
+  border: 1px solid #ccc;
+  text-decoration: none;
+  color: #333;
+}
+
+.pagination-link.active {
+  background-color: #ddd;
+}
+
+.pagination-link.disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+
+/*Right modal for update employee document*/
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+#modal-container {
+    position: fixed; /* Ensures the modal container is positioned on top of the page */
+    top: 0;
+    right: 0; /* Places the container at the right edge of the viewport */
+    width: 100%; /* Stretches the container across the entire viewport width */
+    height: 100%; /* Makes the container cover the entire viewport height */
+    background-color: rgba(0, 0, 0, 0.5); /* Gray overlay */
+    display: none; /* Initially hide the container */
+}
+
+#modal {
+    position: absolute; /* Makes the modal element positioned relative to its container */
+    top: 50%;
+    right: 0; /* Positions the modal at the right edge within the container */
+    transform: translateY(-50%); /* Centers the modal vertically within the container */
+    width: 300px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+#close-modal {
+    margin-top: 10px;
+    background-color: #ccc;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+#modal-container.active {
+  overflow: hidden; /* Prevent scrolling behind the modal */
+  display: block;
+}

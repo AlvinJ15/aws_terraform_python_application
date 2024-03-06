@@ -11,9 +11,11 @@ from data_models.models import update_object_from_dict, set_fields_from_dict
 
 def get_all_handler(event, context):
     organization_id = event["pathParameters"]["organization_id"]
+    page_number = int(event['queryStringParameters'].get('page', 1))
+    offset = (page_number - 1) * 100
     with DataBase.get_session() as db:
         try:
-            employees = db.query(Employee).filter_by(organization_id=organization_id).limit(100)
+            employees = db.query(Employee).filter_by(organization_id=organization_id).limit(100).offset(offset).all()
             return {"statusCode": 200,
                     "headers": {
                         'Access-Control-Allow-Headers': 'Content-Type',

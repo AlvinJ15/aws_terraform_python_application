@@ -108,31 +108,6 @@ function getSingleDocument(documentId) {
         });
 }
 
-function updateDocument(documentId, updatedData) {
-    // Replace with your actual endpoint and update the request body accordingly
-    let updateEndpoint = 'https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/body_request/document_types_management/body_update_handler.json';
-
-    // Make a PUT request using fetch API
-    fetch(updateEndpoint, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedData),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Update Success:', data);
-        // Display success message or handle as needed
-        alert("Document updated successfully!");
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // Handle error (replace with your actual error handling logic)
-        alert("Error updating document. Please try again.");
-    });
-}
-
 function deleteDocument(documentId) {
     // Replace with your actual endpoint
     let deleteEndpoint = 'https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/expected/document_types_management/expected_delete_single_handler.json';
