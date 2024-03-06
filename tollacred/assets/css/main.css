@@ -36,7 +36,6 @@ blockquote, q {
     content: none; }
 
 table {
-  border-collapse: collapse;
   border-spacing: 0; }
 
 body {
@@ -1436,6 +1435,8 @@ ul.pagination {
   overflow-x: auto; }
 
 table {
+  table-layout: auto;
+  border-collapse: collapse;
   margin: 0 0 2em 0;
   width: 100%; }
   table tbody tr {
@@ -1445,6 +1446,9 @@ table {
     table tbody tr:nth-child(2n + 1) {
       background-color: rgba(230, 235, 237, 0.25); }
   table td {
+    white-space: pre-wrap;
+    overflow: hidden; /* Hides overflowing content if applicable */
+    text-overflow: ellipsis;
     padding: 0.75em 0.75em; }
   table th {
     color: #3d4449;

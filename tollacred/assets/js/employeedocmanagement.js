@@ -96,7 +96,15 @@ async function updateEmployeeDocument(documentId, employeeId, expiry, documentNu
     formData.append('document_number', documentNumber);
     let organizationId = localStorage.getItem('organization_id')
     let endpoint = `organizations/${organizationId}/employees/${employeeId}/documents/${documentId}`;
-    return await makeRequest('PUT', endpoint, formData, false)
+    let response = await makeRequest('PUT', endpoint, formData, false);
+    if (response) {
+        alert('Document Updated.');
+        let closeModalBtn = document.getElementById('close-modal');
+        closeModalBtn.click()
+    }
+    else {
+        alert('Error Updating Document');
+    }
 }
 
 async function loadEmployeeDocuments(employeeId){

@@ -85,10 +85,12 @@ function populateEmployeeTable(data) {
         cellStaffMember.textContent = `${employee.profile.first_name} ${employee.profile.last_name}`  || "";
         cellRole.textContent = employee.profile.role || "";
         cellAssigned.textContent = employee.assignee || "";
-        cellCompliancePackages.outerHTML = employee.compliance_packages_names.join(',') || "";
+        cellCompliancePackages.innerHTML = employee.compliance_packages_names.join(', ') || "";
         cellSpecialty.textContent = employee.profile.specialty;
         cellCompliance.textContent = employee.status || "";
-        cellTags.outerHTML = employee.compliance_tags.split(',').join(',') || "";
+        if (employee.compliance_tags){
+            cellTags.innerHTML = employee.compliance_tags.split(',').join(', ') || "";
+        }
         cellSignedOff.textContent = "";
         cellActive.textContent = "";
 
