@@ -6,13 +6,15 @@ from streaming_form_data.targets import ValueTarget
 
 from api_services.utils.database_utils import DataBase
 from api_services.utils.s3_utils import upload_file_to_s3
+from api_services.utils.wrappers_utils import set_stage
 from data_models.model_organization_document import OrganizationDocument
 from data_models.model_organization_document_role import OrganizationDocumentRole
 
 
-def get_all_handler(event, context):
+@set_stage
+def get_all_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             organization_documents = db.query(OrganizationDocument).filter_by(organization_id=organization_id)
             return {"statusCode": 200,
@@ -26,10 +28,11 @@ def get_all_handler(event, context):
             return {"statusCode": 500, "body": f"Error retrieving OrganizationDocument: {err}"}
 
 
-def get_single_handler(event, context):
+@set_stage
+def get_single_handler(event, context, stage):
     document_id = event["pathParameters"]["document_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             organization_document = db.query(OrganizationDocument).filter_by(document_id=document_id).first()
             if organization_document:
@@ -46,7 +49,8 @@ def get_single_handler(event, context):
             return {"statusCode": 500, "body": f"Error retrieving OrganizationDocument: {err}"}
 
 
-def create_handler(event, context):
+@set_stage
+def create_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
 
     parser = StreamingFormDataParser(headers=event['headers'])
@@ -75,12 +79,11 @@ def create_handler(event, context):
     purpose = purpose_target.value.decode("utf-8")
     roles = json.loads(roles_target.value.decode("utf-8")) if roles_target.value else []
 
-    stage = event.get('requestContext', {}).get('stage')
     path = (f"{stage}/app_data/orgs/{organization_id}/org_documents/"
             f"{title}.{file_target.multipart_filename.split('.')[-1]}")
     try:
         s3_path = upload_file_to_s3(path, file_target.value, file_target.multipart_content_type)
-        with DataBase.get_session() as db:
+        with DataBase.get_session(stage) as db:
             new_org_document = OrganizationDocument()
             new_org_document.document_id = DataBase.generate_uuid()
             new_org_document.organization_id = organization_id
@@ -112,11 +115,12 @@ def create_handler(event, context):
         return {"statusCode": 500, "body": f"Error creating OrganizationDocument: {err}"}
 
 
-def update_handler(event, context):
+@set_stage
+def update_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
     document_id = event["pathParameters"]["document_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         org_document = db.query(OrganizationDocument).filter_by(document_id=document_id).first()
         if not org_document:
             return {'statusCode': 404, 'body': "OrganizationDocument not found"}
@@ -151,33 +155,32 @@ def update_handler(event, context):
         path = (f"{stage}/app_data/orgs/{organization_id}/org_documents/"
                 f"{title}.{file_target.multipart_filename.split('.')[-1]}")
         try:
-            with DataBase.get_session() as db:
-                org_document.title = title
-                org_document.description = description
-                org_document.purpose = purpose
-                if file_target.value:
-                    org_document.s3_path = upload_file_to_s3(path, file_target.value, file_target.multipart_content_type)
+            org_document.title = title
+            org_document.description = description
+            org_document.purpose = purpose
+            if file_target.value:
+                org_document.s3_path = upload_file_to_s3(path, file_target.value, file_target.multipart_content_type)
 
-                roles_ids = []
-                # Deleting the existing roles for the current steps if the request doesn't have them
-                for role in org_document.roles:
-                    if role.role_id not in current_request_roles:
-                        db.query(OrganizationDocumentRole).filter_by(
-                            document_id=org_document.document_id, role_id=role.role_id
-                        ).delete()
-                    else:
-                        roles_ids.append(role.role_id)
+            roles_ids = []
+            # Deleting the existing roles for the current steps if the request doesn't have them
+            for role in org_document.roles:
+                if role.role_id not in current_request_roles:
+                    db.query(OrganizationDocumentRole).filter_by(
+                        document_id=org_document.document_id, role_id=role.role_id
+                    ).delete()
+                else:
+                    roles_ids.append(role.role_id)
 
-                # Adding new roles which are presented in the request, but not in the org_document
-                for role in current_request_roles:
-                    if role not in roles_ids:
-                        new_role = OrganizationDocumentRole()
-                        new_role.document_id = org_document.document_id
-                        new_role.role_id = role
-                        db.add(new_role)
+            # Adding new roles which are presented in the request, but not in the org_document
+            for role in current_request_roles:
+                if role not in roles_ids:
+                    new_role = OrganizationDocumentRole()
+                    new_role.document_id = org_document.document_id
+                    new_role.role_id = role
+                    db.add(new_role)
 
-                db.commit()
-                db.refresh(org_document)
+            db.commit()
+            db.refresh(org_document)
             return {
                 'statusCode': 201,
                 "headers": {
@@ -191,10 +194,11 @@ def update_handler(event, context):
             return {"statusCode": 500, "body": f"Error creating OrganizationDocument: {err}"}
 
 
-def delete_single_handler(event, context):
+@set_stage
+def delete_single_handler(event, context, stage):
     document_id = event["pathParameters"]["document_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             organization_document = db.query(OrganizationDocument).filter_by(document_id=document_id).first()
             if organization_document:

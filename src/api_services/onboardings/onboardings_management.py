@@ -1,15 +1,17 @@
 import json
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.wrappers_utils import set_stage
 from data_models.model_onboarding import Onboarding
 from data_models.model_onboarding_step import OnboardingStep
 from data_models.model_step_role import StepRole
 from data_models.models import update_object_from_dict
 
 
-def get_all_handler(event, context):
+@set_stage
+def get_all_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             onboardings = db.query(Onboarding).filter_by(organization_id=organization_id)
             return {"statusCode": 200, "body": json.dumps([onboarding.to_dict() for onboarding in onboardings])}
@@ -17,10 +19,11 @@ def get_all_handler(event, context):
             return {"statusCode": 500, "body": f"Error retrieving Onboarding: {err}"}
 
 
-def get_single_handler(event, context):
+@set_stage
+def get_single_handler(event, context, stage):
     onboarding_id = event["pathParameters"]["onboarding_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             onboarding = db.query(Onboarding).filter_by(onboarding_id=onboarding_id).first()
             if onboarding:
@@ -31,11 +34,12 @@ def get_single_handler(event, context):
             return {"statusCode": 500, "body": f"Error retrieving Onboarding: {err}"}
 
 
-def create_handler(event, context):
+@set_stage
+def create_handler(event, context, stage):
     data = json.loads(event["body"])
     organization_id = event["pathParameters"]["organization_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             # TODO: refactorize create and update to reuse code
             new_onboarding = Onboarding()
@@ -67,12 +71,13 @@ def create_handler(event, context):
             return {"statusCode": 500, "body": f"Error creating Onboarding: {err}"}
 
 
-def update_handler(event, context):
+@set_stage
+def update_handler(event, context, stage):
     onboarding_id = event["pathParameters"]["onboarding_id"]
     organization_id = event["pathParameters"]["organization_id"]
     data = json.loads(event["body"])
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             onboarding = db.query(Onboarding).filter_by(
                 onboarding_id=onboarding_id, organization_id=organization_id
@@ -141,10 +146,11 @@ def update_handler(event, context):
             return {"statusCode": 500, "body": f"Error updating Onboarding: {err}"}
 
 
-def delete_single_handler(event, context):
+@set_stage
+def delete_single_handler(event, context, stage):
     onboarding_id = event["pathParameters"]["onboarding_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             onboarding = db.query(Onboarding).filter_by(onboarding_id=onboarding_id).first()
             if onboarding:

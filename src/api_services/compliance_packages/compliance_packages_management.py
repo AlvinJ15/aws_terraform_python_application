@@ -1,15 +1,17 @@
 import json
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.wrappers_utils import set_stage
 from data_models.model_compliance_package import CompliancePackage
 from data_models.model_package_document import PackageDocument
 from data_models.model_package_role import PackageRole
 from data_models.models import update_object_from_dict
 
 
-def get_all_handler(event, context):
+@set_stage
+def get_all_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             compliance_packages = db.query(CompliancePackage).filter_by(organization_id=organization_id)
             return {
@@ -20,16 +22,17 @@ def get_all_handler(event, context):
                     'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
                 },
                 "body": json.dumps([compliance_package.to_dict()
-                                                       for compliance_package in compliance_packages])
+                                    for compliance_package in compliance_packages])
             }
         except Exception as err:
             return {"statusCode": 500, "body": f"Error retrieving CompliancePackage: {err}"}
 
 
-def get_single_handler(event, context):
+@set_stage
+def get_single_handler(event, context, stage):
     compliance_package_id = event["pathParameters"]["package_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             compliance_package = db.query(CompliancePackage).filter_by(
                 package_id=compliance_package_id
@@ -48,11 +51,12 @@ def get_single_handler(event, context):
             return {"statusCode": 500, "body": f"Error retrieving CompliancePackage: {err}"}
 
 
-def create_handler(event, context):
+@set_stage
+def create_handler(event, context, stage):
     data = json.loads(event["body"])
     organization_id = event["pathParameters"]["organization_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             new_compliance_package = CompliancePackage(**data)
             new_compliance_package.package_id = DataBase.generate_uuid()
@@ -87,12 +91,13 @@ def create_handler(event, context):
             return {"statusCode": 500, "body": f"Error creating CompliancePackage: {err}"}
 
 
-def update_handler(event, context):
+@set_stage
+def update_handler(event, context, stage):
     compliance_package_id = event["pathParameters"]["package_id"]
     organization_id = event["pathParameters"]["organization_id"]
     data = json.loads(event["body"])
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             compliance_package = db.query(CompliancePackage).filter_by(
                 package_id=compliance_package_id, organization_id=organization_id
@@ -154,10 +159,11 @@ def update_handler(event, context):
             return {"statusCode": 500, "body": f"Error updating CompliancePackage: {err}"}
 
 
-def delete_single_handler(event, context):
+@set_stage
+def delete_single_handler(event, context, stage):
     package_id = event["pathParameters"]["package_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             compliance_package = db.query(CompliancePackage).filter_by(package_id=package_id).first()
             if compliance_package:

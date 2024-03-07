@@ -1,13 +1,15 @@
 import json
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.wrappers_utils import set_stage
 from data_models.model_organization import Organization
 
 
-def get_single_handler(event, context):
+@set_stage
+def get_single_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             organization = db.query(Organization).filter_by(id=organization_id).first()
             if organization:

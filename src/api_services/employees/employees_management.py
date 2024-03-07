@@ -2,6 +2,7 @@ import json
 
 from api_services.utils.database_utils import DataBase
 from api_services.utils.s3_utils import create_path_to_s3
+from api_services.utils.wrappers_utils import set_stage
 from data_models.model_employee import Employee
 from data_models.model_employee_compliance_package import EmployeeCompliancePackage
 from data_models.model_employee_profile import EmployeeProfile
@@ -9,11 +10,12 @@ from data_models.model_organization import Organization
 from data_models.models import update_object_from_dict, set_fields_from_dict
 
 
-def get_all_handler(event, context):
+@set_stage
+def get_all_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
     page_number = int(event['queryStringParameters'].get('page', 1))
     offset = (page_number - 1) * 100
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             employees = db.query(Employee).filter_by(organization_id=organization_id).limit(100).offset(offset).all()
             return {"statusCode": 200,
@@ -27,10 +29,11 @@ def get_all_handler(event, context):
             return {"statusCode": 500, "body": f"Error retrieving Employee: {err}"}
 
 
-def get_single_handler(event, context):
+@set_stage
+def get_single_handler(event, context, stage):
     employee_id = event["pathParameters"]["employee_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             employee = db.query(Employee).filter_by(employee_id=employee_id).first()
             if employee:
@@ -49,11 +52,12 @@ def get_single_handler(event, context):
             return {"statusCode": 500, "body": f"Error retrieving Employee: {err}"}
 
 
-def create_handler(event, context):
+@set_stage
+def create_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
     data = json.loads(event["body"])
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             profile = data.get("profile", {})
             if 'profile' in data:
@@ -88,11 +92,12 @@ def create_handler(event, context):
             return {"statusCode": 500, "body": f"Error creating Employee: {err}"}
 
 
-def update_handler(event, context):
+@set_stage
+def update_handler(event, context, stage):
     employee_id = event["pathParameters"]["employee_id"]
     data = json.loads(event["body"])
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             employee = db.query(Employee).filter_by(
                 employee_id=employee_id
@@ -134,10 +139,11 @@ def update_handler(event, context):
             return {"statusCode": 500, "body": f"Error updating Employee: {err}"}
 
 
-def delete_single_handler(event, context):
+@set_stage
+def delete_single_handler(event, context, stage):
     employee_id = event["pathParameters"]["employee_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             profile = db.query(EmployeeProfile).filter_by(employee_id=employee_id).first()
             employee = db.query(Employee).filter_by(employee_id=employee_id).first()

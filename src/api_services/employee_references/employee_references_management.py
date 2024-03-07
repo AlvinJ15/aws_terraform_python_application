@@ -7,8 +7,9 @@ from streaming_form_data import StreamingFormDataParser
 from streaming_form_data.targets import ValueTarget
 
 from api_services.utils.database_utils import DataBase
-from api_services.utils.s3_utils import upload_file_to_s3
+from api_services.utils.s3_utils import upload_file_to_s3, generate_file_link
 from api_services.utils.ses_utils import urlencode_dict, SES
+from api_services.utils.wrappers_utils import set_stage
 from data_models.model_employee import Employee
 from data_models.model_employee_profile import EmployeeProfile
 from data_models.model_organization import Organization
@@ -16,40 +17,57 @@ from data_models.model_employee_reference import EmployeeReference
 from data_models.models import update_object_from_dict
 
 
-def get_all_handler(event, context):
+@set_stage
+def get_all_handler(event, context, stage):
     employee_id = event["pathParameters"]["employee_id"]
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             employee_references = db.query(EmployeeReference).filter_by(employee_id=employee_id)
-            return {"statusCode": 200, "body": json.dumps([reference.to_dict() for reference in employee_references])}
+            return {
+                "statusCode": 200,
+                "headers": {
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                },
+                "body": json.dumps([reference.to_dict() for reference in employee_references])}
         except Exception as err:
             return {"statusCode": 500, "body": f"Error retrieving EmployeeReference: {err}"}
 
 
-def get_single_handler(event, context):
+@set_stage
+def get_single_handler(event, context, stage):
     reference_id = event["pathParameters"]["reference_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             reference = db.query(EmployeeReference).filter_by(reference_id=reference_id).first()
             if reference:
-                return {"statusCode": 200, "body": json.dumps(reference.to_dict())}
+                json_object = reference.to_dict()
+                json_object['download_url'] = generate_file_link(reference.s3_path)
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                        },
+                        "body": json.dumps(json_object)}
             else:
                 return {"statusCode": 404, "body": "EmployeeReference not found"}
         except Exception as err:
             return {"statusCode": 500, "body": f"Error retrieving EmployeeReference: {err}"}
 
 
-def create_handler(event, context):
+@set_stage
+def create_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
     employee_id = event["pathParameters"]["employee_id"]
 
     try:
-        with DataBase.get_session() as db:
+        with DataBase.get_session(stage) as db:
             organization = db.query(Organization).filter_by(id=organization_id).first()
             employee_profile = db.query(EmployeeProfile).filter_by(employee_id=employee_id).first()
             if 'multipart/form-data' in event.get('headers', {}).get('Content-Type', ''):
-                stage = event.get('requestContext', {}).get('stage')
                 data = get_data_from_multipart(event)
                 file = data.pop('file')
                 new_reference = EmployeeReference(**data)
@@ -62,6 +80,7 @@ def create_handler(event, context):
                         f"{file.multipart_filename.split('.')[-1]}")
                 s3_path = upload_file_to_s3(path, file.value, file.multipart_content_type)
                 new_reference.s3_path = s3_path
+                new_reference.status = 'Awaiting Approval'
             else:
                 data = json.loads(event.get('body', '{}'))
                 DataBase.pop_non_updatable_fields(
@@ -79,15 +98,18 @@ def create_handler(event, context):
                 body_mail = (f'Please send you reference for {employee_profile.get_name()}\n'
                              f'https://tollaniscred.paperform.co/?{urlencode_dict(query_parameters)}')
                 mail_result = SES.send_email(new_reference.referee_email, subject, body_mail)
-            if new_reference.status == 'Approved':
-                new_reference.completion_date = DataBase.get_now()
-            else:
-                new_reference.completion_date = None
+                new_reference.status = 'Sent'
+
             new_reference.employee_id = employee_id
             db.add(new_reference)
             db.commit()
             return {
                 'statusCode': 201,
+                "headers": {
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                },
                 'body': json.dumps(new_reference.to_dict())
             }
     except Exception as err:  # Handle general exceptions for robustness
@@ -96,20 +118,20 @@ def create_handler(event, context):
         return {"statusCode": 500, "body": f"Error creating EmployeeReference: {err}"}
 
 
-def update_handler(event, context):
+@set_stage
+def update_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
     employee_id = event["pathParameters"]["employee_id"]
     reference_id = event["pathParameters"]["reference_id"]
 
     try:
-        with DataBase.get_session() as db:
+        with DataBase.get_session(stage) as db:
             organization = db.query(Organization).filter_by(id=organization_id).first()
             employee_profile = db.query(EmployeeProfile).filter_by(employee_id=employee_id).first()
             reference = db.query(EmployeeReference).filter_by(reference_id=reference_id).first()
             if reference is None:
                 return {"statusCode": 404, "body": "EmployeeReference not found"}
             if 'multipart/form-data' in event.get('headers', {}).get('Content-Type', ''):
-                stage = event.get('requestContext', {}).get('stage')
                 data = get_data_from_multipart(event)
                 file = data.pop('file')
                 DataBase.pop_non_updatable_fields(
@@ -161,10 +183,11 @@ def update_handler(event, context):
         return {"statusCode": 500, "body": f"Error updating EmployeeReference: {err}"}
 
 
-def delete_single_handler(event, context):
+@set_stage
+def delete_single_handler(event, context, stage):
     reference_id = event["pathParameters"]["reference_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             employee_reference = db.query(EmployeeReference).filter_by(reference_id=reference_id).first()
             if employee_reference:

@@ -9,11 +9,11 @@ from api_services.utils import credentials_utils
 
 
 class DataBase:
-    _session_local = None  # Class-level attribute for singleton
+    _session_local = {}  # Class-level attribute for singleton
 
     @classmethod
-    def create_session(cls):
-        credentials = credentials_utils.retrieve_credentials_tollacred()
+    def create_session(cls, stage):
+        credentials = credentials_utils.retrieve_credentials_tollacred(stage)
         connection_string = (
             f"mysql+pymysql://{credentials.get('username')}:"
             f"{credentials.get('password')}"
@@ -28,13 +28,13 @@ class DataBase:
         return session_local()
 
     @classmethod
-    def get_session(cls):
-        if not DataBase._session_local:
+    def get_session(cls, stage):
+        if stage not in DataBase._session_local:
             try:
-                DataBase._session_local = cls.create_session()  # Initialize singleton
+                DataBase._session_local[stage] = cls.create_session(stage)  # Initialize singleton
             except Exception as e:
                 print(e)
-        return DataBase._session_local
+        return DataBase._session_local[stage]
 
     @classmethod
     def generate_uuid(cls):

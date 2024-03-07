@@ -1,14 +1,16 @@
 import json
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.wrappers_utils import set_stage
 from data_models.model_employee_questionnaire_response import EmployeeQuestionnaireResponse
 from data_models.model_questionnaire import Questionnaire
 from data_models.models import update_object_from_dict
 
 
-def get_all_handler(event, context):
+@set_stage
+def get_all_handler(event, context, stage):
     employee_id = event["pathParameters"]["employee_id"]
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             questionnaires = db.query(EmployeeQuestionnaireResponse).filter_by(
                 employee_id=employee_id
@@ -19,10 +21,11 @@ def get_all_handler(event, context):
             return {"statusCode": 500, "body": f"Error retrieving EmployeeQuestionnaireResponse: {err}"}
 
 
-def get_single_handler(event, context):
+@set_stage
+def get_single_handler(event, context, stage):
     response_id = event["pathParameters"]["response_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             questionnaire = db.query(EmployeeQuestionnaireResponse).filter_by(response_id=response_id).first()
             if questionnaire:
@@ -33,11 +36,12 @@ def get_single_handler(event, context):
             return {"statusCode": 500, "body": f"Error retrieving EmployeeQuestionnaireResponse: {err}"}
 
 
-def create_handler(event, context):
+@set_stage
+def create_handler(event, context, stage):
     employee_id = event["pathParameters"]["employee_id"]
     data = json.loads(event["body"])
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             new_response = EmployeeQuestionnaireResponse(**data)
             new_response.employee_id = employee_id
@@ -53,11 +57,12 @@ def create_handler(event, context):
             return {"statusCode": 500, "body": f"Error creating EmployeeQuestionnaireResponse: {err}"}
 
 
-def update_handler(event, context):
+@set_stage
+def update_handler(event, context, stage):
     response_id = event["pathParameters"]["response_id"]
     data = json.loads(event["body"])
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             response = db.query(EmployeeQuestionnaireResponse).filter_by(
                 response_id=response_id
@@ -79,10 +84,11 @@ def update_handler(event, context):
             return {"statusCode": 500, "body": f"Error updating EmployeeQuestionnaireResponse: {err}"}
 
 
-def delete_single_handler(event, context):
+@set_stage
+def delete_single_handler(event, context, stage):
     response_id = event["pathParameters"]["response_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             response = db.query(EmployeeQuestionnaireResponse).filter_by(response_id=response_id).first()
             if response:

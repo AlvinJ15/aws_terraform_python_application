@@ -1,13 +1,15 @@
 import json
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.wrappers_utils import set_stage
 from data_models.model_document_type import DocumentType
 from data_models.models import update_object_from_dict
 
 
-def get_all_handler(event, context):
+@set_stage
+def get_all_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             document_types = db.query(DocumentType).filter_by(organization_id=organization_id)
             return {"statusCode": 200,
@@ -21,10 +23,11 @@ def get_all_handler(event, context):
             return {"statusCode": 500, "body": f"Error retrieving DocumentType: {err}"}
 
 
-def get_single_handler(event, context):
+@set_stage
+def get_single_handler(event, context, stage):
     document_type_id = event["pathParameters"]["document_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             document_type = db.query(DocumentType).filter_by(id=document_type_id).first()
             if document_type:
@@ -41,11 +44,12 @@ def get_single_handler(event, context):
             return {"statusCode": 500, "body": f"Error retrieving DocumentType: {err}"}
 
 
-def create_handler(event, context):
+@set_stage
+def create_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
     data = json.loads(event["body"])
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             new_document_type = DocumentType(**data)
             new_document_type.organization_id = organization_id
@@ -63,12 +67,13 @@ def create_handler(event, context):
             return {"statusCode": 500, "body": f"Error creating DocumentType: {err}"}
 
 
-def update_handler(event, context):
+@set_stage
+def update_handler(event, context, stage):
     document_type_id = event["pathParameters"]["document_id"]
     organization_id = event["pathParameters"]["organization_id"]
     data = json.loads(event["body"])
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             document_type = db.query(DocumentType).filter_by(
                 id=document_type_id, organization_id=organization_id
@@ -92,10 +97,11 @@ def update_handler(event, context):
             return {"statusCode": 500, "body": f"Error updating DocumentType: {err}"}
 
 
-def delete_single_handler(event, context):
+@set_stage
+def delete_single_handler(event, context, stage):
     document_type_id = event["pathParameters"]["document_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             document_type = db.query(DocumentType).filter_by(id=document_type_id).first()
             if document_type:

@@ -20,29 +20,72 @@
     <div id="wrapper">
 
         <!-- Main -->
-        <div id="main">
-            <div class="inner">
+<div id="main">
+						<div class="inner">
+							<!-- Header -->
+								<header id="header">
+									<a href="dashboard.html" class="logo"><strong class="org_title">TollanisCred</strong> Credentialing by Tollanis</a>
+								</header>
+							<!-- Banner -->
+							<section id="banner">
+								<div class="content">
+                                <header>
+                                    <h2>Employee Reference<br /></h2>
+                                    <a href="#" onclick="goToAddEmployeeReference()" style="float: right;"><button>Add New Reference</button></a>
+                                </header>
+                                </div>
+                            </section>
+                        <section id="table">
+                            <style>
+                                table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                }
 
-                <!-- Header -->
-                <header id="header">
-                    <a href="dashboard.html" class="logo"><strong class="org_title">TollanisCred</strong> Credentialing by Tollanis</a>
-                </header>
+                                th, td {
+                                    border: 1px solid #ddd;
+                                    padding: 8px;
+                                    text-align: left;
+                                    max-width: 400px;
+                                    word-wrap: break-word;
+                                    overflow-wrap: break-word;
+                                }
 
-                <!-- Banner -->
-                <section id="banner">
-                    <div class="content">
-                        <header>
-                            <h1>Welcome to Your Profile<br /></h1>
-                        </header>
-                        <p>Use the menu on the left sidebar to naviga</p>
+                                th {
+                                    background-color: #f2f2f2;
+                                }
+                            </style>
+                            <title>HTML Grid</title>
+                            <body>
+                                <table>
+									<thead>
+										<tr>
+											<th>Name</th>
+											<th>Email</th>
+                                            <th>Status</th>
+											<th>Uploaded</th>
+											<th>Updated</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody id="tableEmployeeReferences">
+										<!-- Add your data rows here -->
+										<tr>
+											<td>Nurse Employment Agreement</td>
+											<td>Signature Required</td>
+											<td>Date and Time</td>
+											<td>Date and Time</td>
+											<td>Edit|Delete</td>
+										</tr>
+										<tr>
+											<!-- Add more rows as needed -->
+										</tr>
+									</tbody>
+								</table>
+                            </body>
+                        </section>
                     </div>
-                    <span class="image object">
-                        <img src="images/profile.png" />
-                    </span>
-                </section>
             </div>
-        </div>
-
       <!-- Sidebar -->
 				 <div id="sidebar">
 					<div class="inner">
@@ -62,7 +105,7 @@
                                 </div>
                                 <span>MY PROFILE</span>
                             </a>
-                           
+
                         </div>
                         <!-- Search -->
                         <section id="search" class="alt">
@@ -80,17 +123,19 @@
                 <!-- My Profile -->
                 <li>
                     <span class="opener">My Profile</span>
-                    <ul>
-                        <li><a href="profiledashboard.html">dashboard</a></li>
-                        <li><a href="profiledetails.html">Profile Details</a></li>
-                        <li><a href="profiledocuments.html">Documentos</a></li>
-                        <li><a href="profileorganizationdocs.html">Organization's Documents</a></li>
-                        <li><a href="professionalregistration.html">Professional Registration</a></li>
-                        <li><a href="profilereferences.html">References</a></li>
-                        <li><a href="profilequestionnaires.html">Questionnaires</a></li>
-                        <li><a href="profileonboarding.html">Onboarding</a></li>
-                        <li><a href="profilebackgrounchecks.html">Background Checks</a></li>
-                    </ul>
+                    <div class="profile_links">
+                        <ul>
+                            <li><a href="profiledashboard.html">dashboard</a></li>
+                            <li><a href="profiledetails.html">Profile Details</a></li>
+                            <li><a href="profiledocuments.html">Documentos</a></li>
+                            <li><a href="profileorganizationdocs.html">Organization's Documents</a></li>
+                            <li><a href="professionalregistration.html">Professional Registration</a></li>
+                            <li><a href="profilereferences.html">References</a></li>
+                            <li><a href="profilequestionnaires.html">Questionnaires</a></li>
+                            <li><a href="profileonboarding.html">Onboarding</a></li>
+                            <li><a href="profilebackgrounchecks.html">Background Checks</a></li>
+                        </ul>
+                    </div>
                 </li>
 
                 <!-- Preferences -->
@@ -121,9 +166,12 @@
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/browser.min.js"></script>
 <script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/index.js"></script>
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
+<script src="assets/js/env_config.js"></script>
+<script src="assets/js/index.js"></script>
+<script src="assets/js/apis.js"></script>
+<script src="assets/js/employeereference.js"></script>
 <script src="assets/js/documentmanagement.js"></script>
 <script src="assets/js/comppkgmngmt.js"></script>
 

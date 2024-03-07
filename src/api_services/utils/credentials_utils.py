@@ -4,8 +4,8 @@ import json
 from botocore.exceptions import ClientError
 
 
-def retrieve_credentials_tollacred():
-    secret_name = "tollacred_auto"
+def retrieve_credentials_tollacred(stage):
+    secret_name = resolve_secret_name(stage)
     region_name = "us-east-1"
 
     # Create a Secrets Manager client
@@ -56,4 +56,14 @@ def retrieve_credentials_paperform():
     except ClientError as e:
         print(e.response)
         raise e
-    
+
+
+def resolve_secret_name(stage):
+    if stage == 'prod':
+        return 'tollacred_auto'
+    elif stage == 'dev':
+        return 'tollaniscred_auto_dev'
+    elif stage == 'stage':
+        return 'tollaniscred_auto_stage'
+    else:
+        raise Exception('Unknown stage {}'.format(stage))

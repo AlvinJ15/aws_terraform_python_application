@@ -7,6 +7,7 @@ from streaming_form_data.targets import ValueTarget
 
 from api_services.utils.database_utils import DataBase
 from api_services.utils.s3_utils import upload_file_to_s3, generate_file_link
+from api_services.utils.wrappers_utils import set_stage
 from data_models.model_document_type import DocumentType
 from data_models.model_employee_profile import EmployeeProfile
 from data_models.model_organization import Organization
@@ -14,9 +15,10 @@ from data_models.model_employee_document import EmployeeDocument
 from data_models.models import set_fields_from_dict
 
 
-def get_all_handler(event, context):
+@set_stage
+def get_all_handler(event, context, stage):
     employee_id = event["pathParameters"]["employee_id"]
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             organization_documents = db.query(EmployeeDocument).filter_by(employee_id=employee_id)
             return {"statusCode": 200,
@@ -30,10 +32,11 @@ def get_all_handler(event, context):
             return {"statusCode": 500, "body": f"Error retrieving EmployeeDocument: {err}"}
 
 
-def get_single_handler(event, context):
+@set_stage
+def get_single_handler(event, context, stage):
     document_id = event["pathParameters"]["document_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             organization_document = db.query(EmployeeDocument).filter_by(document_id=document_id).first()
             if organization_document:
@@ -52,15 +55,15 @@ def get_single_handler(event, context):
             return {"statusCode": 500, "body": f"Error retrieving EmployeeDocument: {err}"}
 
 
-def create_handler(event, context):
+@set_stage
+def create_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
     employee_id = event["pathParameters"]["employee_id"]
 
     try:
-        with DataBase.get_session() as db:
+        with DataBase.get_session(stage) as db:
             organization = db.query(Organization).filter_by(id=organization_id).first()
             employee_profile = db.query(EmployeeProfile).filter_by(employee_id=employee_id).first()
-            stage = event.get('requestContext', {}).get('stage')
             data = get_data_from_multipart(event)
             file = data.pop('file')
             if not data.get('approver_id'):
@@ -97,12 +100,13 @@ def create_handler(event, context):
                 "body": f"Error creating EmployeeDocument: {err}"}
 
 
-def update_handler(event, context):
+@set_stage
+def update_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
     employee_id = event["pathParameters"]["employee_id"]
     document_id = event["pathParameters"]["document_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         document = db.query(EmployeeDocument).filter_by(document_id=document_id).first()
         if not document:
             return {'statusCode': 404, 'body': "EmployeeDocument not found"}
@@ -110,7 +114,6 @@ def update_handler(event, context):
         try:
             organization = db.query(Organization).filter_by(id=organization_id).first()
             employee_profile = db.query(EmployeeProfile).filter_by(employee_id=employee_id).first()
-            stage = event.get('requestContext', {}).get('stage')
             data = get_data_from_multipart(event)
             file = data.pop('file')
             date_fields = ['expiry_date', 'approval_date', 'upload_date']
@@ -142,10 +145,11 @@ def update_handler(event, context):
             return {"statusCode": 500, "body": f"Error creating EmployeeDocument: {err}"}
 
 
-def delete_single_handler(event, context):
+@set_stage
+def delete_single_handler(event, context, stage):
     document_id = event["pathParameters"]["document_id"]
 
-    with DataBase.get_session() as db:
+    with DataBase.get_session(stage) as db:
         try:
             organization_document = db.query(EmployeeDocument).filter_by(document_id=document_id).first()
             if organization_document:

@@ -167,7 +167,9 @@ resource "aws_iam_policy" "lambda_policy_secrets" {
         "secretsmanager:GetSecretValue"
       ],
       "Resource": [
-        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:${var.secret_manager_name}",
+        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:tollaniscred_auto_stage-S0EWSH",
+        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:tollaniscred_auto_dev-LqRD2e",
+        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:tollacred_auto-vTGnv5",
         "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:Paperform_access_token-B9wnrv"
       ]
     }
