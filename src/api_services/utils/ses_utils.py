@@ -4,22 +4,23 @@ import boto3
 
 ses_client = boto3.client('ses')
 SENDER_REFEVALS = 'refevals@tollaniscred.com'
-SENDER_CREDENTIALLY = 'credentialing@tollanis.com '
+SENDER_CREDENTIALLY = 'credentialing@tollanis.com'
 
 
 def urlencode_dict(data):
-  """
-  Converts a dictionary of key-value pairs to URL-encoded query parameters.
-  """
-  params = []
-  for key, value in data.items():
-    params.append(f"{key}={urllib.parse.quote(str(value))}")
-  return "&".join(params)
+    """
+    Converts a dictionary of key-value pairs to URL-encoded query parameters.
+    """
+    params = []
+    for key, value in data.items():
+        params.append(f"{key}={urllib.parse.quote(str(value))}")
+    return "&".join(params)
 
 
-class SES():
+class SES:
     @classmethod
     def send_email(cls, recipient, subject, body, sender):
+        BODY_HTML = f'<html><head></head><body>{body}</body></html>'
         response = ses_client.send_email(
             Destination={
                 'ToAddresses': [
@@ -28,9 +29,9 @@ class SES():
             },
             Message={
                 'Body': {
-                    'Text': {
+                    'Html': {
                         'Charset': 'UTF-8',
-                        'Data': body,
+                        'Data': BODY_HTML,
                     },
                 },
                 'Subject': {
