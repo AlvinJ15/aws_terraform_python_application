@@ -1,4 +1,5 @@
 from sqlalchemy import ForeignKey, String, Column, Enum, DateTime, Integer
+from sqlalchemy.orm import relationship
 
 from data_models.model_administrator import Administrator
 from data_models.model_document_type import DocumentType
@@ -31,6 +32,8 @@ class EmployeeDocument(Base):
     )
     s3_path = Column(String(255))
     upload_date = Column(DateTime)
+
+    document_type = relationship("DocumentType", backref="document_type")
 
     def __init__(self, **kwargs):
         date_fields = ['expiry_date', 'approval_date', 'upload_date']

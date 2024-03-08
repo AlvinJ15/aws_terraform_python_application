@@ -39,6 +39,7 @@ class Employee(Base):
         lazy="select", viewonly=True, cascade="all, delete-orphan"
     )
     admin = relationship("Administrator", backref="assigned_users")
+    organization = relationship("Organization", backref="organization")
 
     def __init__(self, **kwargs):
         date_fields = ['created']

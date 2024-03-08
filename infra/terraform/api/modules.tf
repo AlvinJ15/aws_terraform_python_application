@@ -133,3 +133,8 @@ module "employee_reference_submission" {
   source                   = "./lambda_functions/process_reference_evaluation_submissions"
   lambda_exec              = aws_iam_role.lambda_exec
 }
+
+module "expiry_soon_employees_documents" {
+  source                   = "./lambda_functions/process_expiring_soon_employee_documents"
+  lambda_exec              = aws_iam_role.lambda_exec
+}

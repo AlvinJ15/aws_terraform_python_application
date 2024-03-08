@@ -3,8 +3,8 @@ import urllib
 import boto3
 
 ses_client = boto3.client('ses')
-#SENDER = 'refevals@tollaniscred.com'
-SENDER = 'credentialing@tollanis.com '
+SENDER_REFEVALS = 'refevals@tollaniscred.com'
+SENDER_CREDENTIALLY = 'credentialing@tollanis.com '
 
 
 def urlencode_dict(data):
@@ -19,7 +19,7 @@ def urlencode_dict(data):
 
 class SES():
     @classmethod
-    def send_email(cls, recipient, subject, body):
+    def send_email(cls, recipient, subject, body, sender):
         response = ses_client.send_email(
             Destination={
                 'ToAddresses': [
@@ -38,7 +38,15 @@ class SES():
                     'Data': subject,
                 },
             },
-            Source=SENDER,
+            Source=sender,
         )
         print(f'EMAIL response: ${response}')
         return response
+
+    @classmethod
+    def send_email_refevals(cls, recipient, subject, body):
+        cls.send_email(recipient, subject, body, SENDER_REFEVALS)
+
+    @classmethod
+    def send_email_credentially(cls, recipient, subject, body):
+        cls.send_email(recipient, subject, body, SENDER_CREDENTIALLY)
