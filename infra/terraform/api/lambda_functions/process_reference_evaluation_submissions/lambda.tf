@@ -36,7 +36,7 @@ resource "aws_lambda_function" "lambda_function_employee_reference_submissions" 
   }
   environment {
     variables = {
-      STAGE = "dev"
+      STAGE = "prod"
     }
   }
 }

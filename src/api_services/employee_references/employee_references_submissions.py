@@ -14,6 +14,7 @@ def submission_handler(event, context):
     organization_id = ''
     employee_id = ''
     reference_id = ''
+    stage = os.environ.get('STAGE')
 
     body = json.loads(event.get('body'))
     data_answers = body.get('data')
@@ -28,11 +29,10 @@ def submission_handler(event, context):
             employee_id = answer.get('value')
     print(reference_id, organization_id, employee_id)
     try:
-        with DataBase.get_session() as db:
+        with DataBase.get_session(stage) as db:
             organization = db.query(Organization).filter_by(id=organization_id).first()
             employee_profile = db.query(EmployeeProfile).filter_by(employee_id=employee_id).first()
             reference = db.query(EmployeeReference).filter_by(reference_id=reference_id).first()
-            stage = os.environ.get('STAGE')
             file = get_file_from_url(pdf_url)
             path = (f"{stage}/app_data/orgs/{organization.name} {DataBase.get_now().year}/"
                     f"Ongoing/{employee_profile.get_name()} - "
