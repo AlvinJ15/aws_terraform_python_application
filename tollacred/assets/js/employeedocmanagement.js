@@ -1,5 +1,6 @@
 // Employee Documents Management
 let currentDocumentId;
+let lastModalElement;
 window.addEventListener("DOMContentLoaded", async () => {
     configureRightModal();
     const employeeId = new URLSearchParams(window.location.search).get('employee_id');
@@ -20,9 +21,47 @@ function createReviewButton(employeeDocument){
     let reviewButton = document.createElement("button");
     reviewButton.innerHTML = "Review";
     reviewButton.onclick = function() {
-        downloadEmployeeDocument(employeeDocument);
+        const modalContainer = document.getElementById('modal-container');
+        lastModalElement = document.getElementById("modal-review");
+        modalContainer.classList.add('active');
+        lastModalElement.classList.add('active');
+        configureReviewSubButtons(employeeDocument);
     };
     return reviewButton;
+}
+
+function configureReviewSubButtons(employeeDocument) {
+    let approveBtn = document.getElementById('approve-button');
+    let rejectBtn = document.getElementById('reject-button');
+    let downloadBtn = document.getElementById('download-button');
+
+    approveBtn.onclick = function() {
+        updateDocumentStatus(employeeDocument, 'Approved');
+    };
+    rejectBtn.onclick = function() {
+        updateDocumentStatus(employeeDocument, 'Rejected');
+    };
+    downloadBtn.onclick = function() {
+        downloadEmployeeDocument(employeeDocument);
+    };
+}
+
+async function updateDocumentStatus(employeeDocument, status) {
+    const employeeId = new URLSearchParams(window.location.search).get('employee_id');
+    const documentId = employeeDocument.document_id;
+    const formData = new FormData();
+    formData.append('status', status);
+    let organizationId = localStorage.getItem('organization_id')
+    let endpoint = `organizations/${organizationId}/employees/${employeeId}/documents/${documentId}`;
+    let response = await makeRequest('PUT', endpoint, formData, false);
+    if (response) {
+        alert('Document Updated.');
+        let closeModalBtn = document.getElementById('close-modal');
+        closeModalBtn.click()
+    }
+    else {
+        alert('Error Updating Document');
+    }
 }
 
 function getFileName(path) {
@@ -241,23 +280,26 @@ function createUpdateButton(documentEmployee){
     openModalBtn.innerHTML = "Update";
     openModalBtn.onclick = function() {
         const modalContainer = document.getElementById('modal-container');
+        lastModalElement = document.getElementById("modal-update");
         modalContainer.classList.add('active');
+        lastModalElement.classList.add('active');
         currentDocumentId = documentId;
     };
     return openModalBtn;
 }
 
 function configureRightModal(){
-    const closeModalBtn = document.getElementById('close-modal');
     const updateBtn = document.getElementById('update-button');
-    const modalContainer = document.getElementById('modal-container');
 
-    closeModalBtn.addEventListener('click', () => {
-        modalContainer.classList.remove('active');
-    });
     updateBtn.addEventListener('click', () => {
         updateDocumentEmployee();
     })
+}
+
+function closeModalBtn() {
+    const modalContainer = document.getElementById('modal-container');
+    lastModalElement.classList.remove('active');
+    modalContainer.classList.remove('active');
 }
 
 async function updateDocumentEmployee() {

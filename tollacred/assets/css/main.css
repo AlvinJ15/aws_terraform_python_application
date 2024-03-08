@@ -2369,7 +2369,7 @@ body {
     display: none; /* Initially hide the container */
 }
 
-#modal {
+.modal-element {
     position: absolute; /* Makes the modal element positioned relative to its container */
     top: 50%;
     right: 0; /* Positions the modal at the right edge within the container */
@@ -2378,6 +2378,10 @@ body {
     background-color: white;
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal-close {
+  position: fixed;
 }
 
 #close-modal {
@@ -2391,4 +2395,15 @@ body {
 #modal-container.active {
   overflow: hidden; /* Prevent scrolling behind the modal */
   display: block;
+}
+
+.modal-element{
+  display: none;
+}
+.modal-element.active {
+  display: block;
+}
+
+#approve-button{
+  background-color: #0abd00;
 }

@@ -115,20 +115,23 @@ def update_handler(event, context, stage):
             organization = db.query(Organization).filter_by(id=organization_id).first()
             employee_profile = db.query(EmployeeProfile).filter_by(employee_id=employee_id).first()
             data = get_data_from_multipart(event)
-            file = data.pop('file')
+            file = data.pop('file', None)
             date_fields = ['expiry_date', 'approval_date', 'upload_date']
             set_fields_from_dict(document, data, date_fields)
-            document_type = db.query(DocumentType).filter_by(id=document.document_type_id).first()
-            path = (f"{stage}/app_data/orgs/{organization.name} {DataBase.get_now().year}/"
-                    f"Ongoing/{employee_profile.get_name()} - "
-                    f"{employee_profile.role}/01 License, Certification and Verification/"
-                    f"{employee_profile.get_name()} - "
-                    f"{document_type.category} - {document_type.name}.{file.multipart_filename.split('.')[-1]}")
-            s3_path = upload_file_to_s3(path, file.value, file.multipart_content_type)
-            document.s3_path = s3_path
+            if file:
+                document_type = db.query(DocumentType).filter_by(id=document.document_type_id).first()
+                path = (f"{stage}/app_data/orgs/{organization.name} {DataBase.get_now().year}/"
+                        f"Ongoing/{employee_profile.get_name()} - "
+                        f"{employee_profile.role}/01 License, Certification and Verification/"
+                        f"{employee_profile.get_name()} - "
+                        f"{document_type.category} - {document_type.name}.{file.multipart_filename.split('.')[-1]}")
+                s3_path = upload_file_to_s3(path, file.value, file.multipart_content_type)
+                document.s3_path = s3_path
+                document.upload_date = DataBase.get_now()
             if document.status == 'Approved':
                 document.approval_date = DataBase.get_now()
-            document.upload_date = DataBase.get_now()
+            else:
+                document.approval_date = None
             db.commit()
             return {
                 'statusCode': 201,
@@ -194,7 +197,7 @@ def get_data_from_multipart(event):
         'document_number': document_number_target.value.decode("utf-8"),
         'status': status_target.value.decode("utf-8"),
         'approver_id': approver_id_target.value.decode("utf-8"),
-        'file': file_target
+        'file': file_target if file_target.value else None
     }
 
     return {key: value for key, value in values.items() if value}
