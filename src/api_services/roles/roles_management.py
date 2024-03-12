@@ -57,7 +57,13 @@ def create_handler(event, context, stage):
             new_role.role_id = DataBase.generate_uuid()
             db.add(new_role)
             db.commit()
-            return {"statusCode": 201, "body": json.dumps(new_role.to_dict())}
+            return {"statusCode": 201,
+                    "headers": {
+                        'Access-Control-Allow-Headers': 'Content-Type',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                    },
+                    "body": json.dumps(new_role.to_dict())}
         except Exception as err:  # Handle general exceptions for robustness
             return {"statusCode": 500, "body": f"Error creating role: {err}"}
 
@@ -77,7 +83,13 @@ def update_handler(event, context, stage):
                     data.pop("role_id")
                 updated_role = update_object_from_dict(role, data)
                 db.commit()
-                return {"statusCode": 200, "body": json.dumps(updated_role.to_dict())}
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET,DELETE,PUT'
+                        },
+                        "body": json.dumps(updated_role.to_dict())}
             else:
                 return {"statusCode": 404, "body": "Role not found"}
         except Exception as err:
@@ -95,7 +107,13 @@ def delete_single_handler(event, context, stage):
             if role:
                 db.delete(role)
                 db.commit()  # Commit the deletion to the database
-                return {"statusCode": 200, "body": json.dumps({"deleted_id": role.role_id})}
+                return {"statusCode": 200,
+                        "headers": {
+                            'Access-Control-Allow-Headers': 'Content-Type',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET,DELETE,PUT'
+                        },
+                        "body": json.dumps({"deleted_id": role.role_id})}
             else:
                 return {"statusCode": 404, "body": "Role not found"}
         except Exception as err:

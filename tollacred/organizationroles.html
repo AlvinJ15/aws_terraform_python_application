@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Organization Roles</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="is-preload">
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Main -->
+        <div id="main">
+            <div class="inner">
+                <!-- Header -->
+                <header id="header">
+                    <a href="dashboard.html" class="logo"><strong class="org_title">TollanisCred</strong> Credentialing by Tollanis</a>
+					<a href="dashboard.html" style="width: 100px; text-align: right;">Back</a>
+                </header>
+                <!-- Banner - Role -->
+                <section id="banner">
+                    <div class="content">
+                        <header>
+                            <h3>Role<br /></h3>
+                            <a href="rolescreation.html" style="float: right;"><button>Add New Role</button></a>
+                        </header>
+                        <p>Here you can create new roles.</p>
+                    </div>
+                </section>
+                <!-- Banner - Role List -->
+                <section id="banner">
+                    <div class="content">
+                        <header>
+							<h3>Role List<br /></h3>
+							<button onclick="getList()" style="float: right;">Get List</button>
+						</header>
+                        <p>Here you can get the actual role list from the organization you are at.</p>
+                    </div>
+                </section>
+                <!-- Table Section -->
+                <section id="table">
+                    <style>
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                        }
+                    
+                        th, td {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                            text-align: left;
+                            max-width: 400px;
+                            word-wrap: break-word;
+                            overflow-wrap: break-word;
+                        }
+                    
+                        th {
+                            background-color: #f2f2f2;
+                        }
+                    </style>
+                    <table id="roleTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Type</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="roleTableBody">
+                            <!-- Table content will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </section>
+                <div id="modal-container">
+                <div id="modal-update" class="modal-element">
+                    <h2>Update Role</h2>
+                    <div class="form-group" style="margin-left: 50px;">
+                        <label for="role-name" style="margin-top: 15px;">Role Name*</label>
+                        <div class="input-container">
+                            <input type="text" id="role-name" name="role-name" class="textbox" placeholder="Enter role name" style="width: 500px;" required>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-left: 50px;">
+                        <label for="role-description" style="margin-top: 15px;">Role Description</label>
+                        <div class="input-container">
+                            <input type="text" id="role-description" name="role-description" class="textbox" placeholder="Enter role description" style="width: 500px;">
+                        </div>
+                    </div>
+                    <div class="box-selection-group" style="margin-left: 50px;">
+                        <div class="box-selection">
+                            <label style="margin-top: 15px;">Category:</label>
+                            <input type="radio" id="clinical" name="role-type" value="Clinical" required>
+                            <label for="clinical">Clinical</label>
+                            <input type="radio" id="non-clinical" name="role-type" value="Non-Clinical" required>
+                            <label for="non-clinical">Non-Clinical</label>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-left: 50px; margin-top: 20px;">
+                        <a href="#" class="button primary default" id="update-button" onclick="modalUpdateBtn()" disabled>Update</a>
+                        <a href="#" class="button default" onclick="closeModalBtn()">Cancel</a>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+	</div>
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/env_config.js"></script>
+<script src="assets/js/apis.js"></script>
+<script src="assets/js/index.js"></script>
+<script src="assets/js/rolesmanagement.js"></script>
+<script src="assets/js/comppkgmngmt.js"></script>
+
+
+</body>
+
+</html>
