@@ -37,7 +37,7 @@ def expiry_soon_handler(event, context, stage):
                 build_paragraph(document, employees_dict[document.employee_id]) for document in employee_documents
             ])
             body = f'<BR>{body}<BR><BR>'
-            SES.send_email_credentially('credentialling@tollanis.com', 'EXPIRING SOON DOCUMENTS', body)
+            SES.send_email_credentially('credentialing@tollanis.com', 'EXPIRING SOON DOCUMENTS', body)
             return {
                 'statusCode': 201,
                 'body': body
@@ -50,5 +50,5 @@ def expiry_soon_handler(event, context, stage):
 
 def build_paragraph(employee_document: EmployeeDocument, employee: Employee):
     profile = employee.profile
-    return (f'{employee.organization.name},{profile.last_name} {profile.last_name},{profile.email},'
+    return (f'{employee.organization.name},{profile.first_name} {profile.last_name},{profile.email},'
             f'{employee_document.document_type.name},{employee_document.expiry_date.strftime("%Y-%m-%d %H:%M:%S")}')

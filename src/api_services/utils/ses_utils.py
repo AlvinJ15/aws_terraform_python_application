@@ -4,7 +4,8 @@ import boto3
 
 ses_client = boto3.client('ses')
 SENDER_REFEVALS = 'refevals@tollaniscred.com'
-SENDER_CREDENTIALLY = 'credentialing@tollanis.com'
+SENDER_CREDENTIALLY = 'automation@tollaniscred.com'
+DEFAULT_CC = 'shubham.aggarwal@tollanis.com'
 
 
 def urlencode_dict(data):
@@ -19,13 +20,14 @@ def urlencode_dict(data):
 
 class SES:
     @classmethod
-    def send_email(cls, recipient, subject, body, sender):
+    def send_email(cls, recipient, subject, body, sender, cc=DEFAULT_CC):
         BODY_HTML = f'<html><head></head><body>{body}</body></html>'
         response = ses_client.send_email(
             Destination={
                 'ToAddresses': [
                     recipient,
                 ],
+                'CcAddresses': [cc] if cc else []
             },
             Message={
                 'Body': {
