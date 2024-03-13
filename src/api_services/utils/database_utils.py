@@ -28,7 +28,7 @@ class DataBase:
         return session_local()
 
     @classmethod
-    def get_session(cls, stage):
+    def get_session(cls, stage=None):
         if stage not in DataBase._session_local:
             try:
                 DataBase._session_local[stage] = cls.create_session(stage)  # Initialize singleton

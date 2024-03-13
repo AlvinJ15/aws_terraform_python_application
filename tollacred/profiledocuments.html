@@ -36,45 +36,51 @@
                         </header>
                         <p>If you have compliance requirements packages assigned to you, it will show below.</p>
                     </div>
-                    
-                    //Add Compliance Requirements Package for employee here.
+                    <div class="profile_links">
+                        <label>Add or remove compliance packages </label>
+                        <a class="employee-link" href="profiledashboard.html" style="text-decoration: none;">
+                            <button>Dashboard</button>
+                        </a>
+                    </div>
                 </section>
+                <div>
+                    <input type="file" id="fileNoMandatory" style="display: none;" accept="your_file_extensions">
+                    <div class="tabs">
+                      <div class="tab active" data-target-table="documentsMandatory">Mandatory Documents</div>
+                      <div class="tab" data-target-table="documentsNonMandatory">Non Mandatory Documents</div>
+                    </div>
+                        <br>
+                    <!-- Documents table -->
+                    <table id="documentsMandatory" style="display: table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Expiry</th>
+                                <th>Approval</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeeDocumentsTableMandatory">
+                            <!-- Table rows will be populated dynamically using JavaScript -->
+                        </tbody>
+                    </table>
+                    <table id="documentsNonMandatory" style="display: none">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>Approval</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeeDocumentsTableNonMandatory">
+                            <!-- Table rows will be populated dynamically using JavaScript -->
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
             </div>
-        <input type="file" id="fileNoMandatory" style="display: none;" accept="your_file_extensions">
-        <div class="tabs">
-          <div class="tab active" data-target-table="documentsMandatory">Mandatory Documents</div>
-          <div class="tab" data-target-table="documentsNonMandatory">Non Mandatory Documents</div>
-        </div>
-            <br>
-        <!-- Documents table -->
-        <table id="documentsMandatory" style="display: table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Expiry</th>
-                    <th>Approval</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="employeeDocumentsTableMandatory">
-                <!-- Table rows will be populated dynamically using JavaScript -->
-            </tbody>
-        </table>
-        <table id="documentsNonMandatory" style="display: none">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Approval</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="employeeDocumentsTableNonMandatory">
-                <!-- Table rows will be populated dynamically using JavaScript -->
-            </tbody>
-        </table>
-        </div>
 
         <!-- Right modal update document -->
         <div id="modal-container">
@@ -202,7 +208,6 @@
 <script src="assets/js/profile.js"></script>
 <script src="assets/js/employeedocmanagement.js"></script>
 <script src="assets/js/documentmanagement.js"></script>
-<script src="assets/js/comppkgmngmt.js"></script>
 <script src="assets/js/employeemanagement.js"></script>
 
 </body>

@@ -150,11 +150,11 @@ function createLoadingScreen() {
 function redirectToLogin(){
     window.location.href = LOGIN_URL
 }
-    function showLoading() {
-        loadingScreen.classList.add('show'); // Add the hidden class
-    }
+function showLoading() {
+    loadingScreen.classList.add('show'); // Add the hidden class
+}
 
-    // Function to hide the loading screen
-    function hideLoading() {
-        loadingScreen.classList.remove('show'); // Remove the hidden class
-    }
+// Function to hide the loading screen
+function hideLoading() {
+    loadingScreen.classList.remove('show'); // Remove the hidden class
+}

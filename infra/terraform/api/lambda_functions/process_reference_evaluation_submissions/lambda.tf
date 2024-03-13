@@ -15,7 +15,7 @@ resource "aws_lambda_function" "lambda_function_employee_reference_submissions" 
   handler          = "api_services/employee_references/employee_references_submissions.submission_handler"
   depends_on       = [module.lambda_layers]
   layers           = [module.lambda_layers.layer_arn]
-  timeout          = 10
+  timeout          = 30
 
   //TODO: Change fixed security groups IDs
   vpc_config {

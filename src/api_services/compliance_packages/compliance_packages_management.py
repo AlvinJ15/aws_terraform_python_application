@@ -1,8 +1,10 @@
 import json
+import traceback
 
 from api_services.utils.database_utils import DataBase
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_compliance_package import CompliancePackage
+from data_models.model_employee_compliance_package import EmployeeCompliancePackage
 from data_models.model_package_document import PackageDocument
 from data_models.model_package_role import PackageRole
 from data_models.models import update_object_from_dict
@@ -58,28 +60,26 @@ def create_handler(event, context, stage):
 
     with DataBase.get_session(stage) as db:
         try:
+            roles = data.pop("roles", [])
+            document_types = data.pop("document_types", [])
             new_compliance_package = CompliancePackage(**data)
             new_compliance_package.package_id = DataBase.generate_uuid()
             new_compliance_package.organization_id = organization_id
             new_compliance_package.creation_date = DataBase.get_now()
             db.add(new_compliance_package)
             db.flush()
-            roles = data.get("roles", [])
             for role_id in roles:
                 new_package_role = PackageRole()
                 new_package_role.package_id = new_compliance_package.package_id
                 new_package_role.role_id = role_id
                 db.add(new_package_role)
-            document_types = data.get("document_types", [])
             for document_type_id in document_types:
                 new_package_document = PackageDocument()
                 new_package_document.package_id = new_compliance_package.package_id
                 new_package_document.document_type_id = document_type_id
                 db.add(new_package_document)
             db.commit()
-            new_compliance_package = db.query(CompliancePackage).filter_by(
-                package_id=new_compliance_package.package_id
-            ).first()
+            db.refresh(new_compliance_package)
             return {"statusCode": 201,
                     "headers": {
                         'Access-Control-Allow-Headers': 'Content-Type',
@@ -88,6 +88,8 @@ def create_handler(event, context, stage):
                     },
                     "body": json.dumps(new_compliance_package.to_dict())}
         except Exception as err:  # Handle general exceptions for robustness
+            string_error = traceback.format_exc()
+            print(string_error)
             return {"statusCode": 500, "body": f"Error creating CompliancePackage: {err}"}
 
 
@@ -167,6 +169,9 @@ def delete_single_handler(event, context, stage):
         try:
             compliance_package = db.query(CompliancePackage).filter_by(package_id=package_id).first()
             if compliance_package:
+                db.query(PackageDocument).filter_by(package_id=package_id).delete()
+                db.query(PackageRole).filter_by(package_id=package_id).delete()
+                db.query(EmployeeCompliancePackage).filter_by(package_id=package_id).delete()
                 db.delete(compliance_package)
                 db.commit()  # Commit the deletion to the database
                 return {"statusCode": 200, "body": json.dumps({"deleted_id": compliance_package.package_id})}

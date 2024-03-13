@@ -47,116 +47,56 @@
 							</header>
 						</div>
 					</section>
-					<div class="form-group" style="margin-left: 50px;">
-						<label for="package-name" style="margin-top: 15px;">Package Name</label>
+					<div class="form-group">
+						<label for="package-name">Package Name</label>
 						<div class="input-container">
 							<input type="text" id="package-name" name="package-name" class="textbox" placeholder="Enter package name" style="width: 500px;" required>
 						</div>
 					</div>
-					<div class="form-group" style="margin-left: 50px;">
-						<label for="assignmentrules" style="margin-top: 15px;">Assignment Rules</label>
-						<div class="input-container">
-							<p>Select the roles the compliance requirements package will be automatically added to for new staff members. Leave the field blank if you want to assign the package manually.</p>
-							<div class="form-group" style="margin-left: 50px;">
-								<label for="compliancerequirements2" style="margin-top: 15px; margin-left: 50px;">Compliance Requirements</label>
-								<div class="input-container">
-									<div class="column">
-										<input type="checkbox" id="option1" name="compliancerequirements" value="Option 1">
-										<label for="option1">Option 1</label><br>
-										<input type="checkbox" id="option2" name="compliancerequirements" value="Option 2">
-										<label for="option2">Option 2</label><br>
-										<input type="checkbox" id="option3" name="compliancerequirements" value="Option 3">
-										<label for="option3">Option 3</label><br>
-									</div>
-									<!-- Add more options here -->
-								</div>
-							</div>
-							<div style="margin-left: 50px;">
-								<input type="checkbox" id="value1" name="assignmentrules" value="value1">
-								<label for="manualassignment">Manual Assignment</label>
-							</div>
+					<div class="form-group">
+						<label for="document-types-table">Document Types</label>
+						<div class="table-container">
+							<table id="document-types-table">
+								<thead>
+									<tr>
+										<th>Check</th>
+										<th>Name</th>
+										<th>Description</th>
+										<th>Category</th>
+										<th>Expiration</th>
+									</tr>
+								</thead>
+								<tbody id="documentTypesTableBody">
+								<!-- Table rows will be populated dynamically using JavaScript -->
+								</tbody>
+							</table>
 						</div>
-						<div class="form-group" style="margin-left: 50px;">
-							<label for="compliancerequirements2" style="margin-top: 15px; margin-left: 50px;">Compliance Requirements</label>
-							<a href="ruleslist.html" class="button primary" style="margin-left: 10px;">Add Rules</a>
-							</div>
+					</div>
+					<div class="form-group">
+						<label for="roles-table">Roles</label>
+						<div class="table-container">
+							<table id="roles-table">
+								<thead>
+									<tr>
+										<th>Check</th>
+										<th>Name</th>
+										<th>Description</th>
+										<th>Type</th>
+									</tr>
+								</thead>
+								<tbody id="rolesTableBody">
+								<!-- Table rows will be populated dynamically using JavaScript -->
+								</tbody>
+							</table>
 						</div>
-						<div class="form-group" style="margin-top: 20px; margin-left: 50px;">
-							<a href="#" class="button primary default" id="save-button" disabled>Save Package</a>
-							<a href="#" class="button default" id="cancel-button">Cancel</a>
-						</div>
+					</div>
+					<div class="form-group" style="margin-top: 20px; margin-left: 50px;">
+						<a href="#" onclick="saveButtonAction()" class="button primary default" id="save-button" disabled>Save Package</a>
+						<a href="compliancerequirements.html" class="button default" id="cancel-button">Cancel</a>
 					</div>
 				</div>
-			<!-- Sidebar -->
-			<div id="sidebar">
-				<div class="inner">
-					<span class="image object">
-						<img src="images/bpologo2.png" alt="bpologo2" style="display: block; margin: 0 auto;" />
-					</span>
-					<br />
-					<meta charset="UTF-8">
-					<meta name="viewport" content="width=device-width, initial-scale=1.0">
-					<link rel="stylesheet" href="styles.css">
-					<title>User Button</title>
-				</head>
-				<body>
-					<div class="sidebar">
-						<a href="profile.html" style="display: flex; align-items: center;">
-							<div style="border-radius: 50%; width: 40px; height: 40px; background-color: #00125B; display: flex; justify-content: center; align-items: center; margin-right: 10px;">
-							</div>
-							<span>User Settings</span>
-						</a>
-					   
-					</div>
-					<!-- Search -->
-					<section id="search" class="alt">
-						<form method="post" action="#">
-							<input type="text" name="query" id="query" placeholder="Search" />
-						</form>
-					</section>
-					<!-- Menu -->
-					<nav id="menu">
-						<header class="major">
-							<h2>Menu</h2>
-						</header>
-						<ul>
-							<li><a href="dashboard.html">Homepage</a></li>
-							<li>
-								<span class="opener">Organization Settings</span>
-								<ul>
-									<li><a href="organizationdetails.html">Organization Details</a></li>
-									<li><a href="documenttypes.html">Document Types</a></li>
-									<li><a href="compliancerequirements.html">Compliance Requirements</a></li>
-									<li><a href="organizationdocuments.html">Organization Documents</a></li>
-									<li><a href="questionnaires.html">Questionnaires</a></li>
-									<li><a href="onboarding.html">Onboarding</a></li>
-								</ul>
-							</li>
-							<li>
-								<span class="opener">Staff</span>
-								<ul>
-									<li><a href="staff.html">Staff</a></li>
-									<li><a href="staffapproval.html">Staff needing approval</a></li>
-								</ul>
-							</li>
-						</ul>
-					</nav>
-					
-			<!-- Section -->
-			<section>
-				<header class="major">
-					<h2>Get in touch</h2>
-				</header>
-				<p>We're here to help! If you're experiencing any issues or have questions, please don't hesitate to reach out to us at <a href="mailto:help@tollanis.com">help@tollanis.com</a>. Our dedicated support team is ready to assist you and ensure you have a smooth experience with our new product. Your satisfaction is our priority.</p>
-				<ul class="contact">
-					<li class="icon solid fa-envelope"><a href="mailto:help@tollanis.com">help@tollanis.com</a></li>
-				</ul>
-			</section>
-
+			</div>
 		</div>
-	</div>
-
-</div>
 
 <!-- Scripts -->
 <script src="assets/js/jquery.min.js"></script>
@@ -165,9 +105,13 @@
 <script src="assets/js/index.js"></script>
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
+<script src="assets/js/env_config.js"></script>
+<script src="assets/js/apis.js"></script>
+<script src="assets/js/roles.js"></script>
+<script src="assets/js/documentTypes.js"></script>
+<script src="assets/js/compliancePackages.js"></script>
+<script src="assets/js/addComplianceRequirements.js"></script>
 <script src="assets/js/documentmanagement.js"></script>
-<script src="assets/js/comppkgmngmt.js"></script>
-<script src="assets/js/employeemanagement.js"></script>
 
 </body>
 

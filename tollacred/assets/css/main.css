@@ -2374,7 +2374,7 @@ body {
     top: 50%;
     right: 0; /* Positions the modal at the right edge within the container */
     transform: translateY(-50%); /* Centers the modal vertically within the container */
-    width: 300px;
+    width: 50%;
     background-color: white;
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
@@ -2406,4 +2406,12 @@ body {
 
 #approve-button{
   background-color: #0abd00;
+}
+
+/*table-container on addcompliancerequirement*/
+.table-container {
+  width: 50%; /* Adjust width as needed */
+  height: 300px; /* Adjust height as needed */
+  overflow-y: auto; /* Enable vertical scrollbar */
+  border: 1px solid #ddd; /* Optional border */
 }

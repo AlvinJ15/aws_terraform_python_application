@@ -22,7 +22,7 @@ class MockDatabase:
     _mock_date = datetime(2000, 1, 1, 0, 0, 0)  # Fixed Date for test dates
 
     @classmethod
-    def mock_create_session(cls):
+    def mock_create_session(cls, stage):
         test_database_url = 'sqlite:///:memory:'
 
         config = Configurator(settings={"sqlalchemy.url": test_database_url})
