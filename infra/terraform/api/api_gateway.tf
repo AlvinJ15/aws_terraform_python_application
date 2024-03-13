@@ -24,7 +24,8 @@ resource "aws_api_gateway_deployment" "deployment" {
     module.employee_management,
     module.employee_document_management,
     module.employee_questionnaire_response_management,
-    module.employee_reference_management
+    module.employee_reference_management,
+    module.administrator_management
   ]
   lifecycle {
     create_before_destroy = true

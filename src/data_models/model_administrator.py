@@ -23,5 +23,5 @@ class Administrator(Base):
             "first_name": self.first_name,
             "last_name": self.last_name,
             "email": self.email,
-            "created": self.creation_date.strftime("%Y-%m-%d %H:%M:%S")
+            "created": self.created.strftime("%Y-%m-%d %H:%M:%S")
         }

@@ -5,7 +5,8 @@ window.addEventListener("DOMContentLoaded", async () => {
         await setEmployeeIdQueryParameter(employeeId);
         const saveButton = document.getElementById("save_button");
         saveButton.addEventListener("click", () => {
-            updateEmployee(employeeId);
+            let data = getEmployeeJson();
+            updateEmployee(employeeId, data);
         });
 
         await retrieveEmployeeInformation(employeeId)
@@ -13,20 +14,6 @@ window.addEventListener("DOMContentLoaded", async () => {
         console.error("Error adding options Employee:", error);
     }
 });
-
-async function updateEmployee(employee_id){
-    let organizationId = localStorage.getItem('organization_id')
-    let endpoint = `organizations/${organizationId}/employees/${employee_id}`;
-    let data = getEmployeeJson();
-    let response = await makeRequest('PUT', endpoint, data);
-    if(response){
-        alert('Employee Info Updated');
-    }
-    else {
-        alert('Error Updating Info');
-    }
-
-}
 
 function getEmployeeJson(){
     let birthday = document.getElementById('date-of-birth').value
@@ -71,13 +58,6 @@ async function setEmployeeIdQueryParameter() {
 async function retrieveEmployeeInformation(employeeId){
     let response = await loadEmployee(employeeId)
     fillFormulary(response);
-}
-
-async function loadEmployee(employeeId){
-    let organizationId = localStorage.getItem('organization_id')
-    let endpoint = `organizations/${organizationId}/employees/${employeeId}`;
-    let response = await makeRequest('GET', endpoint)
-    return response
 }
 
 function fillFormulary(response){

@@ -10,32 +10,6 @@ async function getAllEmployeeReferences() {
     populateEmployeeReferencesTable(response);
 }
 
-// Function to create a new employee
-async function createEmployee() {
-    let organizationId = localStorage.getItem('organization_id');
-    let createEndpoint = `organizations/${organizationId}/employees`;
-    let data = getAddStaffJson();
-    let response = await makeRequest('POST', createEndpoint, data)
-    if(response !== null){
-        alert('Employee Created !!!')
-        window.location.href = 'staff.html'
-    } else {
-        alert('Error Creating the Employee.')
-    }
-}
-
-// Function to delete a single employee with employee_id
-async function deleteEmployee(employeeId) {
-    let organizationId = localStorage.getItem("organization_id");
-    let deleteEndpoint = `organizations/${organizationId}/employees/${employeeId}`;
-    let response = await makeRequest('DELETE', deleteEndpoint)
-    if(response){
-        alert('Employee Deleted.')
-    }
-    else{
-        alert('Error Deleting Employee')
-    }
-}
 
 // Function to create "Manage" and "Delete" buttons
 function createReferenceButtons(reference) {

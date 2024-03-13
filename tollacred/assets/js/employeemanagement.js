@@ -1,9 +1,21 @@
 // Function to get a list of all employees associated with organization_id
+async function executeBaseRequests(page) {
+    try {
+        let organizationId = localStorage.getItem('organization_id')
+        let endpoint = `organizations/${organizationId}/employees?page=${page}`;
+        const [response, adminList] = await Promise.all([
+            makeRequest('GET', endpoint),
+            loadAdministrators()
+        ]);
+        return {response, adminList}
+        // Your code here after both responses are received
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
 async function getAllEmployees(page) {
-    let organizationId = localStorage.getItem('organization_id')
-    let endpoint = `organizations/${organizationId}/employees?page=${page}`;
-    let response = await makeRequest('GET', endpoint)
-    populateEmployeeTable(response);
+    let data = await executeBaseRequests(page)
+    populateEmployeeTable(data.response, data.adminList);
 }
 
 // Function to create a new employee
@@ -34,15 +46,14 @@ async function deleteEmployee(employeeId) {
 }
 
 async function manageEmployee(employeeId) {
-    let organizationId = localStorage.getItem("organization_id");
-    window.location.href = `profile.html?employee_id=${employee_id=employeeId}`
+    window.location.href = `profile.html?employee_id=${employeeId}`
 }
 
 // Function to create "Manage" and "Delete" buttons
 function createEditButtons(employeeId) {
-    var editCell = document.createElement("td");
-    var manageButton = document.createElement("button");
-    var deleteButton = document.createElement("button");
+    let editCell = document.createElement("td");
+    let manageButton = document.createElement("button");
+    let deleteButton = document.createElement("button");
 
     // Set attributes for "Manage" button
     manageButton.innerHTML = "Manage";
@@ -64,8 +75,8 @@ function createEditButtons(employeeId) {
 }
 
 // Function to populate the employee table with data
-function populateEmployeeTable(data) {
-    var tableBody = document.getElementById("employeeTableBody");
+async function populateEmployeeTable(data, adminList) {
+    let tableBody = document.getElementById("employeeTableBody");
 
     // Clear existing rows
     tableBody.innerHTML = "";
@@ -84,7 +95,19 @@ function populateEmployeeTable(data) {
 
         cellStaffMember.textContent = `${employee.profile.first_name} ${employee.profile.last_name}`  || "";
         cellRole.textContent = employee.profile.role || "";
-        cellAssigned.textContent = employee.assignee || "";
+        let assignedSelect = document.createElement('select');
+        assignedSelect.style.width = 'auto';
+        fillDropDown(adminList, assignedSelect);
+        cellAssigned.appendChild(assignedSelect);
+        if (employee.assignee_id){
+            assignedSelect.value = employee.assignee_id;
+        } else {
+            assignedSelect.value = "";
+        }
+        assignedSelect.addEventListener('change', function(event) {
+            const selectedOption = event.target.value
+            updateEmployee(employee.employee_id, {assignee_id: selectedOption});
+        });
         cellCompliancePackages.innerHTML = employee.compliance_packages_names.join(', ') || "";
         cellSpecialty.textContent = employee.profile.specialty;
         cellCompliance.textContent = employee.status || "";
