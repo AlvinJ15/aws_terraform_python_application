@@ -64,7 +64,9 @@ function createEditButtons(employeeId) {
     // Set attributes for "Delete" button
     deleteButton.innerHTML = "Delete";
     deleteButton.onclick = function() {
-        deleteEmployee(employeeId);
+        if(confirm('Are you sure you want to delete this Employee?')){
+            deleteEmployee(employeeId);
+        }
     };
 
     // Append buttons to the cell

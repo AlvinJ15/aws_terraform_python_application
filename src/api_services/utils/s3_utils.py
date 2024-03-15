@@ -1,4 +1,5 @@
 from boto3 import Session
+from boto3 import resource
 
 session = Session()
 s3_client = session.client("s3")
@@ -45,3 +46,26 @@ def create_path_to_s3(path):
     except Exception as e:
         print(f'Error creating path in S3: {e}')
 
+
+def delete_file_from_s3(path):
+    try:
+        s3_client.delete_object(
+            Bucket=BUCKET_NAME,
+            Key=path,
+        )
+        print(f'File {path} deleted successfully from S3')
+    except Exception as e:
+        print(f'Error deleting file from S3: {e}')
+
+
+def delete_entire_folder(path):
+    s3 = resource('s3')
+    bucket = s3.Bucket(BUCKET_NAME)
+    objects_to_delete = []
+    for obj in bucket.objects.filter(Prefix=path):
+        objects_to_delete.append({'Key': obj.key})
+    bucket.delete_objects(
+        Delete={
+            'Objects': objects_to_delete
+        }
+    )

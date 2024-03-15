@@ -17,63 +17,16 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-function createReviewButton(employeeDocument){
-    let reviewButton = document.createElement("button");
-    reviewButton.innerHTML = "Review";
-    reviewButton.onclick = function() {
-        const modalContainer = document.getElementById('modal-container');
-        lastModalElement = document.getElementById("modal-review");
-        modalContainer.classList.add('active');
-        lastModalElement.classList.add('active');
-        configureReviewSubButtons(employeeDocument);
-    };
-    return reviewButton;
-}
-
-function configureReviewSubButtons(employeeDocument) {
-    let approveBtn = document.getElementById('approve-button');
-    let rejectBtn = document.getElementById('reject-button');
-    let downloadBtn = document.getElementById('download-button');
-
-    approveBtn.onclick = function() {
-        updateDocumentStatus(employeeDocument, 'Approved');
-    };
-    rejectBtn.onclick = function() {
-        updateDocumentStatus(employeeDocument, 'Rejected');
-    };
-    downloadBtn.onclick = function() {
-        downloadEmployeeDocument(employeeDocument);
-    };
-}
-
-async function updateDocumentStatus(employeeDocument, status) {
-    const employeeId = new URLSearchParams(window.location.search).get('employee_id');
-    const documentId = employeeDocument.document_id;
-    const formData = new FormData();
-    formData.append('status', status);
-    let organizationId = localStorage.getItem('organization_id')
-    let endpoint = `organizations/${organizationId}/employees/${employeeId}/documents/${documentId}`;
-    let response = await makeRequest('PUT', endpoint, formData, false);
-    if (response) {
-        alert('Document Updated.');
-        let closeModalBtn = document.getElementById('close-modal');
-        closeModalBtn.click()
-    }
-    else {
-        alert('Error Updating Document');
-    }
-}
-
 function getFileName(path) {
-  const parts = path.split('/'); // Split the path into an array of path segments
-  return parts[parts.length - 1]; // Access the last element (filename)
+    const parts = path.split('/'); // Split the path into an array of path segments
+    return parts[parts.length - 1]; // Access the last element (filename)
 }
 
 async function downloadEmployeeDocument(employeeDocument) {
     const employeeId = new URLSearchParams(window.location.search).get('employee_id');
     let organizationId = localStorage.getItem('organization_id')
     let endpoint = `organizations/${organizationId}/employees/${employeeId}/documents/${employeeDocument.document_id}`;
-    let response =  await makeRequest('GET', endpoint);
+    let response = await makeRequest('GET', endpoint);
     // Get the download URL from the API call (replace with your actual API call logic)
 
     const downloadUrl = response.download_url
@@ -98,17 +51,16 @@ fileInputMandatory.addEventListener('change', async (event) => {
         let response = await uploadEmployeeDocument(documentTypeSaved, employeeIdSaved, selectedFile);
         if (response) {
             alert('Document Uploaded');
-        }
-        else {
+        } else {
             alert('Error when Uploading');
         }
     }
 });
 
-function createUploadButton(documentType, employeeId){
+function createUploadButton(documentType, employeeId) {
     let uploadButton = document.createElement("button");
     uploadButton.innerHTML = "Upload";
-    uploadButton.onclick = async function() {
+    uploadButton.onclick = async function () {
         documentTypeSaved = documentType;
         employeeIdSaved = employeeId;
         document.getElementById('fileNoMandatory').click();
@@ -117,7 +69,7 @@ function createUploadButton(documentType, employeeId){
 
 }
 
-async function uploadEmployeeDocument(documentType, employeeId, file){
+async function uploadEmployeeDocument(documentType, employeeId, file) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('document_type_id', documentType.id);
@@ -127,7 +79,7 @@ async function uploadEmployeeDocument(documentType, employeeId, file){
     return await makeRequest('POST', endpoint, formData, false)
 }
 
-async function updateEmployeeDocument(documentId, employeeId, expiry, documentNumber, file){
+async function updateEmployeeDocument(documentId, employeeId, expiry, documentNumber, file) {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('status', 'Awaiting Approval');
@@ -140,13 +92,12 @@ async function updateEmployeeDocument(documentId, employeeId, expiry, documentNu
         alert('Document Updated.');
         let closeModalBtn = document.getElementById('close-modal');
         closeModalBtn.click()
-    }
-    else {
+    } else {
         alert('Error Updating Document');
     }
 }
 
-async function loadEmployeeDocuments(employeeId){
+async function loadEmployeeDocuments(employeeId) {
     let organizationId = localStorage.getItem('organization_id')
     let endpoint = `organizations/${organizationId}/employees/${employeeId}/documents`;
     let response = await makeRequest('GET', endpoint)
@@ -160,7 +111,7 @@ async function loadAllDocumentTypes() {
     return response
 }
 
-async function loadCompliancePackageDocuments(all_documents){
+async function loadCompliancePackageDocuments(all_documents) {
     const employeeId = new URLSearchParams(window.location.search).get('employee_id');
     let organizationId = localStorage.getItem('organization_id')
     let endpoint = `organizations/${organizationId}/employees/${employeeId}`;
@@ -174,7 +125,7 @@ async function loadCompliancePackageDocuments(all_documents){
     let mandatory = []
     let non_mandatory = []
     all_documents.forEach(document => {
-        if(uniqueList.indexOf(document.id) !== -1){
+        if (uniqueList.indexOf(document.id) !== -1) {
             mandatory.push(document);
         } else {
             non_mandatory.push(document);
@@ -207,21 +158,142 @@ function populateMandatoryDocuments(all_documents, employee_documents) {
         let cellAction = row.insertCell(4);
 
         cellName.textContent = documentType.name;
-        if (employeeDocumentsMap.has(documentType.id)){
+        if (employeeDocumentsMap.has(documentType.id)) {
             let employeeDocument = employeeDocumentsMap.get(documentType.id);
             cellStatus.textContent = employeeDocument.status;
-            cellExpiry.textContent  = employeeDocumentsMap.get(documentType.id).expiry_date || "";
-            cellApproval.textContent = employeeDocumentsMap.get(documentType.id).approver_id
-            cellAction.appendChild(createReviewButton(employeeDocument));
-            cellAction.appendChild(createUpdateButton(employeeDocument));
-        }
-        else {
+            cellExpiry.textContent = employeeDocumentsMap.get(documentType.id).expiry_date || "";
+            cellApproval.textContent = employeeDocumentsMap.get(documentType.id).approver_id;
+            cellAction.appendChild(createHamburgerActions(employeeDocument));
+        } else {
             cellStatus.textContent = "Not Uploaded";
             cellApproval.textContent = "";
             cellExpiry.textContent = ""
             cellAction.appendChild(createUploadButton(documentType, employeeId))
         }
     });
+}
+
+function createHamburgerActions(employeeDocument) {
+    const container = document.createElement('div');
+    container.classList.add('more-container');
+
+    const more = document.createElement('div');
+    more.classList.add('more');
+
+    const moreBtn = document.createElement('button');
+    moreBtn.id = 'more-btn';
+    moreBtn.classList.add('more-btn');
+
+    for (let i = 0; i < 3; i++) { // Create three dots
+        const dot = document.createElement('span');
+        dot.classList.add('more-dot');
+        moreBtn.appendChild(dot);
+    }
+
+    const moreMenu = document.createElement('div');
+    moreMenu.classList.add('more-menu');
+
+    function hideMenu(event) {
+        const clickedElement = event.target;
+
+        if (!moreMenu.contains(clickedElement)) {
+            more.classList.remove('show-more-menu');
+            moreMenu.setAttribute('aria-hidden', true);
+            document.removeEventListener('mousedown', hideMenu);
+        }
+    }
+    moreBtn.onclick = () =>{
+        more.classList.add('show-more-menu');
+        moreMenu.setAttribute('aria-hidden', false);
+        document.addEventListener('mousedown', hideMenu, false);
+    }
+
+    const moreMenuCaret = document.createElement('div');
+    moreMenuCaret.classList.add('more-menu-caret');
+
+    const caretOuter = document.createElement('div');
+    caretOuter.classList.add('more-menu-caret-outer');
+    moreMenuCaret.appendChild(caretOuter);
+
+    const caretInner = document.createElement('div');
+    caretInner.classList.add('more-menu-caret-inner');
+    moreMenuCaret.appendChild(caretInner);
+
+    moreMenu.appendChild(moreMenuCaret);
+
+    const moreMenuItems = document.createElement('ul');
+    moreMenuItems.classList.add('more-menu-items');
+    moreMenuItems.setAttribute('tabindex', '-1');
+    moreMenuItems.setAttribute('role', 'menu');
+    moreMenuItems.setAttribute('aria-labelledby', 'more-btn');
+    moreMenuItems.setAttribute('aria-hidden', 'true'); // Initially hidden
+
+    const options = [
+        {text: 'Review', click_function: reviewButtonClick},
+        {text: 'Upload', click_function: updateButtonClick},
+        {text: 'Delete', click_function: deleteButtonClick}
+    ]; // Option labels (modify as needed)
+    options.forEach(item => {
+        const menuItem = document.createElement('li');
+        menuItem.classList.add('more-menu-item');
+        menuItem.setAttribute('role', 'presentation');
+
+        const menuBtn = document.createElement('button');
+        menuBtn.type = 'button';
+        menuBtn.classList.add('more-menu-btn');
+        menuBtn.setAttribute('role', 'menuitem');
+        menuBtn.textContent = item.text;
+        menuBtn.onclick = () => {
+            item.click_function(employeeDocument)
+        }
+        menuItem.appendChild(menuBtn);
+        moreMenuItems.appendChild(menuItem);
+    });
+
+    moreMenu.appendChild(moreMenuItems);
+
+    more.appendChild(moreBtn);
+    more.appendChild(moreMenu);
+
+    container.appendChild(more);
+
+    // Here you can append the container element to your desired location in the DOM
+    // (replace with your selector or reference)
+    return container;
+}
+
+function abc(employeeDocument) {
+    const container = document.createElement('div');
+    container.id = 'hamburger-container';
+    const button = document.createElement('button');
+    button.classList.add('hamburger-button');
+
+    const optionsList = document.createElement('ul');
+    optionsList.classList.add('hamburger-options-list');
+
+    button.addEventListener('click', () => {
+        button.classList.toggle('active');
+        optionsList.classList.toggle('active');
+    });
+    const options = [
+        {text: 'Review', click_function: reviewButtonClick},
+        {text: 'Upload', click_function: updateButtonClick},
+        {text: 'Delete', click_function: deleteButtonClick}
+    ]; // Option labels (modify as needed)
+
+    options.forEach(option => {
+        const listItem = document.createElement('li');
+        listItem.classList.add('hamburger-option');
+        listItem.textContent = option.text;
+        listItem.onclick = () => {
+            option.click_function(employeeDocument)
+        }
+        optionsList.appendChild(listItem);
+    });
+
+    container.appendChild(button);
+    container.appendChild(optionsList);
+    return container;
 }
 
 function populateNonMandatoryDocuments(all_documents, employee_documents) {
@@ -243,14 +315,12 @@ function populateNonMandatoryDocuments(all_documents, employee_documents) {
         let cellAction = row.insertCell(3);
 
         cellName.textContent = documentType.name;
-        if (employeeDocumentsMap.has(documentType.id)){
+        if (employeeDocumentsMap.has(documentType.id)) {
             let employeeDocument = employeeDocumentsMap.get(documentType.id);
             cellStatus.textContent = employeeDocument.status;
-            cellApproval.textContent  = employeeDocumentsMap.get(documentType.id).expiry_date || "";
-            cellAction.appendChild(createReviewButton(employeeDocument));
-            cellAction.appendChild(createUpdateButton(employeeDocument));
-        }
-        else {
+            cellApproval.textContent = employeeDocumentsMap.get(documentType.id).expiry_date || "";
+            cellAction.appendChild(createHamburgerActions(employeeDocument));
+        } else {
             cellStatus.textContent = "Not Uploaded";
             cellApproval.textContent = "";
             cellAction.appendChild(createUploadButton(documentType, employeeId))
@@ -262,33 +332,85 @@ const tabs = document.querySelectorAll('.tab');
 const tables = document.querySelectorAll('table');
 
 tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('active'));  // Remove active state from all tabs
-    tab.classList.add('active');  // Set clicked tab as active
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));  // Remove active state from all tabs
+        tab.classList.add('active');  // Set clicked tab as active
 
-    const targetTableId = tab.dataset.targetTable;  // Get target table ID
-    const targetTable = document.getElementById(targetTableId);  // Select target table
+        const targetTableId = tab.dataset.targetTable;  // Get target table ID
+        const targetTable = document.getElementById(targetTableId);  // Select target table
 
-    tables.forEach(table => table.style.display = 'none');  // Initially hide all tables
-    targetTable.style.display = 'table';  // Show the target table
-  });
+        tables.forEach(table => table.style.display = 'none');  // Initially hide all tables
+        targetTable.style.display = 'table';  // Show the target table
+    });
 });
 
-function createUpdateButton(documentEmployee){
-    let documentId = documentEmployee.document_id;
-    let openModalBtn = document.createElement("button");
-    openModalBtn.innerHTML = "Update";
-    openModalBtn.onclick = function() {
-        const modalContainer = document.getElementById('modal-container');
-        lastModalElement = document.getElementById("modal-update");
-        modalContainer.classList.add('active');
-        lastModalElement.classList.add('active');
-        currentDocumentId = documentId;
-    };
-    return openModalBtn;
+function reviewButtonClick(employeeDocument) {
+    const modalContainer = document.getElementById('modal-container');
+    lastModalElement = document.getElementById("modal-review");
+    modalContainer.classList.add('active');
+    lastModalElement.classList.add('active');
+    configureReviewSubButtons(employeeDocument);
 }
 
-function configureRightModal(){
+function configureReviewSubButtons(employeeDocument) {
+    let approveBtn = document.getElementById('approve-button');
+    let rejectBtn = document.getElementById('reject-button');
+    let downloadBtn = document.getElementById('download-button');
+
+    approveBtn.onclick = function () {
+        updateDocumentStatus(employeeDocument, 'Approved');
+    };
+    rejectBtn.onclick = function () {
+        updateDocumentStatus(employeeDocument, 'Rejected');
+    };
+    downloadBtn.onclick = function () {
+        downloadEmployeeDocument(employeeDocument);
+    };
+}
+
+async function updateDocumentStatus(employeeDocument, status) {
+    const employeeId = new URLSearchParams(window.location.search).get('employee_id');
+    const documentId = employeeDocument.document_id;
+    const formData = new FormData();
+    formData.append('status', status);
+    let organizationId = localStorage.getItem('organization_id')
+    let endpoint = `organizations/${organizationId}/employees/${employeeId}/documents/${documentId}`;
+    let response = await makeRequest('PUT', endpoint, formData, false);
+    if (response) {
+        alert('Document Updated.');
+        let closeModalBtn = document.getElementById('close-modal');
+        closeModalBtn.click()
+    } else {
+        alert('Error Updating Document');
+    }
+}
+
+function updateButtonClick(documentEmployee) {
+    let documentId = documentEmployee.document_id;
+    const modalContainer = document.getElementById('modal-container');
+    lastModalElement = document.getElementById("modal-update");
+    modalContainer.classList.add('active');
+    lastModalElement.classList.add('active');
+    currentDocumentId = documentId;
+}
+
+async function deleteButtonClick(documentEmployee) {
+    let organizationId = localStorage.getItem('organization_id')
+    const employeeId = new URLSearchParams(window.location.search).get('employee_id');
+    let endpoint = `organizations/${organizationId}/employees/${employeeId}/documents/${documentEmployee.document_id}`;
+    if (confirm('Are you sure you want to delete this document?')) {
+        let response = await makeRequest('DELETE', endpoint);
+        if (response) {
+            alert('Document Deleted.');
+            location.reload();
+        } else {
+            alert('Error Deleting Document');
+        }
+    }
+}
+
+
+function configureRightModal() {
     const updateBtn = document.getElementById('update-button');
 
     updateBtn.addEventListener('click', () => {

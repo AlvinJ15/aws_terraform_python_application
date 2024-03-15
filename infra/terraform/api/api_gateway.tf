@@ -143,9 +143,12 @@ resource "aws_s3_bucket_policy" "lambda_access" {
       },
       "Action": [
         "s3:GetObject",
-        "s3:PutObject"
+        "s3:PutObject",
+        "s3:ListBucket",
+        "s3:DeleteObject"
       ],
       "Resource": [
+        "arn:aws:s3:::tollacred",
         "arn:aws:s3:::tollacred/*"
       ]
     }

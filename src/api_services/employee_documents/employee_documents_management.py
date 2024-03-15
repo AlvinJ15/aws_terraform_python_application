@@ -6,7 +6,7 @@ from streaming_form_data import StreamingFormDataParser
 from streaming_form_data.targets import ValueTarget
 
 from api_services.utils.database_utils import DataBase
-from api_services.utils.s3_utils import upload_file_to_s3, generate_file_link
+from api_services.utils.s3_utils import upload_file_to_s3, generate_file_link, delete_file_from_s3
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_document_type import DocumentType
 from data_models.model_employee_profile import EmployeeProfile
@@ -155,9 +155,11 @@ def delete_single_handler(event, context, stage):
     with DataBase.get_session(stage) as db:
         try:
             organization_document = db.query(EmployeeDocument).filter_by(document_id=document_id).first()
+            document_path = organization_document.s3_path
             if organization_document:
                 db.delete(organization_document)
                 db.commit()  # Commit the deletion to the database
+                delete_file_from_s3(document_path)
                 return {"statusCode": 200,
                         "headers": {
                             'Access-Control-Allow-Headers': 'Content-Type',

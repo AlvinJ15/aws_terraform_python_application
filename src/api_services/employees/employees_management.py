@@ -1,11 +1,15 @@
 import json
+import traceback
 
 from api_services.utils.database_utils import DataBase
-from api_services.utils.s3_utils import create_path_to_s3
+from api_services.utils.s3_utils import create_path_to_s3, delete_file_from_s3, delete_entire_folder
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_employee import Employee
 from data_models.model_employee_compliance_package import EmployeeCompliancePackage
+from data_models.model_employee_document import EmployeeDocument
 from data_models.model_employee_profile import EmployeeProfile
+from data_models.model_employee_questionnaire_response import EmployeeQuestionnaireResponse
+from data_models.model_employee_reference import EmployeeReference
 from data_models.model_organization import Organization
 from data_models.models import update_object_from_dict, set_fields_from_dict
 
@@ -79,7 +83,7 @@ def create_handler(event, context, stage):
             organization = db.query(Organization).filter_by(id=organization_id).first()
             path = (f"{stage}/app_data/orgs/{organization.name} {DataBase.get_now().year}/"
                     f"Ongoing/{new_employee_profile.first_name} {new_employee_profile.last_name} - "
-                    f"{new_employee_profile.role}")
+                    f"{new_employee_profile.role}/")
             create_path_to_s3(path)
             return {"statusCode": 201,
                     "headers": {
@@ -145,10 +149,17 @@ def delete_single_handler(event, context, stage):
 
     with DataBase.get_session(stage) as db:
         try:
-            profile = db.query(EmployeeProfile).filter_by(employee_id=employee_id).first()
             employee = db.query(Employee).filter_by(employee_id=employee_id).first()
             if employee:
-                db.delete(profile)
+                path = (f"{stage}/app_data/orgs/{employee.organization.name} {DataBase.get_now().year}/"
+                        f"Ongoing/{employee.profile.first_name} {employee.profile.last_name} - "
+                        f"{employee.profile.role}")
+                db.query(EmployeeCompliancePackage).filter_by(employee_id=employee_id).delete()
+                db.query(EmployeeProfile).filter_by(employee_id=employee_id).delete()
+                db.query(EmployeeDocument).filter_by(employee_id=employee_id).delete()
+                db.query(EmployeeQuestionnaireResponse).filter_by(employee_id=employee_id).delete()
+                db.query(EmployeeReference).filter_by(employee_id=employee_id).delete()
+                delete_entire_folder(path)
                 db.flush()
                 db.delete(employee)
                 db.commit()  # Commit the deletion to the database
@@ -162,4 +173,6 @@ def delete_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "Employee not found"}
         except Exception as err:
+            string_error = traceback.format_exc()
+            print(string_error)
             return {"statusCode": 500, "body": f"Error deleting Employee: {err}"}
