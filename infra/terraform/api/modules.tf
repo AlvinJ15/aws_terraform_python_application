@@ -150,3 +150,8 @@ module "expiry_soon_employees_documents" {
   source                   = "./lambda_functions/process_expiring_soon_employee_documents"
   lambda_exec              = aws_iam_role.lambda_exec
 }
+
+module "expired_employees_documents" {
+  source                   = "./lambda_functions/process_expired_employee_documents"
+  lambda_exec              = aws_iam_role.lambda_exec
+}
