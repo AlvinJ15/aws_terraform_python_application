@@ -1,6 +1,6 @@
-function createDocument() {
+async function createDocument() {
     // Get values from form
-    let organizationId = document.getElementById("organization-id").value;
+    let organizationId = localStorage.getItem('organization_id');
     let documentName = document.getElementById("document-name").value;
     let documentDescription = document.getElementById("document-description").value;
     let documentCategory = document.querySelector('input[name="document-category"]:checked').value;
@@ -8,52 +8,23 @@ function createDocument() {
 
     // Create JSON object
     let jsonRequestBody = {
-        "organization_id": organizationId,
         "name": documentName,
         "description": documentDescription,
         "category": documentCategory,
-        "expiration_months": documentExpiration
+        "expiration": documentExpiration
     };
 
-    // Convert JSON to string
-    let jsonString = JSON.stringify(jsonRequestBody);
-
-    // Replace these URLs with your actual endpoints
-    let createEndpoint = 'https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/body_request/document_types_management/body_create_handler.json';
-    let expectedResponseEndpoint = 'https://tollanis.jetbrains.space/p/tollacred/repositories/tollacredapp/files/develop/src/tests/json_data/expected/document_types_management/expected_create_handler.json';
-
-    // Make a POST request using fetch API
-    fetch(createEndpoint, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: jsonString,
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-
-        // Display success message (replace with your actual handling logic)
-        alert("Document created successfully!");
-
-        // Optionally, you can reset the form after saving.
-        document.getElementById("save-button").disabled = true;
-        document.getElementById("organization-id").value = "";
-        document.getElementById("document-name").value = "";
-        document.getElementById("document-description").value = "";
-        document.querySelector('input[name="document-category"]:checked').checked = false;
-        document.getElementById("document-expiration").value = "";
-    })
-    .catch((error) => {
-        console.error('Error:', error);
+    let endpoint = `organizations/${organizationId}/documents`;
+    let response = await makeRequest('POST', endpoint, jsonRequestBody);
+    if (response){
+        alert('Document Type Created!');
+        history.back();
+    }
+    else {
+        console.error('Error:');
         // Handle error (replace with your actual error handling logic)
-        alert("Error creating document. Please try again.");
-    });
-
-    // For demonstration purposes, you can log the endpoints
-    console.log('Body Request Endpoint:', createEndpoint);
-    console.log('Expected Response Endpoint:', expectedResponseEndpoint);
+        alert("Error creating document types. Please try again.");
+    }
 }
 async function getList() {
     let organizationId = localStorage.getItem('organization_id');
