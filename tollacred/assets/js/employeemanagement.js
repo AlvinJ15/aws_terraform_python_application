@@ -1,4 +1,6 @@
 // Function to get a list of all employees associated with organization_id
+let currentEmployee;
+let lastModalElement;
 async function executeBaseRequests(page) {
     try {
         let organizationId = localStorage.getItem('organization_id')
@@ -50,26 +52,33 @@ async function manageEmployee(employeeId) {
 }
 
 // Function to create "Manage" and "Delete" buttons
-function createEditButtons(employeeId) {
+function createEditButtons(employee) {
     let editCell = document.createElement("td");
     let manageButton = document.createElement("button");
     let deleteButton = document.createElement("button");
+    let editButton = document.createElement("button");
 
+    // Set attributes for "Edit" button
+    editButton.innerHTML = "Edit";
+    editButton.onclick = function () {
+        editStaffButtonClick(employee);
+    }
     // Set attributes for "Manage" button
     manageButton.innerHTML = "Manage";
     manageButton.onclick = function() {
-        manageEmployee(employeeId);
+        manageEmployee(employee.employee_id);
     };
 
     // Set attributes for "Delete" button
     deleteButton.innerHTML = "Delete";
     deleteButton.onclick = function() {
         if(confirm('Are you sure you want to delete this Employee?')){
-            deleteEmployee(employeeId);
+            deleteEmployee(employee.employee_id);
         }
     };
 
     // Append buttons to the cell
+    editCell.appendChild(editButton);
     editCell.appendChild(manageButton);
     editCell.appendChild(deleteButton);
 
@@ -86,6 +95,9 @@ async function populateEmployeeTable(data, adminList) {
     data.forEach(employee => {
         let row = tableBody.insertRow();
         let cellStaffMember = row.insertCell(0);
+        cellStaffMember.onclick = function () {
+            manageEmployee(employee.employee_id);
+        }
         let cellRole = row.insertCell(1);
         let cellAssigned = row.insertCell(2);
         let cellCompliancePackages = row.insertCell(3);
@@ -93,7 +105,7 @@ async function populateEmployeeTable(data, adminList) {
         let cellCompliance = row.insertCell(5);
         let cellTags = row.insertCell(6);
         let cellSignedOff = row.insertCell(7);
-        let cellActive = row.insertCell(8);
+        let cellNotes = row.insertCell(8);
 
         cellStaffMember.textContent = `${employee.profile.first_name} ${employee.profile.last_name}`  || "";
         cellRole.textContent = employee.profile.role || "";
@@ -117,10 +129,10 @@ async function populateEmployeeTable(data, adminList) {
             cellTags.innerHTML = employee.compliance_tags.split(',').join(', ') || "";
         }
         cellSignedOff.textContent = "";
-        cellActive.textContent = "";
+        cellNotes.textContent = employee.notes;
 
         // Add "Manage" and "Delete" buttons under the "Edit" column
-        let editCell = createEditButtons(employee.employee_id);
+        let editCell = createEditButtons(employee);
         row.appendChild(editCell);
     });
 }
@@ -169,4 +181,34 @@ function getAddStaffJson(){
             country: 'United States'
         }
     };
+}
+
+function editStaffButtonClick(employee) {
+    const modalContainer = document.getElementById('modal-container');
+    lastModalElement = document.getElementById("modal-single-staff");
+    modalContainer.classList.add('active');
+    lastModalElement.classList.add('active');
+    currentEmployee = employee;
+    fillEditStaffButtonClick(employee);
+}
+
+function fillEditStaffButtonClick(employee){
+    document.getElementById('compliance').value = employee.status;
+    document.getElementById('compliance-tags').value = employee.compliance_tags;
+    document.getElementById('notes').value = employee.notes || '';
+}
+
+async function updateTagsEmployee() {
+    let data = {
+        status: document.getElementById('compliance').value,
+        compliance_tags: document.getElementById('compliance-tags').value,
+        notes: document.getElementById('notes').value
+    };
+    let response = await updateEmployee(currentEmployee.employee_id, data);
+}
+
+function closeModalBtn() {
+    const modalContainer = document.getElementById('modal-container');
+    lastModalElement.classList.remove('active');
+    modalContainer.classList.remove('active');
 }

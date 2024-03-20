@@ -30,6 +30,7 @@ class Employee(Base):
     )
     compliance_tags = Column(String(255))
     user_tags = Column(String(255))
+    notes = Column(String(255))
     status = Column(String(255))
     created = Column(DateTime, nullable=False)
 
@@ -52,6 +53,7 @@ class Employee(Base):
             "assignee_id": self.assignee_id,
             "compliance_tags": self.compliance_tags,
             "user_tags": self.user_tags,
+            "notes": self.notes,
             "status": self.status,
             "created": self.created.strftime("%Y-%m-%d %H:%M:%S"),
             "profile": self.profile.to_dict(),

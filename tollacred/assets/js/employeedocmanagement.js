@@ -230,7 +230,7 @@ function createHamburgerActions(employeeDocument) {
 
     const options = [
         {text: 'Review', click_function: reviewButtonClick},
-        {text: 'Upload', click_function: updateButtonClick},
+        {text: 'Update', click_function: updateButtonClick},
         {text: 'Delete', click_function: deleteButtonClick}
     ]; // Option labels (modify as needed)
     options.forEach(item => {
@@ -259,40 +259,6 @@ function createHamburgerActions(employeeDocument) {
 
     // Here you can append the container element to your desired location in the DOM
     // (replace with your selector or reference)
-    return container;
-}
-
-function abc(employeeDocument) {
-    const container = document.createElement('div');
-    container.id = 'hamburger-container';
-    const button = document.createElement('button');
-    button.classList.add('hamburger-button');
-
-    const optionsList = document.createElement('ul');
-    optionsList.classList.add('hamburger-options-list');
-
-    button.addEventListener('click', () => {
-        button.classList.toggle('active');
-        optionsList.classList.toggle('active');
-    });
-    const options = [
-        {text: 'Review', click_function: reviewButtonClick},
-        {text: 'Upload', click_function: updateButtonClick},
-        {text: 'Delete', click_function: deleteButtonClick}
-    ]; // Option labels (modify as needed)
-
-    options.forEach(option => {
-        const listItem = document.createElement('li');
-        listItem.classList.add('hamburger-option');
-        listItem.textContent = option.text;
-        listItem.onclick = () => {
-            option.click_function(employeeDocument)
-        }
-        optionsList.appendChild(listItem);
-    });
-
-    container.appendChild(button);
-    container.appendChild(optionsList);
     return container;
 }
 
