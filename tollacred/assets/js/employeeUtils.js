@@ -17,3 +17,12 @@ async function loadEmployee(employeeId){
     let response = await makeRequest('GET', endpoint)
     return response
 }
+
+function saveLocalEmployee(employee){
+    localStorage.setItem('current_employee', JSON.stringify(employee));
+}
+
+function getLocalEmployee(){
+    let employee = JSON.parse(localStorage.getItem('current_employee'));
+    return employee;
+}

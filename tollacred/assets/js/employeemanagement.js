@@ -47,8 +47,9 @@ async function deleteEmployee(employeeId) {
     }
 }
 
-async function manageEmployee(employeeId) {
-    window.location.href = `profile.html?employee_id=${employeeId}`
+async function manageEmployee(employee) {
+    saveLocalEmployee(employee);
+    window.location.href = `profile.html?employee_id=${employee.employee_id}`
 }
 
 // Function to create "Manage" and "Delete" buttons
@@ -66,7 +67,7 @@ function createEditButtons(employee) {
     // Set attributes for "Manage" button
     manageButton.innerHTML = "Manage";
     manageButton.onclick = function() {
-        manageEmployee(employee.employee_id);
+        manageEmployee(employee);
     };
 
     // Set attributes for "Delete" button
@@ -96,7 +97,7 @@ async function populateEmployeeTable(data, adminList) {
         let row = tableBody.insertRow();
         let cellStaffMember = row.insertCell(0);
         cellStaffMember.onclick = function () {
-            manageEmployee(employee.employee_id);
+            manageEmployee(employee);
         }
         let cellRole = row.insertCell(1);
         let cellAssigned = row.insertCell(2);

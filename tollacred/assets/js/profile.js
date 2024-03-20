@@ -1,5 +1,6 @@
 
 window.addEventListener("DOMContentLoaded", async () => {
+    setEmployeeTitle();
     setEmployeeIdQueryParameter();
 });
 
@@ -16,4 +17,10 @@ async function setEmployeeIdQueryParameter() {
       const newHref = currentHref.includes('?') ? currentHref + '&employee_id=' + userId : currentHref + '?employee_id=' + userId;
       link.href = newHref;
     });
+}
+
+function setEmployeeTitle() {
+    let employee = getLocalEmployee();
+    let titleElement = document.getElementById('profile-title');
+    titleElement.innerHTML = `Welcome to the profile of ${employee.profile.first_name} ${employee.profile.last_name}`;
 }
