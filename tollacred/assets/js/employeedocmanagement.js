@@ -81,7 +81,9 @@ async function uploadEmployeeDocument(documentType, employeeId, file) {
 
 async function updateEmployeeDocument(documentId, employeeId, expiry, documentNumber, file) {
     const formData = new FormData();
-    formData.append('file', file);
+    if (file){
+        formData.append('file', file);
+    }
     formData.append('status', 'Awaiting Approval');
     formData.append('expiry_date', expiry);
     formData.append('document_number', documentNumber);
@@ -160,6 +162,7 @@ function populateMandatoryDocuments(all_documents, employee_documents) {
         cellName.textContent = documentType.name;
         if (employeeDocumentsMap.has(documentType.id)) {
             let employeeDocument = employeeDocumentsMap.get(documentType.id);
+            employeeDocument.document_name = documentType.name;
             cellStatus.textContent = employeeDocument.status;
             cellExpiry.textContent = employeeDocumentsMap.get(documentType.id).expiry_date || "";
             cellApproval.textContent = employeeDocumentsMap.get(documentType.id).approver_id;
@@ -285,6 +288,7 @@ function populateNonMandatoryDocuments(all_documents, employee_documents) {
             let employeeDocument = employeeDocumentsMap.get(documentType.id);
             cellStatus.textContent = employeeDocument.status;
             cellApproval.textContent = employeeDocumentsMap.get(documentType.id).expiry_date || "";
+            employeeDocument.document_name = documentType.name;
             cellAction.appendChild(createHamburgerActions(employeeDocument));
         } else {
             cellStatus.textContent = "Not Uploaded";
@@ -322,7 +326,8 @@ function configureReviewSubButtons(employeeDocument) {
     let approveBtn = document.getElementById('approve-button');
     let rejectBtn = document.getElementById('reject-button');
     let downloadBtn = document.getElementById('download-button');
-
+    let docTitle = document.getElementById('document-review-title');
+    docTitle.innerHTML = `Review ${employeeDocument.document_name}`;
     approveBtn.onclick = function () {
         updateDocumentStatus(employeeDocument, 'Approved');
     };
@@ -358,6 +363,8 @@ function updateButtonClick(documentEmployee) {
     modalContainer.classList.add('active');
     lastModalElement.classList.add('active');
     currentDocumentId = documentId;
+    let docTitle = document.getElementById('document-update-title');
+    docTitle.innerHTML = `Update ${documentEmployee.document_name}`;
 }
 
 async function deleteButtonClick(documentEmployee) {
