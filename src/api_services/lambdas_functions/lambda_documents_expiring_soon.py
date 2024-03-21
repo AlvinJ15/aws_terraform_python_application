@@ -2,6 +2,7 @@ import traceback
 
 from datetime import datetime, timedelta
 
+from api_services.utils.csv_utils import create_csv_in_memory
 from api_services.utils.database_utils import DataBase
 from api_services.utils.ses_utils import SES
 from api_services.utils.wrappers_utils import set_stage
@@ -33,11 +34,15 @@ def expiry_soon_handler(event, context, stage):
                 else:
                     employee.compliance_tags = 'DOCUMENTS_EXPIRY_SOON'
 
-            body = '<BR>'.join([
-                build_paragraph(document, employees_dict[document.employee_id]) for document in employee_documents
-            ])
-            body = f'<BR>{body}<BR><BR>'
-            SES.send_email_credentially('credentialing@tollanis.com', 'EXPIRING SOON DOCUMENTS', body)
+            rows = [
+                build_employee_row(document, employees_dict[document.employee_id]) for document in employee_documents
+            ]
+            body = '<BR>Expiring Soon Employee Documents Attached<BR><BR>'
+            csv_file = create_csv_in_memory(build_employee_header(), rows)
+            SES.send_email_credentially(
+                'credentialing@tollanis.com', 'EXPIRING SOON DOCUMENTS',
+                body, csv_file, 'expiring_soon_documents.csv'
+            )
             db.commit()
             return {
                 'statusCode': 201,
@@ -49,7 +54,24 @@ def expiry_soon_handler(event, context, stage):
         return {"statusCode": 500, "body": f"Error creating EmployeeReference: {err}"}
 
 
-def build_paragraph(employee_document: EmployeeDocument, employee: Employee):
+def build_employee_header():
+    return [
+        'organization_name',
+        'first_name',
+        'last_name',
+        'email',
+        'document_type',
+        'expiry_date'
+    ]
+
+
+def build_employee_row(employee_document: EmployeeDocument, employee: Employee):
     profile = employee.profile
-    return (f'{employee.organization.name},{profile.first_name} {profile.last_name},{profile.email},'
-            f'{employee_document.document_type.name},{employee_document.expiry_date.strftime("%Y-%m-%d %H:%M:%S")}')
+    return [
+        employee.organization.name,
+        profile.first_name,
+        profile.last_name,
+        profile.email,
+        employee_document.document_type.name,
+        employee_document.expiry_date.strftime("%Y-%m-%d %H:%M:%S")
+    ]

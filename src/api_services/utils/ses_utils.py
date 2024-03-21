@@ -1,11 +1,16 @@
 import urllib
-
 import boto3
+
+from botocore.exceptions import ClientError
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
 
 ses_client = boto3.client('ses')
 SENDER_REFEVALS = 'refevals@tollaniscred.com'
 SENDER_CREDENTIALLY = 'automation@tollaniscred.com'
 DEFAULT_CC = 'shubham.aggarwal@tollanis.com'
+CHARSET = "utf-8"
 
 
 def urlencode_dict(data):
@@ -39,7 +44,7 @@ class SES:
                 'Subject': {
                     'Charset': 'UTF-8',
                     'Data': subject,
-                },
+                }
             },
             Source=sender,
         )
@@ -47,9 +52,61 @@ class SES:
         return response
 
     @classmethod
+    def send_email_with_attachment(cls, recipient, subject, body, sender, file_bytes, filename, cc=DEFAULT_CC):
+        msg = MIMEMultipart('mixed')
+        msg['Subject'] = subject
+        msg['From'] = sender
+        msg['To'] = recipient
+        msg['cc'] = cc
+
+        msg_body = MIMEMultipart('alternative')
+
+        # Encode the text and HTML content and set the character encoding. This step is
+        # necessary if you're sending a message with characters outside the ASCII range.
+        #textpart = MIMEText(BODY_TEXT.encode(CHARSET), 'plain', CHARSET)
+        htmlpart = MIMEText(body.encode(CHARSET), 'html', CHARSET)
+
+        # Add the text and HTML parts to the child container.
+        #msg_body.attach(textpart)
+        msg_body.attach(htmlpart)
+
+        # Define the attachment part and encode it using MIMEApplication.
+        att = MIMEApplication(file_bytes)
+
+        # Add a header to tell the email client to treat this part as an attachment,
+        # and to give the attachment a name.
+        att.add_header('Content-Disposition','attachment', filename=filename)
+
+        # Attach the multipart/alternative child container to the multipart/mixed
+        # parent container.
+        msg.attach(msg_body)
+
+        # Add the attachment to the parent container.
+        msg.attach(att)
+        try:
+            response = ses_client.send_raw_email(
+                Source=sender,
+                Destinations=[
+                    recipient,
+                    cc
+                ],
+                RawMessage={
+                    'Data': msg.as_string(),
+                },
+            )
+        except ClientError as e:
+            print(e.response['Error']['Message'])
+        else:
+            print("Email sent! Message ID:"),
+            print(response['MessageId'])
+
+    @classmethod
     def send_email_refevals(cls, recipient, subject, body):
         cls.send_email(recipient, subject, body, SENDER_REFEVALS)
 
     @classmethod
-    def send_email_credentially(cls, recipient, subject, body):
-        cls.send_email(recipient, subject, body, SENDER_CREDENTIALLY)
+    def send_email_credentially(cls, recipient, subject, body, file=None, filename=None):
+        if file:
+            cls.send_email_with_attachment(recipient, subject, body, SENDER_CREDENTIALLY, file, filename)
+        else:
+            cls.send_email(recipient, subject, body, SENDER_CREDENTIALLY)
