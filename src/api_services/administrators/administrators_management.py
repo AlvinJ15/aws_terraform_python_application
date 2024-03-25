@@ -1,6 +1,7 @@
 import json
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.error_utils import print_exception_stack
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_administrator import Administrator
 
@@ -18,4 +19,5 @@ def get_all_handler(event, context, stage):
                     },
                     "body": json.dumps([admin.to_dict() for admin in administrators])}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving Administrators: {err}"}

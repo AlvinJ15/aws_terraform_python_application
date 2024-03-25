@@ -1,6 +1,7 @@
 import json
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.error_utils import print_exception_stack
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_document_type import DocumentType
 from data_models.models import update_object_from_dict
@@ -20,6 +21,7 @@ def get_all_handler(event, context, stage):
                     },
                     "body": json.dumps([document_type.to_dict() for document_type in document_types])}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving DocumentType: {err}"}
 
 
@@ -41,6 +43,7 @@ def get_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "DocumentType not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving DocumentType: {err}"}
 
 
@@ -64,6 +67,7 @@ def create_handler(event, context, stage):
                     },
                     "body": json.dumps(new_document_type.to_dict())}
         except Exception as err:  # Handle general exceptions for robustness
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error creating DocumentType: {err}"}
 
 
@@ -94,6 +98,7 @@ def update_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "DocumentType not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error updating DocumentType: {err}"}
 
 
@@ -117,4 +122,5 @@ def delete_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "DocumentType not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error deleting DocumentType: {err}"}

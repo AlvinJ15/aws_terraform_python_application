@@ -1,4 +1,31 @@
 
+async function createEmployee(data){
+    let organizationId = localStorage.getItem('organization_id');
+    let createEndpoint = `organizations/${organizationId}/employees`;
+    let response = await makeRequest('POST', createEndpoint, data);
+    if(response){
+        alert('Employee Info Created');
+    }
+    else {
+        alert('Error Creating Employee');
+    }
+    return response;
+}
+
+async function filterEmployees(filters){
+    let organizationId = localStorage.getItem('organization_id');
+    let getEndpoint = `organizations/${organizationId}/employees`;
+    filters["filters"] = true;
+    getEndpoint = buildUrl(getEndpoint, filters);
+    let response = await makeRequest('GET', getEndpoint);
+    if(!response) {
+        alert('Error Retrieving Employees');
+    }
+    return response;
+
+}
+
+
 async function updateEmployee(employee_id, data){
     let organizationId = localStorage.getItem('organization_id')
     let endpoint = `organizations/${organizationId}/employees/${employee_id}`;

@@ -4,6 +4,7 @@ import traceback
 import requests
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.error_utils import print_exception_stack
 from api_services.utils.s3_utils import upload_file_to_s3
 from data_models.model_employee_profile import EmployeeProfile
 from data_models.model_organization import Organization
@@ -47,8 +48,7 @@ def submission_handler(event, context):
                 'body': json.dumps(reference.to_dict())
             }
     except Exception as err:  # Handle general exceptions for robustness
-        string_error = traceback.format_exc()
-        print(string_error)
+        print_exception_stack()
         return {"statusCode": 500, "body": f"Error creating EmployeeReference: {err}"}
 
 

@@ -6,6 +6,7 @@ from streaming_form_data import StreamingFormDataParser
 from streaming_form_data.targets import ValueTarget
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.error_utils import print_exception_stack
 from api_services.utils.s3_utils import upload_file_to_s3, generate_file_link, delete_file_from_s3
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_document_type import DocumentType
@@ -29,6 +30,7 @@ def get_all_handler(event, context, stage):
                     },
                     "body": json.dumps([document.to_dict() for document in organization_documents])}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving EmployeeDocument: {err}"}
 
 
@@ -52,6 +54,7 @@ def get_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "EmployeeDocument not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving EmployeeDocument: {err}"}
 
 
@@ -94,8 +97,7 @@ def create_handler(event, context, stage):
             'body': json.dumps(new_document.to_dict())
         }
     except Exception as err:  # Handle general exceptions for robustness
-        string_error = traceback.format_exc()
-        print(string_error)
+        print_exception_stack()
         return {"statusCode": 500,
                 "body": f"Error creating EmployeeDocument: {err}"}
 
@@ -143,8 +145,7 @@ def update_handler(event, context, stage):
                 'body': json.dumps(document.to_dict())
             }
         except Exception as err:  # Handle general exceptions for robustness
-            string_error = traceback.format_exc()
-            print(string_error)
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error creating EmployeeDocument: {err}"}
 
 
@@ -170,6 +171,7 @@ def delete_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "EmployeeDocument not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error deleting EmployeeDocument: {err}"}
 
 

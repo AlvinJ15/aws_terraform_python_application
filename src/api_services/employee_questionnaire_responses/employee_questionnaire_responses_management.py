@@ -1,6 +1,7 @@
 import json
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.error_utils import print_exception_stack
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_employee_questionnaire_response import EmployeeQuestionnaireResponse
 from data_models.model_questionnaire import Questionnaire
@@ -18,6 +19,7 @@ def get_all_handler(event, context, stage):
             return {"statusCode": 200,
                     "body": json.dumps([questionnaire.to_dict() for questionnaire in questionnaires])}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving EmployeeQuestionnaireResponse: {err}"}
 
 
@@ -33,6 +35,7 @@ def get_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "EmployeeQuestionnaireResponse not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving EmployeeQuestionnaireResponse: {err}"}
 
 
@@ -54,6 +57,7 @@ def create_handler(event, context, stage):
             db.commit()
             return {"statusCode": 201, "body": json.dumps(new_response.to_dict())}
         except Exception as err:  # Handle general exceptions for robustness
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error creating EmployeeQuestionnaireResponse: {err}"}
 
 
@@ -81,6 +85,7 @@ def update_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "EmployeeQuestionnaireResponse not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error updating EmployeeQuestionnaireResponse: {err}"}
 
 
@@ -98,4 +103,5 @@ def delete_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "EmployeeQuestionnaireResponse not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error deleting EmployeeQuestionnaireResponse: {err}"}

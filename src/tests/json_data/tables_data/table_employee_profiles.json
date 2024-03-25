@@ -55,5 +55,24 @@
     "city": "Chicago",
     "state": "IL",
     "zip": "60610"
+  },
+  {
+    "profile_id": "xxxxxxx-xxxx-dddd-dddd-dddddddddddd",
+    "employee_id": "xxxxxxx-dddd-dddd-dddd-dddddddddddd",
+    "title": "Medical Assistant",
+    "first_name": "Michael",
+    "last_name": "Lee",
+    "gender": "Male",
+    "email": "michael.lee@hospital.com",
+    "role": "Medical Assistant",
+    "grade": "Certified Medical Assistant",
+    "medical_category": "CMA",
+    "specialty": "Family Medicine",
+    "date_of_birth": "1990-12-24 00:00:00",
+    "address": "789 Oak Avenue",
+    "country": "United States",
+    "city": "Chicago",
+    "state": "IL",
+    "zip": "60610"
   }
 ]

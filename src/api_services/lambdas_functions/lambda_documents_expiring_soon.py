@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 from api_services.utils.csv_utils import create_csv_in_memory
 from api_services.utils.database_utils import DataBase
+from api_services.utils.error_utils import print_exception_stack
 from api_services.utils.ses_utils import SES
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_employee import Employee
@@ -49,8 +50,7 @@ def expiry_soon_handler(event, context, stage):
                 'body': body
             }
     except Exception as err:  # Handle general exceptions for robustness
-        string_error = traceback.format_exc()
-        print(string_error)
+        print_exception_stack()
         return {"statusCode": 500, "body": f"Error creating EmployeeReference: {err}"}
 
 

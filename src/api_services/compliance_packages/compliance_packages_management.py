@@ -1,13 +1,12 @@
 import json
-import traceback
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.error_utils import print_exception_stack
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_compliance_package import CompliancePackage
 from data_models.model_employee_compliance_package import EmployeeCompliancePackage
 from data_models.model_package_document import PackageDocument
 from data_models.model_package_role import PackageRole
-from data_models.models import update_object_from_dict
 
 
 @set_stage
@@ -27,6 +26,7 @@ def get_all_handler(event, context, stage):
                                     for compliance_package in compliance_packages])
             }
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving CompliancePackage: {err}"}
 
 
@@ -50,6 +50,7 @@ def get_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "CompliancePackage not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving CompliancePackage: {err}"}
 
 
@@ -88,8 +89,7 @@ def create_handler(event, context, stage):
                     },
                     "body": json.dumps(new_compliance_package.to_dict())}
         except Exception as err:  # Handle general exceptions for robustness
-            string_error = traceback.format_exc()
-            print(string_error)
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error creating CompliancePackage: {err}"}
 
 
@@ -158,6 +158,7 @@ def update_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "CompliancePackage not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error updating CompliancePackage: {err}"}
 
 
@@ -178,4 +179,5 @@ def delete_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "CompliancePackage not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error deleting CompliancePackage: {err}"}

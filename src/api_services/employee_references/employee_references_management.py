@@ -7,6 +7,7 @@ from streaming_form_data import StreamingFormDataParser
 from streaming_form_data.targets import ValueTarget
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.error_utils import print_exception_stack
 from api_services.utils.s3_utils import upload_file_to_s3, generate_file_link
 from api_services.utils.ses_utils import urlencode_dict, SES
 from api_services.utils.wrappers_utils import set_stage
@@ -32,6 +33,7 @@ def get_all_handler(event, context, stage):
                 },
                 "body": json.dumps([reference.to_dict() for reference in employee_references])}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving EmployeeReference: {err}"}
 
 
@@ -55,6 +57,7 @@ def get_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "EmployeeReference not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving EmployeeReference: {err}"}
 
 
@@ -114,8 +117,7 @@ def create_handler(event, context, stage):
                 'body': json.dumps(new_reference.to_dict())
             }
     except Exception as err:  # Handle general exceptions for robustness
-        string_error = traceback.format_exc()
-        print(string_error)
+        print_exception_stack()
         return {"statusCode": 500, "body": f"Error creating EmployeeReference: {err}"}
 
 
@@ -179,8 +181,7 @@ def update_handler(event, context, stage):
                 'body': json.dumps(reference.to_dict())
             }
     except Exception as err:  # Handle general exceptions for robustness
-        string_error = traceback.format_exc()
-        print(string_error)
+        print_exception_stack()
         return {"statusCode": 500, "body": f"Error updating EmployeeReference: {err}"}
 
 
@@ -198,6 +199,7 @@ def delete_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "EmployeeReference not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error deleting EmployeeReference: {err}"}
 
 

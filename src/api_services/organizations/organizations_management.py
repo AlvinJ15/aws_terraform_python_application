@@ -1,6 +1,7 @@
 import json
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.error_utils import print_exception_stack
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_organization import Organization
 
@@ -25,4 +26,5 @@ def get_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "Organization not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving Organization: {err}"}

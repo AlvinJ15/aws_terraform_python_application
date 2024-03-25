@@ -35,6 +35,43 @@ class TestEmployees:
         )
         assert json.loads(response["body"]) == expected
 
+    def test_get_all_handler_with_filters(self, initialize_db):
+        event = {
+            "pathParameters": {
+                "organization_id": "11111111-1111-1111-1111-111111111111"
+            },
+            "queryStringParameters": {
+                "filters": True,
+                "status": "Inactive"
+            }
+        }
+        response = self.get_all_handler(event, {})
+
+        assert response["statusCode"] == 200
+        expected = json.load(
+            open(f"{EXPECTED_JSON_PATH}/expected_get_all_handler_with_filters.json")
+        )
+        assert json.loads(response["body"]) == expected
+
+    def test_get_all_handler_with_filters_profile(self, initialize_db):
+        event = {
+            "pathParameters": {
+                "organization_id": "11111111-1111-1111-1111-111111111111"
+            },
+            "queryStringParameters": {
+                "filters": True,
+                "email": "jane.doe@hospital.com"
+            }
+        }
+        response = self.get_all_handler(event, {})
+
+        assert response["statusCode"] == 200
+        expected = json.load(
+            open(f"{EXPECTED_JSON_PATH}/expected_get_all_handler_with_filters_profile.json")
+        )
+        assert json.loads(response["body"]) == expected
+
+
     def test_get_single_handler(self, initialize_db):
         event = {
             "pathParameters": {

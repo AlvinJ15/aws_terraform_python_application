@@ -1,6 +1,7 @@
 import json
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.error_utils import print_exception_stack
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_roles import Role
 from data_models.models import update_object_from_dict
@@ -21,6 +22,7 @@ def get_all_handler(event, context, stage):
                     },
                     "body": json.dumps([role.to_dict() for role in roles])}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving roles: {err}"}
 
 
@@ -42,6 +44,7 @@ def get_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "Role not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving role: {err}"}
 
 
@@ -65,6 +68,7 @@ def create_handler(event, context, stage):
                     },
                     "body": json.dumps(new_role.to_dict())}
         except Exception as err:  # Handle general exceptions for robustness
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error creating role: {err}"}
 
 
@@ -93,6 +97,7 @@ def update_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "Role not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error updating role: {err}"}
 
 
@@ -117,4 +122,5 @@ def delete_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "Role not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error deleting Role: {err}"}

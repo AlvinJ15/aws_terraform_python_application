@@ -1,7 +1,9 @@
 import json
 import traceback
 
+from api_services.employees.employees_utils import get_employees_with_filter
 from api_services.utils.database_utils import DataBase
+from api_services.utils.error_utils import print_exception_stack
 from api_services.utils.s3_utils import create_path_to_s3, delete_file_from_s3, delete_entire_folder
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_employee import Employee
@@ -18,10 +20,15 @@ from data_models.models import update_object_from_dict, set_fields_from_dict
 def get_all_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
     page_number = int(event['queryStringParameters'].get('page', 1))
+    has_filters = event['queryStringParameters'].get('filters', False)
     offset = (page_number - 1) * 100
     with DataBase.get_session(stage) as db:
         try:
-            employees = db.query(Employee).filter_by(organization_id=organization_id).limit(100).offset(offset).all()
+            if has_filters:
+                query = get_employees_with_filter(db, organization_id, event['queryStringParameters'])
+                employees = query.limit(100).offset(offset).all()
+            else:
+                employees = db.query(Employee).filter_by(organization_id=organization_id).limit(100).offset(offset).all()
             return {"statusCode": 200,
                     "headers": {
                         'Access-Control-Allow-Headers': 'Content-Type',
@@ -30,6 +37,7 @@ def get_all_handler(event, context, stage):
                     },
                     "body": json.dumps([employee.to_dict() for employee in employees])}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving Employee: {err}"}
 
 
@@ -53,6 +61,7 @@ def get_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "Employee not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving Employee: {err}"}
 
 
@@ -92,7 +101,8 @@ def create_handler(event, context, stage):
                         'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
                     },
                     "body": json.dumps(new_employee.to_dict())}
-        except Exception as err:  # Handle general exceptions for robustness
+        except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error creating Employee: {err}"}
 
 
@@ -140,6 +150,7 @@ def update_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "Employee not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error updating Employee: {err}"}
 
 
@@ -173,6 +184,5 @@ def delete_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "Employee not found"}
         except Exception as err:
-            string_error = traceback.format_exc()
-            print(string_error)
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error deleting Employee: {err}"}

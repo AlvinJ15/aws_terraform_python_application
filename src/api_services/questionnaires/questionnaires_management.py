@@ -1,6 +1,7 @@
 import json
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.error_utils import print_exception_stack
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_questionnaire import Questionnaire
 from data_models.models import update_object_from_dict
@@ -15,6 +16,7 @@ def get_all_handler(event, context, stage):
             return {"statusCode": 200,
                     "body": json.dumps([questionnaire.to_dict() for questionnaire in questionnaires])}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving Questionnaire: {err}"}
 
 
@@ -30,6 +32,7 @@ def get_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "Questionnaire not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving Questionnaire: {err}"}
 
 
@@ -47,6 +50,7 @@ def create_handler(event, context, stage):
             db.commit()
             return {"statusCode": 201, "body": json.dumps(new_questionnaire.to_dict())}
         except Exception as err:  # Handle general exceptions for robustness
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error creating Questionnaire: {err}"}
 
 
@@ -71,6 +75,7 @@ def update_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "Questionnaire not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error updating Questionnaire: {err}"}
 
 
@@ -88,4 +93,5 @@ def delete_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "Questionnaire not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error deleting Questionnaire: {err}"}

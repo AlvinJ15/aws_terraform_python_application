@@ -1,6 +1,7 @@
 import json
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.error_utils import print_exception_stack
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_onboarding import Onboarding
 from data_models.model_onboarding_step import OnboardingStep
@@ -16,6 +17,7 @@ def get_all_handler(event, context, stage):
             onboardings = db.query(Onboarding).filter_by(organization_id=organization_id)
             return {"statusCode": 200, "body": json.dumps([onboarding.to_dict() for onboarding in onboardings])}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving Onboarding: {err}"}
 
 
@@ -31,6 +33,7 @@ def get_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "Onboarding not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving Onboarding: {err}"}
 
 
@@ -68,6 +71,7 @@ def create_handler(event, context, stage):
             new_onboarding = db.query(Onboarding).filter_by(onboarding_id=new_onboarding.onboarding_id).first()
             return {"statusCode": 201, "body": json.dumps(new_onboarding.to_dict())}
         except Exception as err:  # Handle general exceptions for robustness
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error creating Onboarding: {err}"}
 
 
@@ -143,6 +147,7 @@ def update_handler(event, context, stage):
             ).first()
             return {"statusCode": 200, "body": json.dumps(onboarding.to_dict())}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error updating Onboarding: {err}"}
 
 
@@ -160,4 +165,5 @@ def delete_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "Onboarding not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error deleting Onboarding: {err}"}

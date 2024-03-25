@@ -21,16 +21,24 @@ async function getAllEmployees(page) {
 }
 
 // Function to create a new employee
-async function createEmployee() {
-    let organizationId = localStorage.getItem('organization_id');
-    let createEndpoint = `organizations/${organizationId}/employees`;
+async function createEmployeeBtn() {
     let data = getAddStaffJson();
-    let response = await makeRequest('POST', createEndpoint, data)
-    if(response !== null){
-        alert('Employee Created !!!')
-        window.location.href = 'staff.html'
-    } else {
-        alert('Error Creating the Employee.')
+    let existingEmail = await filterEmployees({
+        email: data.profile.email
+    });
+    if (existingEmail !== null && existingEmail.length > 0) {
+        if(confirm(`There's already exist an employee with the email ${data.profile.email}\nDo you want to continue?`)){
+            let response = await createEmployee(data);
+            if(response !== null) {
+                window.location.href = 'staff.html'
+            }
+        }
+    }
+    else{
+        let response = await createEmployee(data);
+        if(response !== null) {
+            window.location.href = 'staff.html'
+        }
     }
 }
 

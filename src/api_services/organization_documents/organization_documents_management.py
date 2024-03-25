@@ -5,6 +5,7 @@ from streaming_form_data import StreamingFormDataParser
 from streaming_form_data.targets import ValueTarget
 
 from api_services.utils.database_utils import DataBase
+from api_services.utils.error_utils import print_exception_stack
 from api_services.utils.s3_utils import upload_file_to_s3
 from api_services.utils.wrappers_utils import set_stage
 from data_models.model_organization_document import OrganizationDocument
@@ -25,6 +26,7 @@ def get_all_handler(event, context, stage):
                     },
                     "body": json.dumps([document.to_dict() for document in organization_documents])}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving OrganizationDocument: {err}"}
 
 
@@ -46,6 +48,7 @@ def get_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "OrganizationDocument not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error retrieving OrganizationDocument: {err}"}
 
 
@@ -112,6 +115,7 @@ def create_handler(event, context, stage):
             'body': json.dumps(new_org_document.to_dict())
         }
     except Exception as err:  # Handle general exceptions for robustness
+        print_exception_stack()
         return {"statusCode": 500, "body": f"Error creating OrganizationDocument: {err}"}
 
 
@@ -191,6 +195,7 @@ def update_handler(event, context, stage):
                 'body': json.dumps(org_document.to_dict())
             }
         except Exception as err:  # Handle general exceptions for robustness
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error creating OrganizationDocument: {err}"}
 
 
@@ -208,4 +213,5 @@ def delete_single_handler(event, context, stage):
             else:
                 return {"statusCode": 404, "body": "OrganizationDocument not found"}
         except Exception as err:
+            print_exception_stack()
             return {"statusCode": 500, "body": f"Error deleting OrganizationDocument: {err}"}
