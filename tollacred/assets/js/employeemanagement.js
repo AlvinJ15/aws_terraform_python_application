@@ -117,7 +117,7 @@ async function populateEmployeeTable(data, adminList) {
         let cellNotes = row.insertCell(8);
 
         cellStaffMember.textContent = `${employee.profile.first_name} ${employee.profile.last_name}`  || "";
-        cellRole.textContent = employee.profile.role || "";
+        cellRole.textContent = employee.role ? employee.role.name : "";
         let assignedSelect = document.createElement('select');
         assignedSelect.style.width = 'auto';
         fillDropDown(adminList, assignedSelect);
@@ -155,7 +155,7 @@ function getAddStaffJson(){
     const firstName = document.getElementById('first-name').value.trim();
     const lastName = document.getElementById('last-name').value.trim();
     const email = document.getElementById('email').value.trim();
-    const role = document.getElementById('role').value;
+    const role_id = document.getElementById('role').value;
 
   // Validate input
     let isValid = true;
@@ -182,11 +182,11 @@ function getAddStaffJson(){
 
   // Create JSON object
     return {
+        role_id: role_id,
         profile: {
             first_name: firstName,
             last_name: lastName,
             email: email,
-            role: role,
             country: 'United States'
         }
     };

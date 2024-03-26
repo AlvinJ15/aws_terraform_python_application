@@ -64,8 +64,9 @@ def delete_entire_folder(path):
     objects_to_delete = []
     for obj in bucket.objects.filter(Prefix=path):
         objects_to_delete.append({'Key': obj.key})
-    bucket.delete_objects(
-        Delete={
-            'Objects': objects_to_delete
-        }
-    )
+    if objects_to_delete:
+        bucket.delete_objects(
+            Delete={
+                'Objects': objects_to_delete
+            }
+        )

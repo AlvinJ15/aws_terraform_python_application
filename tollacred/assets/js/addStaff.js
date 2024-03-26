@@ -12,7 +12,6 @@ function populateRoleSelect(data) {
     selectElement.innerHTML = "";
 
     data.forEach(role => {
-
-        selectElement.appendChild(new Option(role.name, role.name))
+        selectElement.appendChild(new Option(role.name, role.role_id))
     });
 }

@@ -1,42 +1,42 @@
-
 window.addEventListener("DOMContentLoaded", async () => {
     const employeeId = new URLSearchParams(window.location.search).get('employee_id');
     try {
-        await setEmployeeIdQueryParameter(employeeId);
+        let response = await loadRoles();
+        populateRoleSelect(response);
         const saveButton = document.getElementById("save_button");
         saveButton.addEventListener("click", () => {
             let data = getEmployeeJson();
             updateEmployee(employeeId, data);
         });
-
         await retrieveEmployeeInformation(employeeId)
     } catch (error) {
         console.error("Error adding options Employee:", error);
     }
 });
 
-function getEmployeeJson(){
+function getEmployeeJson() {
     let birthday = document.getElementById('date-of-birth').value
-    if (birthday){
+    if (birthday) {
         birthday += ' 00:00:00'
     }
     return {
-      profile: {
-        gender: document.getElementById('gender').value,
-        title: document.getElementById('title').value,
-        firstName: document.getElementById('first-name').value,
-        lastName: document.getElementById('last-name').value,
-        grade: document.getElementById('grade').value,
-        medicalCategory: document.getElementById('medical-category').value,
-        specialty: document.getElementById('speciality').value,
-        date_of_birth: birthday,
-        email: document.getElementById('email').value,
-        address: document.getElementById('address').value,
-        country: document.getElementById('country').value,
-        city: document.getElementById('city').value,
-        state: document.getElementById('state').value,
-        zip: document.getElementById('zip').value,
-      }
+        role_id: document.getElementById('role').value,
+        profile: {
+            gender: document.getElementById('gender').value,
+            title: document.getElementById('title').value,
+            firstName: document.getElementById('first-name').value,
+            lastName: document.getElementById('last-name').value,
+            grade: document.getElementById('grade').value,
+            medicalCategory: document.getElementById('medical-category').value,
+            specialty: document.getElementById('speciality').value,
+            date_of_birth: birthday,
+            email: document.getElementById('email').value,
+            address: document.getElementById('address').value,
+            country: document.getElementById('country').value,
+            city: document.getElementById('city').value,
+            state: document.getElementById('state').value,
+            zip: document.getElementById('zip').value,
+        }
     };
 }
 
@@ -49,18 +49,19 @@ async function setEmployeeIdQueryParameter() {
 
     // Add the query parameter to each link's `href` attribute
     links.forEach(link => {
-      const currentHref = link.href;
-      const newHref = currentHref.includes('?') ? currentHref + '&employee_id=' + userId : currentHref + '?employee_id=' + userId;
-      link.href = newHref;
+        const currentHref = link.href;
+        const newHref = currentHref.includes('?') ? currentHref + '&employee_id=' + userId : currentHref + '?employee_id=' + userId;
+        link.href = newHref;
     });
 }
 
-async function retrieveEmployeeInformation(employeeId){
+async function retrieveEmployeeInformation(employeeId) {
     let response = await loadEmployee(employeeId)
     fillFormulary(response);
 }
 
-function fillFormulary(response){
+function fillFormulary(response) {
+    document.getElementById('role').value = response.role_id;
     // Title
     document.getElementById('candidate-name').text = `${response.profile.first_name} ${response.profile.last_name}`
     document.getElementById('gender').value = response.profile.gender;
