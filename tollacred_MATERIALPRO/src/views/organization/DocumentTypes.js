@@ -1,141 +1,149 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
-    Row, Col, Card, Button, Progress, Form, FormGroup, Label, Input, Alert, CardTitle,
-    TabContent, TabPane, Nav, NavItem, NavLink,
+    Row, Col, Card, Button, Alert, TabContent, TabPane, Nav, NavItem, NavLink,
+    Spinner,
 } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import CrudDocumentType from './forms/crudDocumentType';
-import ReactTable from 'react-table-v6';
+
 import 'react-table-v6/react-table.css';
-import ComponentCard from '../../components/ComponentCard';
-import * as data from '../tables/ReacTableData';
-import { FetchData } from '../../assets/js/funcionesGenerales'
+import { useParams } from 'react-router-dom';
+import useFetch from '../../hooks/useFetch';
+import useCreateFetch from '../../hooks/useCreateFetch';
+import ReactTable from 'react-table-v6';
+import useDeleteFetch from '../../hooks/useDeleteFetch';
+import useUpdateFetch from '../../hooks/useUpdateFetch';
+import organizationService from "@/views/organization/services/organization.service.js";
+
+const initialDocumentTypes = {
+    name: '',
+    description: '',
+    category: '',
+    expiration: 0,
+}
+
+
 const DocumentTypes = () => {
-    /**Adding new Document */
-    const [dataDocument, setDataDocument] = useState({
+
+    const params = useParams();
+    const [modalDocumentType, setModalDocumentType] = useState(false)
+    const [modalManageDocument, setModalManageDocument] = useState(false)
+    const [activeRole, setActiveRole] = useState('CREATE');
+
+    /**LIST OF DOCUMENTS */
+    const { data: documentsList, isLoading, error, refresh } = useFetch({ endpoint: `${params.idOrganization}/documents` })
+
+
+
+    /**CREATE DOCUMENTS */
+    const { data: dataDocument, setData: setDataDocument, validate, isFetching, create, error: errorCreate, setError, handleInput } = useCreateFetch({ endpoint: `${params.idOrganization}/documents`, initData: initialDocumentTypes })
+
+    const createDocumentType = () => {
+
+        if (!!!validate({ dataValidate: ['name'] })) {
+            create()
+                .then(res => {
+                    refresh()
+                    toggleModalDocumentType()
+                })
+        }
+    }
+    /* update documents */
+    const [dataUpdate, setDataUpdate] = useState({
         name: '',
         description: '',
         category: '',
         expiration: 0,
+    })
+    const { data: dataDocumentUpdate, setData: setDataDocumentUpdate, validateUpdate, isFetchingUpdate, update, error: errorEdit, setErrorUpdate, handleInput: handleInputUpdate } = useUpdateFetch({ endpoint: `${params.idOrganization}/documents/`, initData: dataUpdate })
+
+    const openUpdateDocumentType = (data) => {
+        setActiveRole("EDIT")
+        console.log("edit", data)
+        //return
+        setDataDocumentUpdate(data);
+
+        //setDataUpdate(data)
+        toggleModalDocumentType()
+    }
+    const updateDocumentType = () => {
+        //update().then(res => {
+        //    refresh()
+        //    toggleModalDocumentType()
+        //})
+
+        organizationService.update(`${params.idOrganization}/documents/${dataDocumentUpdate.id}`, dataDocumentUpdate)
+            .then(response => {
+                setDataUpdate(dataDocumentUpdate);
+                refresh();
+                toggleModalDocumentType();
+            });
+    }
+    //**DELETE DOCUMENT */
+    const [modalDelete, setModalDelete] = useState({
+        state: false,
         id: '',
-        organizationId: ''
     })
-    const [modalDocumentType, setModalDocumentType] = useState(false);
-    const toggleModalDocumentType = () => { setError(false); setModalDocumentType(!modalDocumentType) }
-    const handleInput = (e) => {
-        const { type, name, value, checked } = e.target
-        setDataDocument({ ...dataDocument, [name]: type == 'checkbox' ? checked : value })
-    }
-    const [error, setError] = useState({
-        status: false,
-        message: ''
-    })
-    const validateFieldsDocument = (action = "CREATE") => {
-        switch (action) {
-            case "DELETE":
-                if (dataDocument.organizationId == "" || dataDocument.name == "" || dataDocument.category == "") {
-                    setMessageError('All fields are required to delete')
-                    return false
-                }
-                break;
-            case "EDIT":
-                if (dataDocument.organizationId == "" || dataDocument.name == "" || dataDocument.category == "") {
-                    setMessageError('All fields are required to edit')
-                    return false
-                }
-                break;
-            default:
-                if (dataDocument.name == "" || dataDocument.description == "" || dataDocument.category == "" || dataDocument.expiration == 0) {
-                    setMessageError('All fields are required by default')
-                    return false
-                }
-        }
-        return true
-    }
-    const setMessageError = (message) => {
-        setError({
-            status: message != "",
-            message: message
-        })
-    }
-    const mangeDocument = (action) => {
-        if (validateFieldsDocument(action)) {
-            alert("mandare a " + action)
-            let endpoint = "'organizations/9cf728c0-288a-4d92-9524-04d58b2ab32d/documents'"
-            switch (action) {
-                case "CREATE":
-                    break;
-                case "EDIT":
-                    break;
-                case "DELETE":
-                    break;
-                default:
-                    break;
-            }
-            FetchData(endpoint, "GET", dataDocument).then(response => {
-                console.log("ar", response)
-                setDocumentsList(response)
+    const toggleModalDelete = () => { setModalDelete({ ...modalDelete, state: !modalDelete.state }) }
+    const { isFetching: isFetchingDelete, destroy, error: errorDelete } = useDeleteFetch({ endpoint: `${params.idOrganization}/documents` })
+
+    const deleteDocumentType = (idDocuemntType) => {
+        //return
+        destroy(idDocuemntType)
+            .then(res => {
+                refresh()
+                toggleModalDelete()
+                refresh()
             })
-        }
     }
-    /**end new document */
-    /**Manage  Document */
-    const [modalManageDocument, setModalManageDocument] = useState(false)
-    const toggleManageDocument = () => { setError(false); setModalManageDocument(!modalManageDocument) }
-    const [activeTab, setActiveTab] = useState('DELETE');
-    const toggleTab = (tab) => {
-        if (activeTab !== tab) {
-            setActiveTab(tab);
-        }
-    };
-    /**end manage document */
-    /**LIST OF DOCUMENTS */
-    const [documentsList, setDocumentsList] = useState([])
-    const getDocumentList = () => {
-        FetchData('organizations/9cf728c0-288a-4d92-9524-04d58b2ab32d/documents', "GET").then(response => {
-            console.log("ar", response)
-            setDocumentsList(response)
-        })
+
+    const toggleModalDocumentType = () => {
+        setError({});
+        setDataDocument(initialDocumentTypes);
+        setModalDocumentType(!modalDocumentType)
     }
-    useEffect(() => {
-        getDocumentList()
-    }, [])
+
+    const openNewDocumentType = () => {
+        setActiveRole("CREATE")
+        toggleModalDocumentType()
+    }
     return (
         <><BreadCrumbs />
             <Row>
-                <Col xs="12" md="12" lg="11">
+                <Col xs="12" md="12" lg="12">
                     <Card>
                         <Row>
-                            <Col sm="12">
+                            <Col sm="12" >
                                 <div className="p-4">
-                                    <Row>
-                                        <Col md="9" xs="6" >
+                                    <div className='d-flex align-items-center justify-content-between'>
+                                        <div>
                                             <strong>Document Type</strong>
-                                        </Col>
-                                        <Col md="1" xs="3" >
-                                            <Button color="primary" className='float-end mb-2' onClick={toggleManageDocument}>Manage</Button>
-                                        </Col>
-                                        <Col md="2" xs="3" >
-                                            <Button color="primary" className='float-end mb-2' onClick={toggleModalDocumentType}>Add New</Button>
-                                        </Col>
+                                        </div>
+                                        <div className='d-flex gap-2'>
+                                            <div>
+                                                <Button color="primary" className='float-end mb-2' onClick={openNewDocumentType}>Add New</Button>
+                                            </div>
+                                        </div>
 
-                                    </Row>
+                                    </div>
                                     <hr />
                                     <div>
                                         <Modal isOpen={modalDocumentType} toggle={toggleModalDocumentType} className={"primary"}>
                                             <ModalHeader toggle={toggleModalDocumentType}>
-                                                Document Type Creation
+                                                Document Type {activeRole == "CREATE" ? " Creation" : " Update"}
                                             </ModalHeader>
                                             <ModalBody>
-                                                {error.status && <Alert color="danger">
-                                                    {error.message}
+                                                {!!Object.keys(errorCreate).length && <Alert color="danger">
+                                                    {JSON.stringify(errorCreate)}
                                                 </Alert>}
-                                                <CrudDocumentType role="CREATE" data={dataDocument} handle={handleInput} />
+                                                <CrudDocumentType role={activeRole} data={activeRole == "CREATE" ? dataDocument : dataDocumentUpdate} handle={activeRole == "CREATE" ? handleInput : handleInputUpdate} />
                                             </ModalBody>
                                             <ModalFooter>
-                                                <Button color="primary" onClick={() => mangeDocument("CREATE")}>Save</Button>{' '}
-                                                <Button color="secondary" onClick={toggleModalDocumentType}>Cancel</Button>
+                                                <Button color="primary" onClick={() => activeRole == "CREATE" ? createDocumentType() : updateDocumentType()} disabled={isFetching}>{isFetching || isFetchingUpdate ? 'Saving...' : 'Save'}</Button>{' '}
+                                                <Button color="secondary" onClick={toggleModalDocumentType} disabled={isFetching}>Cancel</Button>
+                                                {JSON.stringify(initialDocumentTypes)}
+                                                {JSON.stringify(dataUpdate)}
                                             </ModalFooter>
                                         </Modal>
                                     </div>
@@ -143,91 +151,74 @@ const DocumentTypes = () => {
                             </Col>
                         </Row>
                         <Row className="p-4">
-                            <Col sm="12">
-                                {documentsList.length > 0 &&
-                                    <center>
-                                        <ReactTable style={{}}
-                                            data={documentsList}
-                                            columns={[
-                                                {
-                                                    Header: 'Name',
-                                                    accessor: 'name',
-                                                    id: 'id',
-                                                },
-                                                {
-                                                    Header: 'Description',
-                                                    id: 'description',
-                                                    accessor: (d) => d.description,
-                                                },
-                                                {
-                                                    Header: 'Category',
-                                                    accessor: 'category',
-                                                },
-                                                {
-                                                    Header: 'Expires',
-                                                    accessor: 'expiration',
-                                                }
-                                            ]}
-                                            defaultPageSize={10}
-                                            className="-striped -highlight"
-                                        />
-                                    </center>
-                                }
-                            </Col>
+                            {
+                                isLoading
+                                    ? <Spinner className='mx-auto my-4'>Loading...</Spinner>
+                                    : <Col sm="12">
+                                        <center>
+                                            <ReactTable style={{}}
+                                                data={documentsList}
+                                                columns={[
+                                                    {
+                                                        Header: 'Name',
+                                                        accessor: 'name',
+                                                        id: 'name',
+                                                    },
+                                                    {
+                                                        Header: 'Description',
+                                                        id: 'description',
+                                                        accessor: (d) => d.description,
+                                                    },
+                                                    {
+                                                        Header: 'Category',
+                                                        accessor: 'category',
+                                                    },
+                                                    {
+                                                        Header: 'Expires',
+                                                        accessor: 'expiration',
+                                                    },
+                                                    {
+                                                        id: 'id',
+                                                        Header: 'Actions',
+                                                        sorteable: false,
+                                                        accessor: 'id',
+                                                        Cell: id => (
+                                                            <div className='d-flex gap-3 justify-content-center'>
+                                                                <div className=''>
+                                                                    <Button color="primary" onClick={() => openUpdateDocumentType(id.original)}>
+                                                                        Edit
+                                                                    </Button>
+                                                                </div>
+                                                                <div className=''>
+                                                                    <Button color="danger" onClick={() => setModalDelete({ state: true, id: id.value })}>
+                                                                        Delete
+                                                                    </Button>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    },
+                                                ]}
+                                                defaultPageSize={10}
+                                                className="-striped -highlight"
+                                            />
+                                        </center>
+                                    </Col>
+                            }
                         </Row>
                     </Card>
-                    <Card>
-
-                        <Modal isOpen={modalManageDocument} toggle={toggleManageDocument} className={"primary"} size='lg'>
-                            <ModalHeader toggle={toggleManageDocument}>
-                                Manage Document
-                            </ModalHeader>
-                            <ModalBody>
-                                {error.status && <Alert color="danger">
-                                    {error.message}
-                                </Alert>}
-                                <Nav tabs>
-                                    <NavItem>
-                                        <NavLink
-                                            className={activeTab === 'DELETE' ? 'active bg-transparent' : 'cursor-pointer'}
-                                            onClick={() => { toggleTab('DELETE'); }}   >
-                                            Delete
-                                        </NavLink>
-                                    </NavItem>
-                                    <NavItem>
-                                        <NavLink
-                                            className={activeTab === 'EDIT' ? 'active bg-transparent' : 'cursor-pointer'}
-                                            onClick={() => { toggleTab('EDIT'); }}   >
-                                            Manage
-                                        </NavLink>
-                                    </NavItem>
-                                </Nav>
-                                <TabContent activeTab={activeTab}>
-                                    <TabPane tabId="DELETE">
-                                        <br />
-                                        <Row>
-                                            <CrudDocumentType role="DELETE" data={dataDocument} handle={handleInput} />
-                                        </Row>
-                                    </TabPane>
-                                    <TabPane tabId="EDIT">
-                                        <br />
-                                        <Row>
-                                            <CrudDocumentType role="EDIT" data={dataDocument} handle={handleInput} />
-                                        </Row>
-                                    </TabPane>
-                                </TabContent>
-
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button color="primary" onClick={() => mangeDocument(activeTab)}>{activeTab}</Button>{' '}
-                                <Button color="secondary" onClick={toggleManageDocument}>Cancel</Button>
-                            </ModalFooter>
-                        </Modal>
-                    </Card>
-                    {/* <Button color="primary" className='float-end mb-2' onClick={getDocumentList}>Get List</Button> */}
 
                 </Col>
-            </Row>
+            </Row >
+            <Modal isOpen={modalDelete.state} toggle={toggleModalDelete}>
+                <ModalHeader toggle={toggleModalDelete}>Confirme Delete Item </ModalHeader>
+                <ModalBody className='p-4'>
+                    <h5 className='text-center text-muted fw-light mb-3'>It can not be undone</h5>
+                    <div className='d-flex justify-content-center gap-3'>
+                        <button className='btn btn-success' style={{ width: '120px' }} onClick={() => deleteDocumentType(modalDelete.id)}>YES</button>
+                        <button className='btn btn-danger' style={{ width: '120px' }} onClick={toggleModalDelete}>NO</button>
+                    </div>
+                </ModalBody>
+            </Modal>
         </>
     )
 }

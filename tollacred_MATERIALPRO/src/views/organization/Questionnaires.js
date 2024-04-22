@@ -1,76 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import {
-    Row, Col, Card, CardBody, CardGroup, Button, Progress, Form, FormGroup, Label, Input, Alert, CardTitle,
-    TabContent, TabPane, Nav, NavItem, NavLink, Offcanvas, OffcanvasHeader, OffcanvasBody
-} from 'reactstrap';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import React, { useState } from 'react';
+import {Row, Col, Card, Button, Spinner,} from 'reactstrap';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ReactTable from 'react-table-v6';
 import 'react-table-v6/react-table.css';
 import ComponentCard from '../../components/ComponentCard';
-import { FetchData } from '../../assets/js/funcionesGenerales'
 import CrudQuestionnaire from './forms/crudQuestionnaire'
+import useFetch from '../../hooks/useFetch';
+import useCreateFetch from '../../hooks/useCreateFetch';
+import { useParams } from 'react-router-dom';
 const Questionnaires = () => {
-    /**Adding new Questionnaire */
-    const [dataQuestionnaire, setDataQuestionnaire] = useState({
-        id: '',
-        name: '',
-        description: '',
-        questions: [],
-    })
 
-    const [openCrud, setOpenCrud] = useState(false)
+    const params = useParams()
+
     const toggleCrud = () => { setOpenCrud(!openCrud) }
-
-    useEffect(() => {
-        //getQuestionnaireList()
-    }, [])
     const [modalQuestionnaire, setModalQuestionnaire] = useState(false);
-    const toggleModalQuestionnaire = () => { setError(false); setModalQuestionnaire(!modalQuestionnaire) }
-    const handleInput = (e) => {
-        const { type, name, value, checked } = e.target
-        console.log("name", name, "type", type, "value", value, "checked", checked)
-        setDataQuestionnaire({ ...dataQuestionnaire, [name]: type == 'checkbox' ? checked : value })
+    const [openCrud, setOpenCrud] = useState(false)
+
+    const toggleModalQuestionnaire = () => { 
+        setError(false)
+        setModalQuestionnaire(!modalQuestionnaire) 
     }
-    const [error, setError] = useState({
-        status: false,
-        message: ''
-    })
-    const validateFieldsQuestionnaire = (action = "CREATE") => {
-        if (dataQuestionnaire.packageName == "") {
-            setMessageError('All fields are required by default')
-            return false
-        }
-        return true
-    }
-    const setMessageError = (message) => {
-        setError({
-            status: message != "",
-            message: message
-        })
-    }
-    const mangeQuestionnaire = (action) => {
-        if (validateFieldsQuestionnaire(action)) {
-            alert("mandare a " + action)
-            let endpoint = "'organizations/9cf728c0-288a-4d92-9524-04d58b2ab32d/save'"
-            FetchData(endpoint, "GET", dataQuestionnaire).then(response => {
-                console.log("ar", response)
-                setQuestionnairesList(response)
-            })
-        }
-    }
-    /**end new Questionnaire */
+
+    /**CREATE Questionnarie */
+    const { data: dataQuestionnaire, handleInput, error, setError,isFetching} = useCreateFetch({endpoint: `${params.idOrganization}/questionnaires`})
+
     /**LIST OF Questionnaires */
-    const [questionnairesList, setQuestionnairesList] = useState([])
-    const getQuestionnaireList = () => {
-        FetchData('organizations/9cf728c0-288a-4d92-9524-04d58b2ab32d/questionnaires', "GET").then(response => {
-            setQuestionnairesList(response)
-        })
-    }
+    const {data: questionnairesList, isLoading, reset} = useFetch({endpoint: `${params.idOrganization}/questionnaires`})
+
     return (
         <><BreadCrumbs />
             <Row>
-                <Col xs="12" md="12" lg="11">
+                <Col xs="12" md="12" lg="12">
                     <Card >
                         <Row>
                             <Col sm="12">
@@ -90,7 +50,11 @@ const Questionnaires = () => {
                                                 <CrudQuestionnaire role="CREATE" data={dataQuestionnaire} handle={handleInput} />
                                                 :
                                                 <ComponentCard title="List" >
-
+                                                    {
+                                                        isFetching 
+                                                        ? <Spinner className='mx-auto'>Loading...</Spinner>
+                                                        :
+                                                    
                                                     <ReactTable
                                                         data={questionnairesList}
                                                         columns={[
@@ -113,13 +77,13 @@ const Questionnaires = () => {
                                                                 accessor: 'package_id',
                                                                 sorteable: false,
                                                                 Cell: row => (
-                                                                    <div className='row'>
-                                                                        <div className='col-6'>
+                                                                    <div className='d-flex gap-3 justify-content-center'>
+                                                                        <div className=''>
                                                                             <Button color="primary" onClick={toggleModalQuestionnaire}>
                                                                                 Edit
                                                                             </Button>
                                                                         </div>
-                                                                        <div className='col-6'>
+                                                                        <div className=''>
                                                                             <Button color="danger" onClick={toggleModalQuestionnaire}>
                                                                                 Assign
                                                                             </Button>
@@ -138,6 +102,7 @@ const Questionnaires = () => {
                                                     //     );
                                                     // }}
                                                     />
+                                                    }
                                                 </ComponentCard>
                                             }
                                         </Row>
@@ -146,12 +111,6 @@ const Questionnaires = () => {
                             </Col>
                         </Row>
                     </Card>
-
-                    {questionnairesList.length > 0 &&
-                        <Row>
-
-                        </Row>
-                    }
                 </Col>
             </Row>
         </>

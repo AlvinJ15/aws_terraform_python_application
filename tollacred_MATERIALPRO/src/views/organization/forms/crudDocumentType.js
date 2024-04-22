@@ -3,30 +3,31 @@ import {
     Progress, Form, FormGroup, Label, Input, Alert
 } from 'reactstrap';
 const CrudDocumentType = ({ role, data, handle }) => {
+    console.log("en mi tol", role)
     return (
         <>
             {role == "EDIT" &&
-                <FormGroup >
+                <FormGroup style={{ display: "none" }}>
                     <Label>ID (Primary Key):</Label>
                     <Input type="text" value={data.id} placeholder="Enter a ID" onChange={handle} name="id" />
                 </FormGroup >
             }
-            {role != "CREATE" &&
+            {/* {role != "CREATE" &&
                 <FormGroup >
                     <Label>Organization ID:</Label>
                     <Input type="text" value={data.organizationId} placeholder="Enter a document Name" onChange={handle} name="organizationId" />
                 </FormGroup >
-            }
+            } */}
             <FormGroup>
                 <Label>Document Name*</Label>
                 <Input type="text" value={data.name} placeholder="Enter a document Name" onChange={handle} name="name" />
             </FormGroup>
-            {role == "CREATE" &&
-                <FormGroup>
-                    <Label>Document Description</Label>
-                    <Input type="text" value={data.description} placeholder="Enter document description" onChange={handle} name="description" />
-                </FormGroup>
-            }
+
+            <FormGroup>
+                <Label>Document Description</Label>
+                <Input type="text" value={data.description} placeholder="Enter document description" onChange={handle} name="description" />
+            </FormGroup>
+
             <FormGroup>
                 <Label>Category</Label>
                 <FormGroup check>
@@ -38,7 +39,7 @@ const CrudDocumentType = ({ role, data, handle }) => {
                 </FormGroup>
 
                 <FormGroup check>
-                    <Input type="radio" checked={data.category == "Certificate"} value="Certificate" name="category" onChange={handle} />
+                    <Input type="radio" checked={data.category == "Certificates"} value="Certificate" name="category" onChange={handle} />
                     {' '}
                     <Label check>
                         Certificate

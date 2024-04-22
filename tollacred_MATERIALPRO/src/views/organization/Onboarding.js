@@ -8,9 +8,12 @@ import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ReactTable from 'react-table-v6';
 import 'react-table-v6/react-table.css';
 import ComponentCard from '../../components/ComponentCard';
-import { FetchData } from '../../assets/js/funcionesGenerales'
+import { useNavigate } from 'react-router-dom';
 //import CrudOnboarding from './forms/crudOnboarding'
 const Onboarding = () => {
+
+    const navigate = useNavigate()
+
     /**Adding new Onboarding */
     const [dataOnboarding, setDataOnboarding] = useState({
         id: '',
@@ -25,6 +28,7 @@ const Onboarding = () => {
     useEffect(() => {
         getOnboardingList()
     }, [])
+    
     const [modalOnboarding, setModalOnboarding] = useState(false);
     const toggleModalOnboarding = () => { setError(false); setModalOnboarding(!modalOnboarding) }
     const handleInput = (e) => {
@@ -84,10 +88,10 @@ const Onboarding = () => {
     return (
         <><BreadCrumbs />
             <Row>
-                <Col xs="12" md="12" lg="11">
+                <Col xs="12" md="12" lg="12">
                     <Row>
                         <Col sm="12">
-                            <div className="p-4">
+                            <div className="">
                                 <Row>
                                     <Col md="6" xs="12" >
                                         <Card style={{}}>
@@ -107,8 +111,8 @@ const Onboarding = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {onboardingList.map((tdata) => (
-                                                            <tr key={tdata.name} className="border-top">
+                                                        {onboardingList.map((tdata, index) => (
+                                                            <tr key={index} className="border-top">
                                                                 <td>
                                                                     <div className="d-flex align-items-center p-2">
                                                                         {/* <img
@@ -176,11 +180,11 @@ const Onboarding = () => {
                         </Col>
                     </Row>
 
-                    {onboardingList.length > 0 &&
+                    {/* {onboardingList.length > 0 &&
                         <Row>
 
                         </Row>
-                    }
+                    } */}
                 </Col >
             </Row >
         </>

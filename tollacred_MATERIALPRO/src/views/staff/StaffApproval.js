@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { FetchData } from '../../assets/js/funcionesGenerales'
 import StaffList from './StaffList';
 const StaffApproval = () => {
     const [staffApproval, setStaffApproval] = useState({
@@ -17,11 +16,11 @@ const StaffApproval = () => {
         })*/
     }
     useEffect(() => {
-        getStaffList()
     }, [])
     return (
-
-        <StaffList dataFetch={staffApproval} />
+        <>
+            <StaffList/>
+        </>
 
     )
 

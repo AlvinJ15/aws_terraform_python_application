@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { FetchData } from '../../assets/js/funcionesGenerales'
 import StaffList from './StaffList';
 const StaffArchived = () => {
     const [staffArchived, setstaffArchived] = useState({
@@ -16,12 +15,12 @@ const StaffArchived = () => {
             //setSpinnerLoading(false)
         })*/
     }
-    useEffect(() => {
-        getStaffList()
-    }, [])
+    // useEffect(() => {
+    //     getStaffList()
+    // }, [])
     return (
 
-        <StaffList dataFetch={staffArchived} />
+        <StaffList/>
 
     )
 

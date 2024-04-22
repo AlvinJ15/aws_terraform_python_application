@@ -40,6 +40,11 @@ const SidebarData = [
         href: '/organization/onboarding',
         icon: <MaterialIcon icon="description" />,
       },
+      {
+        title: 'Roles',
+        href: '/organization/roles',
+        icon: <MaterialIcon icon="description" />,
+      },
     ],
   },
 
@@ -72,6 +77,59 @@ const SidebarData = [
     title: 'LIST',
     href: '/organization/list',
     icon: <MaterialIcon icon="home" />,
+  },
+  {
+    title: 'My Profile',
+    icon: <MaterialIcon icon="face" />,
+    id: 2.9,
+    collapisble: true,
+    children: [
+      {
+        title: 'Dashboard',
+        href: '/profile/dashboard',
+        icon: <MaterialIcon icon="face" />,
+      },
+      {
+        title: 'Profile Details',
+        href: '/profile/details',
+        icon: <MaterialIcon icon="check" />,
+      },
+      {
+        title: 'Documents ',
+        href: '/profile/documents',
+        icon: <MaterialIcon icon="check" />,
+      },
+      {
+        title: 'Organization Documents',
+        href: '/profile/organizationdocuments',
+        icon: <MaterialIcon icon="check" />,
+      },
+      {
+        title: 'Professional Registration',
+        href: '/profile/registration',
+        icon: <MaterialIcon icon="check" />,
+      },
+      {
+        title: 'References',
+        href: '/profile/references',
+        icon: <MaterialIcon icon="check" />,
+      },
+      {
+        title: 'Questionnaires',
+        href: '/profile/questionnares',
+        icon: <MaterialIcon icon="check" />,
+      },
+      {
+        title: 'Onboarding',
+        href: '/profile/onboarding',
+        icon: <MaterialIcon icon="check" />,
+      },
+      {
+        title: 'Background Checks',
+        href: '/profile/checks',
+        icon: <MaterialIcon icon="check" />,
+      },
+    ],
   },
 ];
 

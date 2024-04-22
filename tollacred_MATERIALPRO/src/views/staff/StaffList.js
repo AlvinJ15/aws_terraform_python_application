@@ -1,114 +1,152 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Row, Col, Card, CardBody, CardSubtitle, Button, Progress, Form, FormGroup, Label, Input, Alert, CardTitle,Spinner,
-    Table, Offcanvas, OffcanvasHeader, OffcanvasBody, ButtonGroup, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Dropdown
+    Row, Col, Card, CardBody, CardSubtitle, Button, Progress, Form, FormGroup, Label, Input, Alert, CardTitle, Spinner,
+    Table, Offcanvas, OffcanvasHeader, OffcanvasBody, ButtonGroup, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from 'reactstrap';
-
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ReactTable from 'react-table-v6';
-import 'react-table-v6/react-table.css';
-import ComponentCard from '../../components/ComponentCard';
-import { FetchData } from '../../assets/js/funcionesGenerales'
+
 import CrudStaff from './forms/CrudStaff';
-import Select from 'react-select'
+// import Select from 'react-select'
 import Loader from '../../layouts/loader/Loader';
+import organizationService from '../organization/services/organization.service';
+
+import 'react-table-v6/react-table.css';
+import { useNavigate, useParams } from 'react-router-dom';
+import useActionStaff from './hooks/useActionStaff';
 
 const StaffList = ({ dataFetch = [] }) => {
+
+    const params = useParams()
+    const navigate = useNavigate()
+
+    const [administrators, setAdministrator] = useState([])
+
     /**Adding new StaffList */
-    const [dataStaff, setDataStaff] = useState({
-        id: '',
-        first_name: '',
-        last_name: '',
-        email: '',
-        personnel_type: '',
-    })
-    const [roleList, setRoleList] = useState([])
-    const getRoleList = () => {
-        FetchData('organizations/9cf728c0-288a-4d92-9524-04d58b2ab32d/roles', "GET").then(response => {
-            setRoleList(response)
+    const { dataStaff,
+        roleList,
+        getRoleList,
+        isLoading,
+        setIsLoading,
+        toggleModalStaffList,
+        modalStaffList,
+        handleInput,
+        error,
+        mangeStaffCreate } = useActionStaff(params.idOrganization)
+    const saveEmployee = () => {
+        mangeStaffCreate("CREATE").then(response => {
+            //console.log("cargarrr", response)
+            getStaffList()
         })
     }
+    /**end new StaffList */
+    /**LIST OF StaffList */
+    const [spinnerLoading, setSpinnerLoading] = useState(false)
+    const [staffList, setStaffList] = useState([])
 
+    const getStaffList = () => {
+        if (typeof dataFetch.type !== "undefined") {
+            setStaffList(dataFetch.body)
+        } else {
+            setSpinnerLoading(true)
+
+            organizationService.get(`${params.idOrganization}/employees?page=1`)
+                .then(response => {
+                    setStaffList(response)
+                    setSpinnerLoading(false)
+                })
+        }
+    }
+
+    const getAdministratorList = () => {
+        organizationService.get(`${params.idOrganization}/administrators`)
+            .then(response => setAdministrator(response))
+    }
+
+    const deleteStaff = (idStaff) => {
+        params.idEmployee = idStaff
+        setIsLoading(true)
+        organizationService.delete(`${params.idOrganization}/employees/${idStaff}`)
+            .then(response => {
+                //console.log('delete --->', response)
+                setIsLoading(false)
+                getStaffList()
+            })
+    }
+
+    const navigateProfile = (idStaff) => {
+        params.idEmployee = idStaff
+        navigate(`/organization/${params.idOrganization}/employee/${idStaff}/compliancePackages`)
+    }
 
     useEffect(() => {
         getAdministratorList()
         getStaffList()
         getRoleList()
     }, [])
-    const [modalStaffList, setModalStaffList] = useState(false);
-    const toggleModalStaffList = () => { setError(false); setModalStaffList(!modalStaffList) }
-    const handleInput = (e) => {
-        const { type, name, value, checked } = e.target
-        console.log("name", name, "type", type, "value", value, "checked", checked)
-        setDataStaff({ ...dataStaff, [name]: type == 'checkbox' ? checked : value })
+    const defaultFilterMethod = (filter, row, column) => {
+        //console.log("filtering", filter)
+        const id = filter.pivotId || filter.id
+        return row[id] !== undefined ? String(row[id]).toLowerCase().startsWith(filter.value.toString().toLowerCase()) : true
     }
-    const [error, setError] = useState({
-        status: false,
-        message: ''
+    const [changingAssigned, setIsChangingId] = useState(false)
+    const handleAdministrador = (e, row) => {
+        setIsChangingId(true)
+        //console.log(e.target.value, row.original.employee_id)
+        //return
+        organizationService.update(`${params.idOrganization}/employees/${row.original.employee_id}`, { assignee_id: e.target.value })
+            .then(response => {
+                //getAdministratorList()
+                setIsChangingId(false)
+                e.target.value = e.target.value
+            })
+    }
+    const [modalEdit, setModalEdit] = useState(false)
+    const toggleModalEdit = () => { setModalEdit(!modalEdit) }
+    const [dataUpdate, setDataUpdate] = useState({
+        compliance_packages_names: '',
+        compliance_tags: '',
+        notes: ''
     })
-    const validateFieldsStaffList = (action = "CREATE") => {
-        if (dataStaff.packageName == "") {
-            setMessageError('All fields are required by default')
-            return false
-        }
-        return true
-    }
-    const setMessageError = (message) => {
-        setError({
-            status: message != "",
-            message: message
+    const handleUpdate = (e) => {
+        setDataUpdate({
+            ...dataUpdate,
+            [e.target.name]: e.target.value
         })
     }
-    const mangeStaffList = (action) => {
-        if (validateFieldsStaffList(action)) {
-            alert("mandare a " + action)
-            let endpoint = "'organizations/9cf728c0-288a-4d92-9524-04d58b2ab32d/save'"
-            FetchData(endpoint, "GET", dataStaff).then(response => {
-                setStaffList(response)
-            })
-        }
-    }
-    /**end new StaffList */
-    /**LIST OF StaffList */
-    const [spinnerLoading, setSpinnerLoading] = useState(false)
-    const [staffList, setStaffList] = useState([])
-    const getStaffList = () => {
-        if (typeof dataFetch.type !== "undefined") {
-            setStaffList(dataFetch.body)
-        } else {
-            setSpinnerLoading(true)
-            FetchData('organizations/9cf728c0-288a-4d92-9524-04d58b2ab32d/employees?page=1', "GET").then(response => {
-                setStaffList(response)
-                setSpinnerLoading(false)
-            })
-        } 
-    }
-    const [administrators, setAdministrator] = useState([])
-    const getAdministratorList = () => {
-        FetchData('organizations/9cf728c0-288a-4d92-9524-04d58b2ab32d/administrators', "GET").then(response => {
-            setAdministrator(response)
+    const openEditMember = (row) => {
+        //console.log("editare lo sgte xd!", row)
+        setDataUpdate({
+            id_employee: row.employee_id,
+            compliance_packages_names: row.compliance_packages_names.join(","),
+            compliance_tags: row.compliance_tags,
+            notes: row.notes
         })
+        toggleModalEdit()
     }
-    const openOptionsMember = (role, data) => {
-        console.log(role, data)
-        switch (role) {
-            case "edit":
-                alert("editing")
-                break;
-            default:
-
+    const updateEmployee = () => {
+        setIsLoading(true)
+        let dataSend = {
+            //compliance_packages_names: dataUpdate.compliance_packages_names.split(", "),
+            compliance_tags: dataUpdate.compliance_tags,
+            notes: dataUpdate.notes,
+            status: dataUpdate.compliance_packages_names
         }
-    }
+        organizationService.update(`${params.idOrganization}/employees/${dataUpdate.id_employee}`, dataSend)
+            .then(response => {
+                getStaffList()
+                toggleModalEdit()
+            }).finally(() => setIsLoading(false))
 
+    }
     return (
         <div fallback={Loader}>
-            <BreadCrumbs />
+            <BreadCrumbs name='Staff' />
             <Row>
                 <Col xs="12" md="12" lg="12">
                     <Row>
                         <Col sm="12">
-                            <div className="p-4">
+                            <div className="py-4">
                                 <Row>
                                     <Col md="12" xs="12" >
                                         <Card>
@@ -128,37 +166,39 @@ const StaffList = ({ dataFetch = [] }) => {
                                                                 <strong>
                                                                     Please fill all fields
                                                                 </strong>
-                                                                <CrudStaff role="CREATE" data={dataStaff} handle={handleInput} lists={{ roleList: roleList }} />
-                                                                <Row>
-                                                                    <Col md="6" xs="12">
-                                                                        <Button className='float-end mb-2' color="primary" onClick={() => { mangeStaffList("CREATE") }}
-                                                                        >Save</Button>
-                                                                    </Col>
-                                                                    <Col md="6" xs="12">
-                                                                        <Button className='float-end mb-2' color="primary" onClick={toggleModalStaffList}
+                                                                <CrudStaff role="CREATE" data={dataStaff} handle={handleInput} lists={roleList} />
+                                                                <div className='d-flex justify-content-end gap-2'>
+                                                                    <div>
+                                                                        <Button className='' color="primary" onClick={saveEmployee} disabled={isLoading}
+                                                                        >{isLoading ? "Saving" : "Save"}</Button>
+                                                                    </div>
+                                                                    <div>
+                                                                        <Button className='' color="dark" onClick={toggleModalStaffList} disabled={isLoading}
                                                                         >Close</Button>
-                                                                    </Col>
-                                                                </Row>
+                                                                    </div>
+                                                                </div>
                                                             </OffcanvasBody>
                                                         </Offcanvas>
                                                     </Col>
                                                 </Row>
                                             </CardTitle>
-                                            <CardBody className="p-4"> 
+                                            <CardBody className="p-4">
                                                 {spinnerLoading ?
                                                     <Spinner color="primary">
                                                         Loading...
                                                     </Spinner>
                                                     :
                                                     <ReactTable
+                                                        filterable={true}
+                                                        defaultFilterMethod={defaultFilterMethod}
                                                         loading={spinnerLoading}
                                                         data={staffList}
                                                         columns={[
                                                             {
                                                                 id: 'profile',
                                                                 Header: 'Staff Member',
-                                                                //accessor: (d) => d.profile.first_name + " " + d.profile.last_name,
-                                                                accessor: (d) => d.profile.first_name,
+                                                                accessor: (d) => d.profile.first_name + " " + d.profile.last_name,
+                                                                //accessor: (d) => d.profile.first_name,
                                                             },
                                                             {
                                                                 id: 'role',
@@ -166,14 +206,14 @@ const StaffList = ({ dataFetch = [] }) => {
                                                                 accessor: (d) => d.profile.role,
                                                             },
                                                             {
-                                                                id: 'assigned',
+                                                                id: 'assignee_id',
                                                                 Header: 'Assigned',
-                                                                accessor: 'assigned',
+                                                                accessor: 'assignee_id',
                                                                 Cell: row => (
                                                                     <div className='row'>
-                                                                        <select value={row.assignee} className="form-select">
+                                                                        <select defaultValue={row.value} className="form-select" onChange={(e) => handleAdministrador(e, row)} disabled={changingAssigned} >
                                                                             {administrators.map((admin, index) => (
-                                                                                <option key={index} value={admin.email}>{admin.first_name + " " + admin.last_name}</option>
+                                                                                <option key={index} value={admin.admin_id}>{admin.first_name + " " + admin.last_name}</option>
                                                                             ))}
                                                                         </select>
                                                                         {/* <Select
@@ -190,7 +230,7 @@ const StaffList = ({ dataFetch = [] }) => {
                                                                 )
                                                             },
                                                             {
-                                                                id: "compilance_packages",
+                                                                id: "compliance_packages",
                                                                 Header: 'Compliance Packages',
                                                                 accessor: 'compliance_packages_names',
                                                                 Cell: row => (
@@ -222,59 +262,39 @@ const StaffList = ({ dataFetch = [] }) => {
                                                                 accessor: 'notes',
                                                             },
                                                             {
-                                                                id: 'package_id',
+                                                                id: 'employee_id',
                                                                 Header: 'Actions',
                                                                 sorteable: false,
-                                                                accessor: (d) => d.profile,
-                                                                Cell: row => (
-                                                                    <div className='row'>
-                                                                        <div className='col-12'>
-                                                                            {
-                                                                                <UncontrolledDropdown
-                                                                            className="me-2"
-                                                                            direction="end"
-                                                                        >
-                                                                            <DropdownToggle
-                                                                                caret
-                                                                                color="primary"
+                                                                accessor: 'employee_id',
+                                                                Cell: employee_id => (
+                                                                    <div className=''>
+                                                                        <div className=''>
+                                                                            <UncontrolledDropdown
+                                                                                className="me-4"
+                                                                                direction="down"
+                                                                                style={{ position: 'inherit' }}
                                                                             >
-                                                                                Dropdown
-                                                                            </DropdownToggle>
-                                                                            <DropdownMenu>
-                                                                                <DropdownItem onClick={() => openEditMember(row.value)}>
-                                                                                    Edit
-                                                                                </DropdownItem>
-                                                                                <DropdownItem>
-                                                                                    Manage
-                                                                                </DropdownItem>
-                                                                                <DropdownItem />
-                                                                                <DropdownItem>
-                                                                                    Delete
-                                                                                </DropdownItem>
-                                                                            </DropdownMenu>
-                                                                        </UncontrolledDropdown>
-
-                                                                               /* <Dropdown isOpen={dropdownOpen} toggle={toggle} direction="left">
-                                                                                    <DropdownToggle caret>
+                                                                                <DropdownToggle
+                                                                                    caret
+                                                                                    color="primary"
+                                                                                >
                                                                                     Dropdown
-                                                                                    </DropdownToggle>
-                                                                                    <DropdownMenu>
-                                                                                    <DropdownItem header>Header</DropdownItem>
-                                                                                    <DropdownItem>Some Action</DropdownItem>
-                                                                                    <DropdownItem disabled>Action (disabled)</DropdownItem>
-                                                                                    <DropdownItem divider />
-                                                                                    <DropdownItem>Foo Action</DropdownItem>
-                                                                                    <DropdownItem>Bar Action</DropdownItem>
-                                                                                    <DropdownItem>Quo Action</DropdownItem>
-                                                                                    </DropdownMenu>
-                                                                                </Dropdown>*/
-                                                                            /*<select onChange={(e) => openOptionsMember(e.target.value, row.value)}>
-                                                                                <option value="">   Options   </option>
-                                                                                <option value="manage">   Manage    </option>
-                                                                                <option value="edit">    Edit    </option>
-                                                                                <option value="delete">    Delete      </option>
-                                                                            </select>*/
-                                                                            }
+                                                                                </DropdownToggle>
+                                                                                <DropdownMenu>
+                                                                                    <DropdownItem disabled={isLoading}
+                                                                                        onClick={() => openEditMember(employee_id.original)}
+                                                                                    >
+                                                                                        Edit
+                                                                                    </DropdownItem>
+                                                                                    <DropdownItem disabled={isLoading} onClick={() => navigateProfile(employee_id.value)}>
+                                                                                        Manage
+                                                                                    </DropdownItem>
+                                                                                    <DropdownItem onClick={() => deleteStaff(employee_id.value)} disabled={isLoading}>
+                                                                                        Delete
+                                                                                    </DropdownItem>
+                                                                                </DropdownMenu>
+                                                                            </UncontrolledDropdown>
+
                                                                         </div>
                                                                     </div>
                                                                 )
@@ -295,17 +315,44 @@ const StaffList = ({ dataFetch = [] }) => {
                                         </Card>
                                     </Col>
                                 </Row>
-                                <div>
-                                    <Row>
-
-
-                                    </Row>
-                                </div>
                             </div>
                         </Col>
                     </Row>
                 </Col >
             </Row >
+            {/*to edit a member*/}
+            <Offcanvas direction="end" toggle={toggleModalEdit} isOpen={modalEdit} style={{ width: "48%" }} >
+                <OffcanvasHeader toggle={toggleModalEdit}>
+                    Edit Compliance member
+                </OffcanvasHeader>
+                <OffcanvasBody>
+                    <strong>
+                    </strong>
+                    <hr />
+                    <FormGroup>
+                        <Label>Compliance</Label>
+                        <Input type="textarea" value={dataUpdate.compliance_packages_names} onChange={handleUpdate} name="compliance_packages_names" />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>Compliance Tags</Label>
+                        <Input type="textarea" value={dataUpdate.compliance_tags} onChange={handleUpdate} name="compliance_tags" />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label>Notes</Label>
+                        <Input type="textarea" value={dataUpdate.notes} onChange={handleUpdate} name="notes" />
+                    </FormGroup>
+                    <div className='d-flex justify-content-end gap-2'>
+                        <div>
+                            <Button className='' color="primary" onClick={updateEmployee} disabled={isLoading}
+                            >{isLoading ? "Updating" : "Update"}</Button>
+                        </div>
+                        <div>
+                            <Button className='' color="dark" onClick={toggleModalEdit} disabled={isLoading}
+                            >Close</Button>
+                        </div>
+                    </div>
+                </OffcanvasBody>
+            </Offcanvas>
         </div>
     )
 }

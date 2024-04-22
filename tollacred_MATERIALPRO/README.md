@@ -11,6 +11,9 @@ Configure dependencies before install:
 
 ### `npm i -g vite`
 
+Set env variables for local development
+### `source .env.local`
+
 Run project in development mode.
 ### `npm run dev`
 

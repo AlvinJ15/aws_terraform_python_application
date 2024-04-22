@@ -25,6 +25,8 @@ import { ToggleMobileSidebar } from '../../store/customizer/CustomizerSlice';
 import ProfileDD from './ProfileDD';
 import { ToggleHorizontal, } from '../../store/customizer/CustomizerSlice';
 import HorizontalLogo from '../logo/HorizontalLogo';
+
+
 const HorizontalHeader = () => {
   const isDarkMode = useSelector((state) => state.customizer.isDark);
   const topbarColor = useSelector((state) => state.customizer.topbarBg);
@@ -63,7 +65,7 @@ const HorizontalHeader = () => {
           {/******************************/}
           {/**********Mega DD**********/}
           {/******************************/}
-          <UncontrolledDropdown className="mega-dropdown mx-1">
+          {/* <UncontrolledDropdown className="mega-dropdown mx-1">
             <DropdownToggle className="bg-transparent border-0" color={topbarColor}>
               <Icon.Grid size={18} />
             </DropdownToggle>
@@ -75,12 +77,12 @@ const HorizontalHeader = () => {
             <Link to="/about" className={`nav-link ${topbarColor === 'white' ? 'text-dark' : ''}`}>
               About
             </Link>
-          </NavItem>
+          </NavItem> */}
         </Nav>
         <div className="d-flex align-items-center">
           {/******************************/}
           {/**********Notification DD**********/}
-          {/******************************/} 
+          {/******************************/}
           <Button
             outline={!!LayoutHorizontal}
             color="secondary"
@@ -89,7 +91,7 @@ const HorizontalHeader = () => {
           >
             Change Sidebar
           </Button>
-          <UncontrolledDropdown>
+          {/* <UncontrolledDropdown>
             <DropdownToggle className="bg-transparent border-0" color={topbarColor}>
               <Bell size={18} />
             </DropdownToggle>
@@ -108,11 +110,11 @@ const HorizontalHeader = () => {
                 </Button>
               </div>
             </DropdownMenu>
-          </UncontrolledDropdown>
+          </UncontrolledDropdown> */}
           {/******************************/}
           {/**********Message DD**********/}
           {/******************************/}
-          <UncontrolledDropdown className="mx-1">
+          {/* <UncontrolledDropdown className="mx-1">
             <DropdownToggle className="bg-transparent border-0" color={topbarColor}>
               <MessageSquare size={18} />
             </DropdownToggle>
@@ -131,7 +133,7 @@ const HorizontalHeader = () => {
                 </Button>
               </div>
             </DropdownMenu>
-          </UncontrolledDropdown>
+          </UncontrolledDropdown> */}
           {/******************************/}
           {/**********Profile DD**********/}
           {/******************************/}

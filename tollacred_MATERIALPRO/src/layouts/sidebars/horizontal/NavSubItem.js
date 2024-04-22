@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavItem, NavLink, Nav } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 const NavSubItem = ({ to, icon, title, items, suffix, activeBck, suffixColor, ddType }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [subMenu, setSubMenu] = useState(items);
+  const [isloading, setIsLoading] = useState(false)
+
+  const params = useParams()
   const location = useLocation();
-  const [isOpen, setIsOpen] = React.useState(false);
 
   const Handletoggle = () => {
     setIsOpen(!isOpen);
-  };
 
+  }
   return (
     <NavItem className={`collapsed && getActive ? 'activeParent' : '' ${ddType}`}>
       <NavLink to={to} className="gap-3 cursor-pointer" onClick={Handletoggle}>
@@ -22,19 +26,22 @@ const NavSubItem = ({ to, icon, title, items, suffix, activeBck, suffixColor, dd
         </div>
       </NavLink>
       <Nav vertical className={`firstDD bg-${activeBck} ${isOpen ? 'showfirstDD' : ''}`}>
-        {items.map((item) => (
-          <NavItem
-            key={item.title}
-            className={`${location.pathname === item.href ? 'activeLink' : ''}`}
-          >
-            <NavLink tag={Link} to={item.href} className="gap-3">
-              <span className="sidebarIcon">{item.icon}</span>
-              <span className="">
-                <span>{item.title}</span>
-              </span>
-            </NavLink>
-          </NavItem>
-        ))}
+        { 
+          (!!subMenu && !isloading) &&
+          subMenu.map((item) => (
+            <NavItem
+              key={item.title}
+              className={`${location.pathname === item.href ? 'activeLink' : ''}`}
+            >
+              <NavLink tag={Link} to={item.href} className="gap-3">
+                <span className="sidebarIcon">{item.icon}</span>
+                <span className="">
+                  <span>{item.title}</span>
+                </span>
+              </NavLink>
+            </NavItem>
+          ))
+        }
       </Nav>
     </NavItem>
   );

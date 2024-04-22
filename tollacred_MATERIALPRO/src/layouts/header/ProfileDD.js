@@ -13,28 +13,10 @@ const ProfileDD = () => {
           <small className='fs-6 text-muted'>info@wrappixel.com</small>
         </span>
       </div>
-      <DropdownItem className="px-4 py-3">
+      {/* <DropdownItem className="px-4 py-3">
         <User size={20} />
         &nbsp; My Profile
-      </DropdownItem>
-      <DropdownItem className="px-4 py-3">
-        <FileText size={20} />
-        &nbsp; Edit Profile
-      </DropdownItem>
-      <DropdownItem className="px-4 py-3">
-        <Star size={20} />
-        &nbsp; My Balance
-      </DropdownItem>
-      <DropdownItem className="px-4 py-3">
-        <Droplet size={20} />
-        &nbsp; Customize
-      </DropdownItem>
-      <DropdownItem divider />
-      <DropdownItem className="px-4 py-3">
-        <Settings size={20} />
-        &nbsp; Settings
-      </DropdownItem>
-      <DropdownItem divider />
+      </DropdownItem> */}
     </div>
   );
 };

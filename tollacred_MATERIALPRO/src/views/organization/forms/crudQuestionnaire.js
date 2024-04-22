@@ -5,7 +5,6 @@ import {
 import '../../tables/ReactBootstrapTable.scss';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import ComponentCard from '../../../components/ComponentCard';
-import { FetchData } from '../../../assets/js/funcionesGenerales';
 const CrudQuestionnaire = ({ role, data, handle }) => {
     const [documentTypeList, setDocumentTypeList] = useState([])
     const [roleList, setRoleList] = useState([])

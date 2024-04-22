@@ -1,5 +1,5 @@
 import { NavLink, NavItem } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 import PropTypes from "prop-types";
 
 const NavSingleItem = ({
@@ -11,6 +11,7 @@ const NavSingleItem = ({
   suffix,
   suffixColor,
 }) => {
+
   return (
     <NavItem onClick={toggle} className={className}>
       <NavLink tag={Link} to={to} className="gap-3">

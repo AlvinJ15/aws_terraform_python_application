@@ -19,7 +19,7 @@ const Error = () => {
               </span>
             </div>
 
-            <Link to="/" className="btn btn-danger">
+            <Link to="/organization" className="btn btn-danger">
               Back to home
             </Link>
           </div>

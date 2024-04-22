@@ -1,81 +1,102 @@
 import React, { useEffect, useState } from 'react';
 import {
     Row, Col, Card, Button, Progress, Form, FormGroup, Label, Input, Alert, CardTitle,
-    TabContent, TabPane, Nav, NavItem, NavLink, Offcanvas, OffcanvasHeader, OffcanvasBody
+    TabContent, TabPane, Nav, NavItem, NavLink, Offcanvas, OffcanvasHeader, OffcanvasBody, Spinner
 } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ReactTable from 'react-table-v6';
 import 'react-table-v6/react-table.css';
 import ComponentCard from '../../components/ComponentCard';
-import { FetchData } from '../../assets/js/funcionesGenerales'
 import CrudRequeriment from './forms/crudRequeriment'
+import organizationService from './services/organization.service';
+import { useNavigate, useParams } from 'react-router-dom';
+import useActionRequeriments from './hooks/useActionRequiments';
+import useDeleteFetch from '../../hooks/useDeleteFetch';
+
+
 const Requeriments = () => {
+
+    const navigate = useNavigate()
+    const params = useParams()
+    const [activeRol, setActiveRol] = useState("CREATE")
     /**Adding new Requeriment */
-    const [dataRequeriment, setDataRequeriment] = useState({
-        id: '',
-        packageName: '',
-        documentTypes: [],
-        roles: [],
-    })
-    const [documentList, setDocumentList] = useState([])
-    const [roleList, setRoleList] = useState([])
-    const getDocumentList = () => {
-        FetchData('organizations/9cf728c0-288a-4d92-9524-04d58b2ab32d/documents', "GET").then(response => setDocumentList(response))
+    const { getDocumentList, dataRequeriment, setDataRequeriment, getRoleList, documentList, roleList, handleInput, error, modalRequeriment, toggleModalRequeriment, mangeRequerimentAction, isFetching } = useActionRequeriments(params.idOrganization)
+    /**end new Requeriment */
+
+    /**LIST OF RequerimentS */
+    const [requerimentsList, setRequerimentsList] = useState([])
+    const [loadingList, setLoadingList] = useState(true)
+    const getRequerimentList = () => {
+        setLoadingList(true)
+        organizationService.get(`${params.idOrganization}/compliancePackages`)
+            .then(response => { setRequerimentsList(response); setLoadingList(false) })
+            .catch(error => navigate('*'))
     }
-    const getRoleList = () => {
-        FetchData('organizations/9cf728c0-288a-4d92-9524-04d58b2ab32d/roles', "GET").then(response => setRoleList(response))
-    }
+
     useEffect(() => {
         getDocumentList()
         getRoleList()
         getRequerimentList()
     }, [])
-    const [modalRequeriment, setModalRequeriment] = useState(false);
-    const toggleModalRequeriment = () => { setError(false); setModalRequeriment(!modalRequeriment) }
-    const handleInput = (e) => {
-        const { type, name, value, checked } = e.target
-        setDataRequeriment({ ...dataRequeriment, [name]: type == 'checkbox' ? checked : value })
-    }
-    const [error, setError] = useState({
-        status: false,
-        message: ''
-    })
-    const validateFieldsRequeriment = (action = "CREATE") => {
-        if (dataRequeriment.packageName == "") {
-            setMessageError('All fields are required by default')
-            return false
-        }
-        return true
-    }
-    const setMessageError = (message) => {
-        setError({
-            status: message != "",
-            message: message
+    const addRequeriment = () => {
+        mangeRequerimentAction(`${params.idOrganization}/compliancePackages`).then(res => {
+            getRequerimentList()
+            toggleModalRequeriment()
         })
     }
-    const mangeRequeriment = (action) => {
-        if (validateFieldsRequeriment(action)) {
-            alert("mandare a " + action)
-            let endpoint = "'organizations/9cf728c0-288a-4d92-9524-04d58b2ab32d/save'"
-            FetchData(endpoint, "GET", dataRequeriment).then(response => {
-                console.log("ar", response)
-                setRequerimentsList(response)
-            })
-        }
+    /*EDIT */
+    /**Updaing new Requeriment */
+    const [dataUpdate, setDataUpdate] = useState({
+        package_id: '',
+        name: '',
+        document_types: [],
+        roles: [],
+    })
+    const { dataRequeriment: dataRequerimentUpdate, setDataRequeriment: setDataUpt, handleInput: handleInputUpdate, error: errorUpdate, updateRequerimentAction: update, isFetching: isFetchingUpdate } = useActionRequeriments(params.idOrganization, dataUpdate)
+    const openEdit = (data) => {
+        setActiveRol("EDIT")
+        setDataUpt({
+            package_id: data.package_id,
+            name: data.name,
+            document_types: data.document_types,
+            roles: data.roles,
+        })
+        toggleModalRequeriment()
     }
-    /**end new Requeriment */
-    /**LIST OF RequerimentS */
-    const [requerimentsList, setRequerimentsList] = useState([])
-    const getRequerimentList = () => {
-        FetchData('organizations/9cf728c0-288a-4d92-9524-04d58b2ab32d/compliancePackages', "GET").then(response => {
-            setRequerimentsList(response)
-        })  
+    const updateRequeriment = () => {
+        update(`${params.idOrganization}/compliancePackages`).then(res => {
+            getRequerimentList()
+            toggleModalRequeriment()
+        })
+    }
+    /**end u´date Requeriment */
+    const openAddModal = () => {
+        setActiveRol("CREATE")
+        toggleModalRequeriment()
+    }
+    //**DELETE Requeriment */
+    const [modalDelete, setModalDelete] = useState({
+        estate: false,
+        id: '',
+    })
+    const toggleModalDelete = () => { setModalDelete({ ...modalDelete, estate: !modalDelete.estate }) }
+    const { isFetching: isFetchingDelete, destroy, error: errorDelete } = useDeleteFetch({ endpoint: `${params.idOrganization}/compliancePackages` })
+
+    const deleteDocumentType = (id) => {
+        //console.log("quiero eliminar", id)
+        //return
+        destroy(id)
+            .then(res => {
+                getRequerimentList()
+                toggleModalDelete()
+                getRequerimentList()
+            })
     }
     return (
         <><BreadCrumbs />
             <Row>
-                <Col xs="12" md="12" lg="11">
+                <Col xs="12" md="12" lg="12">
                     <Card>
                         <Row>
                             <Col sm="12">
@@ -83,85 +104,98 @@ const Requeriments = () => {
                                     <Row>
                                         <Col md="12" xs="12" >
                                             <strong>Compliance Requirements</strong>
-                                            <Button className='float-end mb-2' color="primary" onClick={toggleModalRequeriment}
+                                            <Button className='float-end mb-2' color="primary" onClick={openAddModal}
                                             >Add Compilance Requeriment Package</Button>
                                         </Col>
                                     </Row>
                                     <div>
                                         <Row>
                                             <ComponentCard title=" Compilance Packages List" >
-
-                                                <ReactTable
-                                                    data={requerimentsList}
-                                                    columns={[
-                                                        {
-                                                            Header: 'Package ID',
-                                                            accessor: 'package_id',
-                                                            id: 'id',
-                                                        },
-                                                        {
-                                                            Header: 'Name',
-                                                            id: 'name',
-                                                            accessor: (d) => d.name,
-                                                        },
-                                                        {
-                                                            Header: 'Creation Date',
-                                                            accessor: 'creation_date',
-                                                        },
-                                                        {
-                                                            Header: 'Actions',
-                                                            accessor: 'package_id',
-                                                            sorteable: false,
-                                                            Cell: row => (
-                                                                <div className='row'>
-                                                                    <div className='col-6'>
-                                                                        <Button color="primary" onClick={toggleModalRequeriment}>
-                                                                            Edit
-                                                                        </Button>
+                                                {loadingList ? <Spinner className='mx-auto my-4'>Loading...</Spinner> :
+                                                    <ReactTable
+                                                        data={requerimentsList}
+                                                        columns={[
+                                                            {
+                                                                Header: 'Package ID',
+                                                                accessor: 'package_id',
+                                                                id: 'id',
+                                                            },
+                                                            {
+                                                                Header: 'Name',
+                                                                id: 'name',
+                                                                accessor: (d) => d.name,
+                                                            },
+                                                            {
+                                                                Header: 'Creation Date',
+                                                                accessor: 'creation_date',
+                                                            },
+                                                            {
+                                                                Header: 'Actions',
+                                                                accessor: 'package_id',
+                                                                sorteable: false,
+                                                                Cell: row => (
+                                                                    <div className='d-flex gap-3 justify-content-center'>
+                                                                        <div className=''>
+                                                                            <Button color="primary" onClick={() => openEdit(row.original)}>
+                                                                                Edit
+                                                                            </Button>
+                                                                        </div>
+                                                                        <div className=''>
+                                                                            <Button color="danger"
+                                                                                onClick={() => setModalDelete({ estate: true, id: row.original.package_id })}
+                                                                            >
+                                                                                Delete
+                                                                            </Button>
+                                                                        </div>
                                                                     </div>
-                                                                    <div className='col-6'>
-                                                                        <Button color="danger" onClick={toggleModalRequeriment}>
-                                                                            Delete
-                                                                        </Button>
-                                                                    </div>
-                                                                </div>
-                                                            )
-                                                        },
-                                                    ]}
-                                                    defaultPageSize={10}
-                                                    className="-striped -highlight"
-                                                // SubComponent={row => {
-                                                //     return (
-                                                //         <div>
-                                                //             XD
-                                                //         </div>
-                                                //     );
-                                                // }}
-                                                />
+                                                                )
+                                                            },
+                                                        ]}
+                                                        defaultPageSize={10}
+                                                        className="-striped -highlight"
+                                                    // SubComponent={row => {
+                                                    //     return (
+                                                    //         <div>
+                                                    //             XD
+                                                    //         </div>
+                                                    //     );
+                                                    // }}
+                                                    />}
                                             </ComponentCard>
-                                        </Row> 
+                                        </Row>
                                         <Offcanvas direction="end" toggle={toggleModalRequeriment} isOpen={modalRequeriment} style={{ width: "63%" }} >
                                             <OffcanvasHeader toggle={toggleModalRequeriment}>
-                                                Package Creation
+                                                Requirement Package Creation
                                             </OffcanvasHeader>
                                             <OffcanvasBody>
                                                 <strong>
                                                     Add documents and checks necessary to fulfill compliance requirements.
                                                 </strong>
-                                                <CrudRequeriment role="CREATE" data={dataRequeriment} handle={handleInput} lists={{ documentList: documentList, roleList: roleList }} />
+                                                <CrudRequeriment role="CREATE" data={activeRol == "CREATE" ? dataRequeriment : dataRequerimentUpdate} handle={activeRol == "CREATE" ? handleInput : handleInputUpdate}
+                                                    lists={{ documentList: documentList, roleList: roleList }} />
                                             </OffcanvasBody>
+                                            <div className='d-flex justify-content-center'>
+                                                <Button color="primary" onClick={() => { activeRol == "CREATE" ? addRequeriment() : updateRequeriment() }} disabled={isFetching}>
+                                                    {isFetching || isFetchingUpdate ? "Saving" : "Save"}
+                                                </Button>
+
+                                            </div>
                                         </Offcanvas>
                                     </div>
                                 </div>
                             </Col>
                         </Row>
                     </Card>
-
-                    {requerimentsList.length > 0 &&
-                        <Row>
-
-                        </Row>
-                    }
+                    <Modal isOpen={modalDelete.estate} toggle={toggleModalDelete}>
+                        <ModalHeader toggle={toggleModalDelete}>Confirme Delete Item </ModalHeader>
+                        <ModalBody className='p-4'>
+                            <h5 className='text-center text-muted fw-light mb-3'>It can not be undone</h5>
+                            <div className='d-flex justify-content-center gap-3'>
+                                <button className='btn btn-success' style={{ width: '120px' }} onClick={() => deleteDocumentType(modalDelete.id)}>YES</button>
+                                <button className='btn btn-danger' style={{ width: '120px' }} onClick={toggleModalDelete}>NO</button>
+                            </div>
+                        </ModalBody>
+                    </Modal>
                 </Col>
             </Row>
         </>

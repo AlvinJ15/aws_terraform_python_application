@@ -82,7 +82,7 @@ const Header = () => {
           {/******************************/}
           {/**********Mega DD**********/}
           {/******************************/}
-          <UncontrolledDropdown className="mega-dropdown mx-1">
+          {/* <UncontrolledDropdown className="mega-dropdown mx-1">
             <DropdownToggle className="bg-transparent border-0" color={topbarColor}>
               <Icon.Grid size={18} />
             </DropdownToggle>
@@ -94,14 +94,14 @@ const Header = () => {
             <Link to="/about" className={`nav-link ${topbarColor === 'white' ? 'text-dark' : ''}`}>
               About
             </Link>
-          </NavItem>
+          </NavItem> */}
         </Nav>
 
         <div className="d-flex align-items-center">
           {/******************************/}
           {/**********Notification DD**********/}
           {/******************************/}
-          <Button 
+          <Button
             color="secondary"
             size="sm"
             outline={!LayoutHorizontal}
@@ -109,7 +109,7 @@ const Header = () => {
           >
             Change Sidebar
           </Button>
-          <UncontrolledDropdown className="mx-1">
+          {/* <UncontrolledDropdown className="mx-1">
             <DropdownToggle className="bg-transparent border-0" color={topbarColor}>
               <Icon.MessageSquare size={18} />
             </DropdownToggle>
@@ -128,11 +128,11 @@ const Header = () => {
                 </Button>
               </div>
             </DropdownMenu>
-          </UncontrolledDropdown>
+          </UncontrolledDropdown> */}
           {/******************************/}
           {/**********Message DD**********/}
           {/******************************/}
-          <UncontrolledDropdown className="mx-1">
+          {/* <UncontrolledDropdown className="mx-1">
             <DropdownToggle className="bg-transparent border-0" color={topbarColor}>
               <Icon.Mail size={18} />
             </DropdownToggle>
@@ -151,7 +151,7 @@ const Header = () => {
                 </Button>
               </div>
             </DropdownMenu>
-          </UncontrolledDropdown>
+          </UncontrolledDropdown> */}
           {/******************************/}
           {/**********Profile DD**********/}
           {/******************************/}

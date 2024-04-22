@@ -1,8 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { ReactComponent as LogoDarkIcon } from '../../assets/images/logos/dark-logo-icon.svg';
-import { ReactComponent as LogoDarkText } from '../../assets/images/logos/dark-logo-text.svg';
+//import { ReactComponent as LogoDarkIcon } from '../../assets/images/logos/dark-logo-icon.svg';
+import { ReactComponent as LogoDarkIcon } from '../../assets/images/logos/logo_tollanis.svg';
+//import { ReactComponent as LogoDarkText } from '../../assets/images/logos/dark-logo-text.svg';
+import { ReactComponent as LogoDarkText } from '../../assets/images/logos/logo_tollanis.svg';
 import { ReactComponent as LogoWhiteIcon } from '../../assets/images/logos/white-logo-icon.svg';
 import { ReactComponent as LogoWhiteText } from '../../assets/images/logos/white-logo-text.svg';
 
@@ -14,12 +16,12 @@ const AuthLogo = () => {
       {isDarkMode !== false ? (
         <>
           <LogoWhiteIcon />
-          <LogoWhiteText />
+          {/* <LogoWhiteText /> */}
         </>
       ) : (
         <>
           <LogoDarkIcon />
-          <LogoDarkText />
+          {/* <LogoDarkText /> */}
         </>
       )}
     </div>

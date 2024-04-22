@@ -44,6 +44,7 @@ class EmployeeDocument(Base):
             "document_id": self.document_id,
             "employee_id": self.employee_id,
             "document_type_id": self.document_type_id,
+            "document_type": self.document_type.to_dict() if self.document_type else None,
             "expiry_date": self.expiry_date.strftime("%Y-%m-%d %H:%M:%S") if self.expiry_date else None,
             "document_number": self.document_number,
             "status": self.status,
