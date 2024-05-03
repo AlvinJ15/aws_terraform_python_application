@@ -44,7 +44,7 @@ const LockScreen = () => {
                 <div className="text-center">
                   <img src={img1} alt="avatar" className="rounded-circle" width="95" />
                   <CardTitle tag="h4" className="mt-2">
-                    John DeoQQ
+                    User
                   </CardTitle>
                 </div>
                 <Formik
@@ -58,7 +58,7 @@ const LockScreen = () => {
                   render={({ errors, touched }) => (
                     <Form className="mt-3">
                       <FormGroup>
-                        <Button href={cognitoLoginURL} type="submit" color="info" block className="me-2">
+                        <Button href={cognitoLoginURL} type="submit" color="primary" block className="me-2">
                           Login
                         </Button>
                       </FormGroup>

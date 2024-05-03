@@ -10,7 +10,7 @@ const ProfileDD = () => {
         <img src={user1} alt="user" className="rounded-circle" width="60" />
         <span>
           <h5 className="mb-0">John Deo</h5>
-          <small className='fs-6 text-muted'>info@wrappixel.com</small>
+          <small className='fs-6 text-muted'>info@tollaniscred.com</small>
         </span>
       </div>
       {/* <DropdownItem className="px-4 py-3">

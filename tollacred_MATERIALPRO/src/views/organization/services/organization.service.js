@@ -31,7 +31,7 @@ const organizationService = {
 
     //let dataSend = (data instanceof FormData) ? data : JSON.stringify(data)
     try {
-      return await apiManager.post(`${NAME_ENTITY}/${endpoint}`, dataSend);
+      return await apiManager.post(`${NAME_ENTITY}/${endpoint}`, data);
     } catch (error) {
       throw error;
     }

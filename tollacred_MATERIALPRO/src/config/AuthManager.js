@@ -6,6 +6,7 @@ const CLIENT_SECRET = import.meta.env.VITE_CLIENT_SECRET;
 const COGNITO_DOMAIN = import.meta.env.VITE_COGNITO_DOMAIN;
 const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
 const LOGIN_URL = import.meta.env.VITE_LOGIN_URL;
+const LOGOUT_URL = import.meta.env.VITE_LOGOUT_URL;
 
 
 function redirectToLogin() {
@@ -61,36 +62,49 @@ function setCookie(name, value, options = {}) {
     document.cookie = cookieString;
 }
 
-function deleteCookie(name) {
+export async function deleteCookie(name) {
+    const credentials = `${CLIENT_ID}:${CLIENT_SECRET}`;
+    const encodedCredentials = btoa(credentials);
+
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    /*return await fetch(LOGOUT_URL,{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Basic ${encodedCredentials}`,
+        }
+    });*/
 }
+
 export async  function getApiToken() {
     if (getCookie('API_TOKEN') === undefined) {
         const CODE = new URLSearchParams(window.location.search).get('code');
-        const credentials = `${CLIENT_ID}:${CLIENT_SECRET}`;
-        const encodedCredentials = btoa(credentials);
-        // console.log(encodedCredentials)
-        const body = {
-            grant_type: 'authorization_code',
-            client_id: CLIENT_ID,
-            code: CODE,
-            redirect_uri: REDIRECT_URI,
-        };
+        if (CODE){
+            const credentials = `${CLIENT_ID}:${CLIENT_SECRET}`;
+            const encodedCredentials = btoa(credentials);
+            // console.log(encodedCredentials)
+            const body = {
+                grant_type: 'authorization_code',
+                client_id: CLIENT_ID,
+                code: CODE,
+                redirect_uri: REDIRECT_URI,
+            };
 
-        const headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': `Basic ${encodedCredentials}`,
-        };
+            const headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Basic ${encodedCredentials}`,
+            };
 
-        let response = await makeTokenRequest('POST', `${COGNITO_DOMAIN}/oauth2/token`, body, headers);
-        if (response == null) {
-            alert('Error retrieving the API TOKEN');
-            return undefined;
+            let response = await makeTokenRequest('POST', `${COGNITO_DOMAIN}/oauth2/token`, body, headers);
+            if (response == null) {
+                alert('Error retrieving the API TOKEN');
+                return undefined;
+            }
+            setCookie('API_TOKEN', response.id_token, {
+                expires: 86400,
+                path: '/'
+            })
         }
-        setCookie('API_TOKEN', response.id_token, {
-            expires: 86400,
-            path: '/'
-        })
     }
     return getCookie('API_TOKEN');
 }
@@ -108,7 +122,7 @@ async function makeTokenRequest(method, url, data = null, headers = null, is_jso
         if (response.status === 200 || response.status === 201) {
             return response.json();
         }
-        console.log(response);
+        //console.log(response);
         return null;
     } catch (error) {
         //handleRequestError(url, error);

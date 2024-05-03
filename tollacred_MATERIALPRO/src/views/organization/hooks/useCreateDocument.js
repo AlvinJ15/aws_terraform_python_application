@@ -29,8 +29,7 @@ const useCreateDocument = () => {
   }
 
   const handleInput = (e) => {
-    if(Array.isArray(e)){
-      console.log(e)
+    if(Array.isArray(e)){ 
     }
     else {
       const { type, name, value, checked } = e.target
@@ -61,8 +60,7 @@ const useCreateDocument = () => {
       if (validateFieldsDocument(action)) {
           alert("mandare a " + action)
           let endpoint = "'organizations/9cf728c0-288a-4d92-9524-04d58b2ab32d/save'"
-          FetchData(endpoint, "GET", dataDocument).then(response => {
-              console.log("ar", response)
+          FetchData(endpoint, "GET", dataDocument).then(response => { 
               setDocumentsList(response)
           })
       }

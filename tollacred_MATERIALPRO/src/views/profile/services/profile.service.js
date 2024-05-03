@@ -24,7 +24,7 @@ export const updateStateDocument = async (endpoint ,review) => {
   try {
     const formData = new FormData()
     formData.append('status', review)
-    return await apiManager.get('organizations/'+endpoint,formData,{
+    return await apiManager.put('organizations/'+endpoint,formData,{
         'Authorization': await getApiToken(),
     })
   } catch (error) {

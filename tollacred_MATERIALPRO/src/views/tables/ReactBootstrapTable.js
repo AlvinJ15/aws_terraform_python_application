@@ -23,9 +23,7 @@ function onAfterInsertRow(row) {
   alert('The new row is:\n ' + newRowStr);
 }*/
 //This is for the Search item
-function afterSearch(searchText, result) {
-  console.log(`Your search text is ${searchText}`);
-  console.log('Result is:');
+function afterSearch(searchText, result) { 
   for (let i = 0; i < result.length; i++) {
     console.log(`Fruit: ${result[i].id}, ${result[i].name}, ${result[i].price}`);
   }

@@ -18,7 +18,7 @@ const useActionStaff = (idOrganization) => {
 
   const getRoleList = () => {
     organizationService.get(`${idOrganization}/roles`)
-      .then(response => { setRoleList(response); console.log(response) })
+      .then(response => { setRoleList(response); /*console.log(response)*/ })
   }
 
   const toggleModalStaffList = () => {

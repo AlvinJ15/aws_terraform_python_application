@@ -21,7 +21,7 @@ const SidebarData = [
         icon: <MaterialIcon icon="description" />,
       },
       {
-        title: 'Compilance Requeriments',
+        title: 'Compliance Requeriments',
         href: '/organization/requeriments',
         icon: <MaterialIcon icon="description" />,
       },

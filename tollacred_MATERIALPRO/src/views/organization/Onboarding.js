@@ -32,8 +32,7 @@ const Onboarding = () => {
     const [modalOnboarding, setModalOnboarding] = useState(false);
     const toggleModalOnboarding = () => { setError(false); setModalOnboarding(!modalOnboarding) }
     const handleInput = (e) => {
-        const { type, name, value, checked } = e.target
-        console.log("name", name, "type", type, "value", value, "checked", checked)
+        const { type, name, value, checked } = e.target 
         setDataOnboarding({ ...dataOnboarding, [name]: type == 'checkbox' ? checked : value })
     }
     const [error, setError] = useState({
@@ -148,8 +147,7 @@ const Onboarding = () => {
                                                         <CardSubtitle className="mb-2 text-muted" tag="h6">
                                                             Overview of the projects
                                                         </CardSubtitle>
-
-                                                        In strict mode,lorem ipsum
+                                                        <span>In strict mode,lorem ipsum</span>
                                                     </CardBody>
                                                 </Card>
                                             </Col>
@@ -162,8 +160,7 @@ const Onboarding = () => {
                                                         <CardSubtitle className="mb-2 text-muted" tag="h6">
                                                             Overview of the projects
                                                         </CardSubtitle>
-
-                                                        Contact Customer success team
+                                                        <span>Contact Customer success team</span>
                                                     </CardBody>
                                                 </Card>
                                             </Col>

@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import {
     Progress, Form, FormGroup, Label, Input, Alert
 } from 'reactstrap';
-const CrudDocumentType = ({ role, data, handle }) => {
-    console.log("en mi tol", role)
+const CrudDocumentType = ({ role, data, handle }) => { 
     return (
         <>
             {role == "EDIT" &&

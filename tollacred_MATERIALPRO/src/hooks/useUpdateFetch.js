@@ -17,8 +17,7 @@ const useUpdateFetch = ({ endpoint = '', initData = {} }) => {
       setData({ ...tempSelect })
     }
     else if (!!e.target) {
-      const { type, name, value, checked } = e.target
-      //console.log("oa", name, value)
+      const { type, name, value, checked } = e.target 
       setData({ ...data, [name]: type == 'checkbox' ? checked : value })
     }
   }

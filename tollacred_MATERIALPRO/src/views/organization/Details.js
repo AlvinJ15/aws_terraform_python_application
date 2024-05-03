@@ -74,7 +74,7 @@ const Details = () => {
                                 : <TabContent activeTab={activeTab}>
                                     <TabPane tabId="1">
                                         <Row>
-                                            <Col sm="12">
+                                            <Col className='' sm="12">
                                                 <div className="p-4">
                                                     <Form>
                                                         <Row>

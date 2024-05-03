@@ -6,14 +6,15 @@ $font-family-sans-serif: 'Poppins', sans-serif;
 /*******************/
 // Theme Colors
 /********************/
-$primary: #1e88e5;
+$primary: #00125b;
 $info: #7460ee;
-$danger: #fc4b6c;
+$danger: #C1554E;
 $success: #21c1d6;
-$warning: #ffb22b;
+$warning: #F6B53B;
 $dark: #2f3d4a;
-$light: #eaf2fb;
+$light: #E4E4E4;
 $secondary: #2f3d4a;
+
 
 $theme-colors: (
   'primary': $primary,
@@ -30,6 +31,7 @@ $theme-colors: (
   'light-warning': #f8ecdc,
   'light-danger': #f9e7eb,
   'light-secondary': #dde1e4,
+
 );
 // scss-docs-start gray-color-variables
 $white: #fff !default;
@@ -130,7 +132,7 @@ $btn-focus-box-shadow: 0;
 /*******************/
 // Theme sidebar width
 /********************/
-$sidebarWidth: 260px;
+$sidebarWidth: 320px;
 $sidebartext: $gray-900;
 $sidebartextlight: rgba(30, 42, 53, 0.5);
 $miniSidebarWidth: 77px;

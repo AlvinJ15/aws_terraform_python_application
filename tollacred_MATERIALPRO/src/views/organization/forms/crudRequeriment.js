@@ -19,8 +19,7 @@ const CrudRequeriment = ({ role, data, handle, lists }) => {
         afterDeleteRow: () => { }, // A hook for after droping rows.
         afterSearch: () => { }, // define a after search hook 
         /*onRowClick: function (row, columnIndex, rowIndex, e) {
-            alert(`You click row id: , column index: ${columnIndex}, row index: ${rowIndex}`);
-            console.log(e);
+            alert(`You click row id: , column index: ${columnIndex}, row index: ${rowIndex}`); 
         },*/
 
     };
@@ -32,8 +31,7 @@ const CrudRequeriment = ({ role, data, handle, lists }) => {
         onSelect: onRowSelectDocument
     }
     function gettingSelectedes(type, field, array) {
-        let list = []
-        //console.log("quefue", lists[type]);
+        let list = [] 
         if (array.length > 0) {
             lists[type].map(item => {
                 if (array.includes(item[field])) {
@@ -63,8 +61,7 @@ const CrudRequeriment = ({ role, data, handle, lists }) => {
         selected: gettingSelectedes("roleList", "role_id", data.roles),
         onSelect: onRowSelectRole
     }
-    function onRowSelectRole(row, isSelected, e) {
-        //console.log("seleccioo", row)
+    function onRowSelectRole(row, isSelected, e) { 
         let roles = [...data.roles]
         if (isSelected) {
             roles.push(row.role_id)

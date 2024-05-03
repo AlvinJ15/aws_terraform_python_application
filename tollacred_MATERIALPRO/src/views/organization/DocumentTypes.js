@@ -59,8 +59,7 @@ const DocumentTypes = () => {
     const { data: dataDocumentUpdate, setData: setDataDocumentUpdate, validateUpdate, isFetchingUpdate, update, error: errorEdit, setErrorUpdate, handleInput: handleInputUpdate } = useUpdateFetch({ endpoint: `${params.idOrganization}/documents/`, initData: dataUpdate })
 
     const openUpdateDocumentType = (data) => {
-        setActiveRole("EDIT")
-        console.log("edit", data)
+        setActiveRole("EDIT") 
         //return
         setDataDocumentUpdate(data);
 
@@ -118,7 +117,7 @@ const DocumentTypes = () => {
                                 <div className="p-4">
                                     <div className='d-flex align-items-center justify-content-between'>
                                         <div>
-                                            <strong>Document Type</strong>
+                                            <h5>Document Type</h5>
                                         </div>
                                         <div className='d-flex gap-2'>
                                             <div>
@@ -131,7 +130,7 @@ const DocumentTypes = () => {
                                     <div>
                                         <Modal isOpen={modalDocumentType} toggle={toggleModalDocumentType} className={"primary"}>
                                             <ModalHeader toggle={toggleModalDocumentType}>
-                                                Document Type {activeRole == "CREATE" ? " Creation" : " Update"}
+                                                <h5>Document Type {activeRole == "CREATE" ? " Creation" : " Update"}</h5>
                                             </ModalHeader>
                                             <ModalBody>
                                                 {!!Object.keys(errorCreate).length && <Alert color="danger">
@@ -140,10 +139,10 @@ const DocumentTypes = () => {
                                                 <CrudDocumentType role={activeRole} data={activeRole == "CREATE" ? dataDocument : dataDocumentUpdate} handle={activeRole == "CREATE" ? handleInput : handleInputUpdate} />
                                             </ModalBody>
                                             <ModalFooter>
+                                                <Button className='text-primary bg-white' color="light" onClick={toggleModalDocumentType} disabled={isFetching}>Cancel</Button>
                                                 <Button color="primary" onClick={() => activeRole == "CREATE" ? createDocumentType() : updateDocumentType()} disabled={isFetching}>{isFetching || isFetchingUpdate ? 'Saving...' : 'Save'}</Button>{' '}
-                                                <Button color="secondary" onClick={toggleModalDocumentType} disabled={isFetching}>Cancel</Button>
-                                                {JSON.stringify(initialDocumentTypes)}
-                                                {JSON.stringify(dataUpdate)}
+                                                {/* {JSON.stringify(initialDocumentTypes)}
+                                                {JSON.stringify(dataUpdate)} */}
                                             </ModalFooter>
                                         </Modal>
                                     </div>
@@ -190,7 +189,7 @@ const DocumentTypes = () => {
                                                                     </Button>
                                                                 </div>
                                                                 <div className=''>
-                                                                    <Button color="danger" onClick={() => setModalDelete({ state: true, id: id.value })}>
+                                                                    <Button outline color="danger" onClick={() => setModalDelete({ state: true, id: id.value })}>
                                                                         Delete
                                                                     </Button>
                                                                 </div>

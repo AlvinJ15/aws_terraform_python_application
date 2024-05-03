@@ -68,7 +68,8 @@ def create_handler(event, context, stage):
             organization = db.query(Organization).filter_by(id=organization_id).first()
             employee_profile = db.query(EmployeeProfile).filter_by(employee_id=employee_id).first()
             data = get_data_from_multipart(event)
-            file = data.pop('file')
+            file_name = data.pop('file_name')
+            file_type = data.pop('file_type')
             if not data.get('approver_id'):
                 data['approver_id'] = None
             new_document = EmployeeDocument(**data)
@@ -79,14 +80,15 @@ def create_handler(event, context, stage):
                     f"Ongoing/{employee_profile.get_name()} - "
                     f"{employee_profile.role}/01 License, Certification and Verification/"
                     f"{employee_profile.get_name()} - "
-                    f"{document_type.category} - {document_type.name}.{file.multipart_filename.split('.')[-1]}")
-            s3_path = upload_file_to_s3(path, file.value, file.multipart_content_type)
-            new_document.s3_path = s3_path
+                    f"{document_type.category} - {document_type.name}.{file_name}")
+            new_document.s3_path = path
             if new_document.status == 'Approved':
                 new_document.approval_date = DataBase.get_now()
             new_document.upload_date = DataBase.get_now()
             db.add(new_document)
             db.commit()
+            dict_document = new_document.to_dict()
+            dict_document['upload_url'] = generate_file_link(path, 'put_object', file_type)
         return {
             'statusCode': 201,
             "headers": {
@@ -94,7 +96,7 @@ def create_handler(event, context, stage):
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
             },
-            'body': json.dumps(new_document.to_dict())
+            'body': json.dumps(dict_document)
         }
     except Exception as err:  # Handle general exceptions for robustness
         print_exception_stack()
@@ -184,6 +186,8 @@ def get_data_from_multipart(event):
     status_target = ValueTarget()
     approver_id_target = ValueTarget()
     file_target = ValueTarget()
+    file_type_target = ValueTarget()
+    file_name_target = ValueTarget()
 
     parser.register("document_type_id", document_type_id_target)
     parser.register("expiry_date", expiry_date_target)
@@ -191,6 +195,8 @@ def get_data_from_multipart(event):
     parser.register("status", status_target)
     parser.register("approver_id", approver_id_target)
     parser.register("file", file_target)
+    parser.register("file_type", file_type_target)
+    parser.register("file_name", file_name_target)
 
     my_data = base64.b64decode(event["body"])
     parser.data_received(my_data)
@@ -201,7 +207,9 @@ def get_data_from_multipart(event):
         'document_number': document_number_target.value.decode("utf-8"),
         'status': status_target.value.decode("utf-8"),
         'approver_id': approver_id_target.value.decode("utf-8"),
-        'file': file_target if file_target.value else None
+        'file': file_target if file_target.value else None,
+        'file_type': file_type_target.value.decode('utf-8'),
+        'file_name': file_name_target.value.decode('utf-8')
     }
 
     return {key: value for key, value in values.items() if value}

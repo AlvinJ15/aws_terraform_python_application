@@ -58,8 +58,7 @@ const Roles = () => {
     const { data: dataRoleUpdate, setData: setDataRoleUpdate, validateUpdate, isFetchingUpdate, update, error: errorEdit, setErrorUpdate, handleInput: handleInputUpdate } = useUpdateFetch({ endpoint: `${params.idOrganization}/roles`, initData: dataUpdate })
 
     const openUpdateRole = (data) => {
-        setActiveRole("EDIT")
-        console.log("edit", data)
+        setActiveRole("EDIT") 
         //return
         setDataRoleUpdate(data)
         setDataUpdate(data)
@@ -115,7 +114,7 @@ const Roles = () => {
                                 <div className="p-4">
                                     <div className='d-flex align-items-center justify-content-between'>
                                         <div>
-                                            <strong>Roles</strong>
+                                            <h5>Roles</h5>
                                         </div>
                                         <div className='d-flex gap-2'>
                                             <div>
@@ -128,7 +127,7 @@ const Roles = () => {
                                     <div>
                                         <Modal isOpen={modalRole} toggle={toggleModalRole} className={"primary"}>
                                             <ModalHeader toggle={toggleModalRole}>
-                                                Role {activeRole == "CREATE" ? " Creation" : " Update"}
+                                               <h5> Role {activeRole == "CREATE" ? " Creation" : " Update"}</h5>
                                             </ModalHeader>
                                             <ModalBody>
                                                 {!!Object.keys(errorCreate).length && <Alert color="danger">
@@ -138,7 +137,7 @@ const Roles = () => {
                                             </ModalBody>
                                             <ModalFooter>
                                                 <Button color="primary" onClick={() => activeRole == "CREATE" ? createRole() : updateRole()} disabled={isFetching || isFetchingUpdate}>{isFetching || isFetchingUpdate ? 'Saving...' : 'Save'}</Button>{' '}
-                                                <Button color="secondary" onClick={toggleModalRole} disabled={isFetching}>Cancel</Button>
+                                                <Button className='text-primary' color="light" onClick={toggleModalRole} disabled={isFetching}>Cancel</Button>
                                                 {/* {JSON.stringify(initialRoles)}
                                                 {JSON.stringify(dataUpdate)} */}
                                             </ModalFooter>
@@ -174,7 +173,7 @@ const Roles = () => {
                                                         id: 'id',
                                                         Header: 'Actions',
                                                         sorteable: false,
-                                                        accessor: 'id',
+                                                        accessor: 'role_id',
                                                         Cell: id => (
                                                             <div className='d-flex gap-3 justify-content-center'>
                                                                 <div className=''>
@@ -183,7 +182,7 @@ const Roles = () => {
                                                                     </Button>
                                                                 </div>
                                                                 <div className=''>
-                                                                    <Button color="danger" onClick={() => setModalDelete({ estate: true, id: id.value })}>
+                                                                    <Button outline color="danger" onClick={() => setModalDelete({ estate: true, id: id.value })}>
                                                                         Delete
                                                                     </Button>
                                                                 </div>

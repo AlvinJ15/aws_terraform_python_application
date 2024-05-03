@@ -82,11 +82,6 @@ const useActionManageDocument = (idOrganization) => {
                 break;
         }
 
-
-        // FetchData(endpoint, "GET", dataDocument).then(response => {
-        //     console.log("ar", response)
-        //     setDocumentsList(response)
-        // })
     }
   }
   

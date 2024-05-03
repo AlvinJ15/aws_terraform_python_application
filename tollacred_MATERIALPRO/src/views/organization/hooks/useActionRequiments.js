@@ -72,7 +72,7 @@ const useActionRequeriments = (idOrganization, dataInicial = initialRequeriment)
                     then(response => { setIsFetching(false) })
             }
             catch (error) {
-                console.log("errorpacakges", error)
+                //console.log("errorpacakges", error)
                 setError({ status: true, error: error })
                 setIsFetching(false)
             }
@@ -91,7 +91,7 @@ const useActionRequeriments = (idOrganization, dataInicial = initialRequeriment)
                 then(response => { setIsFetching(false) })
         }
         catch (error) {
-            console.log("errorpacakges", error)
+            //console.log("errorpacakges", error)
             setError({ status: true, error: error })
             setIsFetching(false)
         }

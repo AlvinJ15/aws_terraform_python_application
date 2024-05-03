@@ -69,19 +69,17 @@ const Documents = () => {
                         <Row>
                             <Col sm="12">
                                 <div className="p-4">
-                                    <Row>
-                                        <Col md="12" xs="12" >
-                                            <strong>Documents</strong>
-                                            {
-                                                !isLoadingRole && <Button className='float-end mb-2' color="primary" onClick={toggleModalDocument}>
-                                                    Add Organization Documents
-                                                </Button>
-                                            }
-                                        </Col>
-                                    </Row>
+                                    <div  className='d-flex justify-content-between align-items-center'>
+                                        <h5>Documents</h5>
+                                        {
+                                            !isLoadingRole && <Button className='float-end mb-2' color="primary" onClick={toggleModalDocument}>
+                                                Add Organization Documents
+                                            </Button>
+                                        }
+                                    </div>
                                     <div>
                                         <Row>
-                                            <ComponentCard title="Documents List" >
+                                            <ComponentCard >
                                                 {
                                                     isLoading
                                                         ? <Spinner className='mx-auto'>Loading...</Spinner>
@@ -154,17 +152,19 @@ const Documents = () => {
                                         </Modal> */}
                                         <Offcanvas direction="end" toggle={toggleModalDocument} isOpen={modalDocument} style={{ width: "51%" }} >
                                             <OffcanvasHeader toggle={toggleModalDocument}>
-                                                Package Creation
+                                                <h5>Package Creation</h5>
                                             </OffcanvasHeader>
                                             <OffcanvasBody>
-                                                <strong>
-                                                    Add documents and checks necessary to fulfill compliance requirements.
-                                                </strong>
+                                                <div className='mb-3'>
+                                                    <small>
+                                                        Add documents and checks necessary to fulfill compliance requirements.
+                                                    </small>
+                                                </div>
                                                 <CrudDocument role="CREATE" data={dataDocument} handle={handleInput} lists={{ roleList: roleList }} />
                                                 <hr></hr>
                                                 <div className='d-flex justify-content-end gap-3'>
+                                                    <button className='btn btn-light text-primary' onClick={() => setModalDocument(false)} isabled={isFetching}> Cancel</button>
                                                     <button className='btn btn-primary' onClick={() => createDocument()} disabled={isFetching}>{isFetching ? 'Saving' : 'Save'}</button>
-                                                    <button className='btn btn-light' onClick={() => setModalDocument(false)} isabled={isFetching}> Cancel</button>
                                                 </div>
                                             </OffcanvasBody>
                                         </Offcanvas>

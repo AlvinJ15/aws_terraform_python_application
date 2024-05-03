@@ -64,8 +64,7 @@ const CustomReactTable = () => {
 								let newdata = data2;
 								newdata.find((o, i) => {
 									if (o.id === key) {
-										newdata.splice(i, 1);
-										console.log(newdata);
+										newdata.splice(i, 1); 
 										return true;
 									}
 									return false;

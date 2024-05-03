@@ -8,3 +8,45 @@
 @import "./layout/horizontal";
 @import "./layout/topbar";
 @import "./layout/rtl/rtl";
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap');
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900');
+
+h5, h6 {
+  font-weight: 600;
+}
+
+.th1, .th2, .th3, .th4, .th5, .th6 ,.rt-thead, thead{
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+p, 
+span, 
+small, 
+label, 
+input[type=text], 
+input[type=password], 
+input[type=email], 
+input[type=search], 
+input[type=date], 
+input[type=number],
+input[type=month],
+input[type=week],
+input[type=time],
+input[type=url],
+input[type=tel],
+input[type=datetime-local],
+input[type=color], 
+.ReactTable,
+td,
+.open-sans{
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400; /* Negrita */
+}
+
+button, a{
+  font-family: 'Poppins', sans-serif;
+}

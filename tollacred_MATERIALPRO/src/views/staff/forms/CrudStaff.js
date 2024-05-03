@@ -6,8 +6,6 @@ import Select from 'react-select'
 const CrudStaff = ({ role, data, handle, lists }) => {
     const [optionRoles, setOptionRoles] = useState([])
 
-    //console.log('list: ', lists)
-
     const optionAdapter = () => {
         let options = []
         lists.map(item => {

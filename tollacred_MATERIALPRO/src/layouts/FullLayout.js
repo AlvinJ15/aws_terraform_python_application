@@ -6,6 +6,7 @@ import Customizer from './customizer/Customizer';
 import Sidebar from './sidebars/vertical/Sidebar';
 import HorizontalHeader from './header/HorizontalHeader';
 import HorizontalSidebar from './sidebars/horizontal/HorizontalSidebar';
+import FooterLayout from './Footer/FooterLayout';
 
 const FullLayout = () => {
   const customizerToggle = useSelector((state) => state.customizer.customizerSidebar);
@@ -30,7 +31,7 @@ const FullLayout = () => {
         )}
         {/********Content Area**********/}
 
-        <div className={`contentArea ${topbarFixed ? 'fixedTopbar' : ''}`}>
+        <div className={`d-flex flex-column contentArea ${topbarFixed ? 'fixedTopbar' : ''}`}>
           {/********header**********/}
           {LayoutHorizontal ? <HorizontalHeader /> : <Header />}
           {LayoutHorizontal ? <HorizontalSidebar /> : ''}
@@ -41,8 +42,9 @@ const FullLayout = () => {
             </div>
             <Customizer className={customizerToggle ? 'showCustomizer' : ''} />
             {showMobileSidebar || customizerToggle ? <div className="sidebarOverlay" /> : ''}
-            {/* holitas */}
           </Container>
+          <FooterLayout className="mt-auto"/>
+
         </div>
       </div>
     </main>

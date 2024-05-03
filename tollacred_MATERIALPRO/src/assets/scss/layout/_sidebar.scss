@@ -201,7 +201,7 @@
     &.bg-white {
       .nav-item.activeParent > .nav-link,
       .nav > .activeLink .nav-link {
-        background: $success;
+        background: $primary;
         color: $white;
         border-radius: $border-radius;
       }

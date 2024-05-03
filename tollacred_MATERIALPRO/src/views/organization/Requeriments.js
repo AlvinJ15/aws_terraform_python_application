@@ -83,8 +83,7 @@ const Requeriments = () => {
     const toggleModalDelete = () => { setModalDelete({ ...modalDelete, estate: !modalDelete.estate }) }
     const { isFetching: isFetchingDelete, destroy, error: errorDelete } = useDeleteFetch({ endpoint: `${params.idOrganization}/compliancePackages` })
 
-    const deleteDocumentType = (id) => {
-        //console.log("quiero eliminar", id)
+    const deleteDocumentType = (id) => { 
         //return
         destroy(id)
             .then(res => {
@@ -103,78 +102,76 @@ const Requeriments = () => {
                                 <div className="p-4">
                                     <Row>
                                         <Col md="12" xs="12" >
-                                            <strong>Compliance Requirements</strong>
+                                            <h5>Compliance Requirements</h5>
                                             <Button className='float-end mb-2' color="primary" onClick={openAddModal}
-                                            >Add Compilance Requeriment Package</Button>
+                                            >Add Compliance Requeriment Package</Button>
                                         </Col>
                                     </Row>
                                     <div>
-                                        <Row>
-                                            <ComponentCard title=" Compilance Packages List" >
-                                                {loadingList ? <Spinner className='mx-auto my-4'>Loading...</Spinner> :
-                                                    <ReactTable
-                                                        data={requerimentsList}
-                                                        columns={[
-                                                            {
-                                                                Header: 'Package ID',
-                                                                accessor: 'package_id',
-                                                                id: 'id',
-                                                            },
-                                                            {
-                                                                Header: 'Name',
-                                                                id: 'name',
-                                                                accessor: (d) => d.name,
-                                                            },
-                                                            {
-                                                                Header: 'Creation Date',
-                                                                accessor: 'creation_date',
-                                                            },
-                                                            {
-                                                                Header: 'Actions',
-                                                                accessor: 'package_id',
-                                                                sorteable: false,
-                                                                Cell: row => (
-                                                                    <div className='d-flex gap-3 justify-content-center'>
-                                                                        <div className=''>
-                                                                            <Button color="primary" onClick={() => openEdit(row.original)}>
-                                                                                Edit
-                                                                            </Button>
-                                                                        </div>
-                                                                        <div className=''>
-                                                                            <Button color="danger"
-                                                                                onClick={() => setModalDelete({ estate: true, id: row.original.package_id })}
-                                                                            >
-                                                                                Delete
-                                                                            </Button>
-                                                                        </div>
+                                        <ComponentCard >
+                                            {loadingList ? <Spinner className='mx-auto my-4'>Loading...</Spinner> :
+                                                <ReactTable
+                                                    data={requerimentsList}
+                                                    columns={[
+                                                        {
+                                                            Header: 'Package ID',
+                                                            accessor: 'package_id',
+                                                            id: 'id',
+                                                        },
+                                                        {
+                                                            Header: 'Name',
+                                                            id: 'name',
+                                                            accessor: (d) => d.name,
+                                                        },
+                                                        {
+                                                            Header: 'Creation Date',
+                                                            accessor: 'creation_date',
+                                                        },
+                                                        {
+                                                            Header: 'Actions',
+                                                            accessor: 'package_id',
+                                                            sorteable: false,
+                                                            Cell: row => (
+                                                                <div className='d-flex gap-3 justify-content-center'>
+                                                                    <div className=''>
+                                                                        <Button color="primary" onClick={() => openEdit(row.original)}>
+                                                                            Edit
+                                                                        </Button>
                                                                     </div>
-                                                                )
-                                                            },
-                                                        ]}
-                                                        defaultPageSize={10}
-                                                        className="-striped -highlight"
-                                                    // SubComponent={row => {
-                                                    //     return (
-                                                    //         <div>
-                                                    //             XD
-                                                    //         </div>
-                                                    //     );
-                                                    // }}
-                                                    />}
-                                            </ComponentCard>
-                                        </Row>
+                                                                    <div className=''>
+                                                                        <Button outline color="danger"
+                                                                            onClick={() => setModalDelete({ estate: true, id: row.original.package_id })}
+                                                                        >
+                                                                            Delete
+                                                                        </Button>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        },
+                                                    ]}
+                                                    defaultPageSize={10}
+                                                    className="-striped -highlight"
+                                                // SubComponent={row => {
+                                                //     return (
+                                                //         <div>
+                                                //             XD
+                                                //         </div>
+                                                //     );
+                                                // }}
+                                                />}
+                                        </ComponentCard>
                                         <Offcanvas direction="end" toggle={toggleModalRequeriment} isOpen={modalRequeriment} style={{ width: "63%" }} >
                                             <OffcanvasHeader toggle={toggleModalRequeriment}>
-                                                Requirement Package Creation
+                                                <h5>Requirement Package Creation</h5>
                                             </OffcanvasHeader>
                                             <OffcanvasBody>
-                                                <strong>
-                                                    Add documents and checks necessary to fulfill compliance requirements.
-                                                </strong>
+                                                <div className='mb-2'>
+                                                    <small>Add documents and checks necessary to fulfill compliance requirements.</small>
+                                                </div>
                                                 <CrudRequeriment role="CREATE" data={activeRol == "CREATE" ? dataRequeriment : dataRequerimentUpdate} handle={activeRol == "CREATE" ? handleInput : handleInputUpdate}
                                                     lists={{ documentList: documentList, roleList: roleList }} />
                                             </OffcanvasBody>
-                                            <div className='d-flex justify-content-center'>
+                                            <div className='d-flex justify-content-end p-3'>
                                                 <Button color="primary" onClick={() => { activeRol == "CREATE" ? addRequeriment() : updateRequeriment() }} disabled={isFetching}>
                                                     {isFetching || isFetchingUpdate ? "Saving" : "Save"}
                                                 </Button>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import {
   Navbar,
   Nav,
@@ -12,19 +12,21 @@ import {
   Container,
   ButtonGroup
 } from 'reactstrap';
-import * as Icon from 'react-feather';
-import { Bell, MessageSquare } from 'react-feather';
+// import * as Icon from 'react-feather';
+// import { Bell, MessageSquare } from 'react-feather';
 import { useSelector, useDispatch } from 'react-redux';
-import SimpleBar from 'simplebar-react';
-import MessageDD from './MessageDD';
-import NotificationDD from './NotificationDD';
-import MegaDD from './MegaDD';
+// import SimpleBar from 'simplebar-react';
+// import MessageDD from './MessageDD';
+// import NotificationDD from './NotificationDD';
+// import MegaDD from './MegaDD';
 import user1 from '../../assets/images/users/user1.jpg';
 
 import { ToggleMobileSidebar } from '../../store/customizer/CustomizerSlice';
 import ProfileDD from './ProfileDD';
 import { ToggleHorizontal, } from '../../store/customizer/CustomizerSlice';
 import HorizontalLogo from '../logo/HorizontalLogo';
+import { deleteCookie } from '../../config/AuthManager';
+import { useNavigate } from 'react-router-dom';
 
 
 const HorizontalHeader = () => {
@@ -33,6 +35,16 @@ const HorizontalHeader = () => {
   const isMobileSidebar = useSelector((state) => state.customizer.isMobileSidebar);
   const dispatch = useDispatch();
   const LayoutHorizontal = useSelector((state) => state.customizer.isLayoutHorizontal);
+
+  const navigate = useNavigate()
+
+  const  logout = async () => {
+    await deleteCookie('API_TOKEN')
+    .then(res => {
+      navigate('/');
+      window.location.reload();
+    })
+  }
 
   return (
     <Navbar
@@ -84,8 +96,8 @@ const HorizontalHeader = () => {
           {/**********Notification DD**********/}
           {/******************************/}
           <Button
-            outline={!!LayoutHorizontal}
-            color="secondary"
+            outline
+            color="light"
             size="sm"
             onClick={() => dispatch(ToggleHorizontal(false))}
           >
@@ -145,8 +157,8 @@ const HorizontalHeader = () => {
               <ProfileDD />
 
               <div className="p-2 px-3">
-                <Button color="danger" size="sm">
-                  Logout
+                <Button color="danger" size="sm" onClick={logout}>
+                  Logout 
                 </Button>
               </div>
             </DropdownMenu>

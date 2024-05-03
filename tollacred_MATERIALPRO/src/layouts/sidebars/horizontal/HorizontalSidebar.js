@@ -85,8 +85,7 @@ const HorizontalSidebar = () => {
                       if (typeof params.idEmployee != "undefined" && navi.id == 2.9) {
                         getNameProfile()
                         navi.title = perfil.name
-                      }
-                      //console.log("viendo el title", navi.title)
+                      } 
                     }
                     let final_url = item.href.toString().split("/")[2]
                     //item.href = item.href.replace(':idOrganization', params.idOrganization)

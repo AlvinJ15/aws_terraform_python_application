@@ -102,9 +102,9 @@ const Header = () => {
           {/**********Notification DD**********/}
           {/******************************/}
           <Button
-            color="secondary"
+            color="light"
+            outline
             size="sm"
-            outline={!LayoutHorizontal}
             onClick={() => dispatch(ToggleHorizontal(true))}
           >
             Change Sidebar

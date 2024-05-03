@@ -4,8 +4,11 @@ from boto3 import Session
 from boto3 import resource
 import mimetypes
 
+from botocore.config import Config
+
 session = Session()
 s3_client = session.client("s3")
+# s3_client = session.client("s3", config=Config(signature_version='v4'))
 
 BUCKET_NAME = 'tollacred'
 
@@ -40,14 +43,15 @@ def upload_file_to_s3(path, file, content_type):
         print(f'Error uploading the Document: {e}')
 
 
-def generate_file_link(path):
+def generate_file_link(path, client_method='get_object', content_type='text/plain'):
     # Get a temporal URL for download the object
     try:
         s3_object_url = s3_client.generate_presigned_url(
-            ClientMethod='get_object',
+            ClientMethod=client_method,
             Params={
                 'Bucket': BUCKET_NAME,
-                'Key': path
+                'Key': path,
+                'ContentType': content_type
             }
         )
         return s3_object_url

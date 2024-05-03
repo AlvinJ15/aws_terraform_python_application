@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import {
     Progress, Form, FormGroup, Label, Input, Alert
 } from 'reactstrap';
-const CrudRole = ({ role, data, handle }) => {
-    //console.log("en mi tol", role)
+const CrudRole = ({ role, data, handle }) => { 
     return (
         <>
             {role == "EDIT" &&

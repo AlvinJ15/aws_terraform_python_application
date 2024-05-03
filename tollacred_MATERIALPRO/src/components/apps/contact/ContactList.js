@@ -71,8 +71,7 @@ const ContactList = () => {
     ),
   );
 
-  const active = useSelector((state) => state.contactsReducer.contactContent);
-  console.log(active);
+  const active = useSelector((state) => state.contactsReducer.contactContent); 
   return (
     <Nav>
       {contacts.map((contact) => (

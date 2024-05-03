@@ -19,6 +19,10 @@ function App() {
   const [isLogged, setIsLogged] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
+        if (import.meta.env.VITE_ENV){
+            document.title = `Tollaniscred - ${import.meta.env.VITE_ENV}`;
+        }
+
         AuthManager.tokenExist().then(res => {
                 setIsLoading(false);
                 setIsLogged(res);

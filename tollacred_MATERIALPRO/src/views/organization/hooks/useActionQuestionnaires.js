@@ -17,8 +17,7 @@ const useActionQuestionnaires = (idOrganization) => {
   const toggleModalQuestionnaire = () => { setError(false); setModalQuestionnaire(!modalQuestionnaire) }
 
   const handleInput = (e) => {
-      const { type, name, value, checked } = e.target
-      console.log("name", name, "type", type, "value", value, "checked", checked)
+      const { type, name, value, checked } = e.target 
       setDataQuestionnaire({ ...dataQuestionnaire, [name]: type == 'checkbox' ? checked : value })
   }
   const [error, setError] = useState({

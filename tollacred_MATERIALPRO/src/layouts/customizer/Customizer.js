@@ -43,7 +43,7 @@ const Customizer = ({ className }) => {
               >
                 {customtoggle ? <i className="bi bi-x" /> : <i className="bi bi-gear" />}
               </Button>
-              <h6>Topbar Color</h6>
+              {/* <h6>Topbar Color</h6>
               <div className="button-group">
                 {ColorsBg.map((colorbg) => (
                   <Button
@@ -83,7 +83,7 @@ const Customizer = ({ className }) => {
                 </Button>
               </ButtonGroup>
               <br />
-              <br />
+              <br /> */}
               <br />
               <h6>Change Mode</h6>
               <ButtonGroup>
@@ -106,7 +106,7 @@ const Customizer = ({ className }) => {
               </ButtonGroup>
               <br />
               <br />
-              <h6>Change Layout</h6>
+              {/* <h6>Change Layout</h6>
               <ButtonGroup>
                 <Button
                   outline={!!LayoutHorizontal}
@@ -189,7 +189,7 @@ const Customizer = ({ className }) => {
                 >
                   Fixed
                 </Button>
-              </ButtonGroup>
+              </ButtonGroup> */}
             </div>
           </SimpleBar>
         </Col>

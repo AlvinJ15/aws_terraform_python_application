@@ -87,103 +87,100 @@ const ProfileDashboard = () => {
 
     return (
         <>
-            {/* <BreadCrumbs /> */}
-            <ProfileOff>
-                <Row>
-                    <Col xs="12" md="12" lg="12">
-                        <Card>
-                            <Row>
-                                <Col sm="12">
-                                    <div className="p-4">
+            <Row>
+                <Col xs="12" md="12" lg="12">
+                    <Card>
+                        <Row>
+                            <Col sm="12">
+                                <div className="p-4">
+                                    <Row>
+                                        <Col md="9" xs="12" >
+                                            <h5>Compliance Requirements Packages</h5>
+                                        </Col>
+                                        <Col md="3" xs="12" >
+                                            {
+                                                isLoading
+                                                    ? <center><Spinner>Is Loading ...</Spinner></center>
+                                                    : <Row className='gap-2'>
+                                                        <select className='form-select' onChange={handleInput} name="package_id" value={compliance.package_id}>
+                                                            <option>Select</option>
+                                                            {compliancePackagesList.map((item, index) => (
+                                                                <option key={index} value={item.package_id}>{item.name}</option>
+                                                            ))}
+                                                        </select>
+                                                        <Button className='' color="primary" onClick={addNewCompilance}
+                                                        >Add Compliance Package</Button>
+                                                    </Row>
+                                            }
+                                        </Col>
+                                    </Row>
+                                    <div>
                                         <Row>
-                                            <Col md="9" xs="12" >
-                                                <strong>Compliance Requirements Packages</strong>
-                                            </Col>
-                                            <Col md="3" xs="12" >
-                                                {
-                                                    isLoading
-                                                        ? <center><Spinner>Is Loading ...</Spinner></center>
-                                                        : <Row className='gap-2'>
-                                                            <select className='form-select' onChange={handleInput} name="package_id" value={compliance.package_id}>
-                                                                <option>Select</option>
-                                                                {compliancePackagesList.map((item, index) => (
-                                                                    <option key={index} value={item.package_id}>{item.name}</option>
-                                                                ))}
-                                                            </select>
-                                                            <Button className='' color="primary" onClick={addNewCompilance}
-                                                            >Add Compilance Package</Button>
-                                                        </Row>
-                                                }
-                                            </Col>
-                                        </Row>
-                                        <div>
-                                            <Row>
-                                                <ComponentCard title=" Compilance Packages List" >
-                                                    {isFetching ? <Spinner className='mx-auto my-4'>Loading...</Spinner> :
-                                                        <ReactTable
+                                            <ComponentCard >
+                                                {isFetching ? <Spinner className='mx-auto my-4'>Loading...</Spinner> :
+                                                    <ReactTable
 
-                                                            data={packagesEmployee.compliance_packages}
-                                                            columns={[
-                                                                {
-                                                                    Header: 'Package ID',
-                                                                    accessor: 'package_id',
-                                                                    id: 'id',
-                                                                },
-                                                                {
-                                                                    Header: 'Name',
-                                                                    id: 'name',
-                                                                    accessor: (d) => d.name,
-                                                                },
-                                                                {
-                                                                    Header: 'Actions',
-                                                                    accessor: 'package_id',
-                                                                    sorteable: false,
-                                                                    Cell: row => (
-                                                                        <div className='row'>
-                                                                            {/* <div className='col-6'>
-                                                                            <Button color="primary" onClick={() => { }}>
-                                                                                Edit
+                                                        data={packagesEmployee.compliance_packages}
+                                                        columns={[
+                                                            {
+                                                                Header: 'Package ID',
+                                                                accessor: 'package_id',
+                                                                id: 'id',
+                                                            },
+                                                            {
+                                                                Header: 'Name',
+                                                                id: 'name',
+                                                                accessor: (d) => d.name,
+                                                            },
+                                                            {
+                                                                Header: 'Actions',
+                                                                accessor: 'package_id',
+                                                                sorteable: false,
+                                                                Cell: row => (
+                                                                    <div className='row'>
+                                                                        {/* <div className='col-6'>
+                                                                        <Button color="primary" onClick={() => { }}>
+                                                                            Edit
+                                                                        </Button>
+                                                                    </div> */}
+                                                                        <div className='col-6'>
+                                                                            <Button disabled={isFetchingDelete} outline color="danger" onClick={() => setModalDelete({ state: true, id: row.value })}>
+                                                                                {isFetchingDelete ? "Wait" : "Delete"}
                                                                             </Button>
-                                                                        </div> */}
-                                                                            <div className='col-6'>
-                                                                                <Button disabled={isFetchingDelete} color="danger" onClick={() => setModalDelete({ state: true, id: row.value })}>
-                                                                                    {isFetchingDelete ? "Wait" : "Delete"}
-                                                                                </Button>
-                                                                            </div>
                                                                         </div>
-                                                                    )
-                                                                },
-                                                            ]}
-                                                            defaultPageSize={10}
-                                                            className="-striped -highlight"
-                                                        />
-                                                    }
-                                                </ComponentCard>
-                                            </Row>
-                                            <Modal isOpen={modalDelete.state} toggle={toggleModalDelete}>
-                                                <ModalHeader toggle={toggleModalDelete}>Confirme Delete Item </ModalHeader>
-                                                <ModalBody className='p-4'>
-                                                    <h5 className='text-center text-muted fw-light mb-3'>It can not be undone</h5>
-                                                    <div className='d-flex justify-content-center gap-3'>
-                                                        <button className='btn btn-success' style={{ width: '120px' }} onClick={() => deleteDocumentType(modalDelete.id)} disabled={isFetchingDelete}>
-                                                            {isFetchingDelete ? "Deleting" : "YES"}
-                                                        </button>
-                                                        <button className='btn btn-danger' style={{ width: '120px' }} onClick={toggleModalDelete} disabled={isFetchingDelete}>
-                                                            {isFetchingDelete ? "..." : "NO"}
-                                                        </button>
-                                                    </div>
-                                                </ModalBody>
-                                            </Modal>
-                                        </div>
+                                                                    </div>
+                                                                )
+                                                            },
+                                                        ]}
+                                                        defaultPageSize={10}
+                                                        className="-striped -highlight"
+                                                    />
+                                                }
+                                            </ComponentCard>
+                                        </Row>
+                                        <Modal isOpen={modalDelete.state} toggle={toggleModalDelete}>
+                                            <ModalHeader toggle={toggleModalDelete}>Confirme Delete Item </ModalHeader>
+                                            <ModalBody className='p-4'>
+                                                <h5 className='text-center text-muted fw-light mb-3'>It can not be undone</h5>
+                                                <div className='d-flex justify-content-center gap-3'>
+                                                    <button className='btn btn-success' style={{ width: '120px' }} onClick={() => deleteDocumentType(modalDelete.id)} disabled={isFetchingDelete}>
+                                                        {isFetchingDelete ? "Deleting" : "YES"}
+                                                    </button>
+                                                    <button className='btn btn-outline-danger' style={{ width: '120px' }} onClick={toggleModalDelete} disabled={isFetchingDelete}>
+                                                        {isFetchingDelete ? "..." : "NO"}
+                                                    </button>
+                                                </div>
+                                            </ModalBody>
+                                        </Modal>
                                     </div>
-                                </Col>
-                            </Row>
-                        </Card>
+                                </div>
+                            </Col>
+                        </Row>
+                    </Card>
 
 
-                    </Col>
-                </Row>
-            </ProfileOff>
+                </Col>
+            </Row>
         </>
     )
 }

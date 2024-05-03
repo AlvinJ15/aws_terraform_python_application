@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Row, Col, Card, CardBody, CardSubtitle, Button, Progress, Form, FormGroup, Label, Input, Alert, CardTitle, Spinner,
+    Row, Col, Card, CardBody, CardSubtitle, Button, Progress, Form, FormGroup, Label, Input, Alert, CardTitle, Spinner, CloseButton,
     Table, Offcanvas, OffcanvasHeader, OffcanvasBody, ButtonGroup, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from 'reactstrap';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
@@ -14,7 +14,8 @@ import organizationService from '../organization/services/organization.service';
 import 'react-table-v6/react-table.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import useActionStaff from './hooks/useActionStaff';
-
+import ProfileOff from '../profile/ProfileOff';
+import ProfileInfo from '../profile/ProfileInfo';
 const StaffList = ({ dataFetch = [] }) => {
 
     const params = useParams()
@@ -35,14 +36,49 @@ const StaffList = ({ dataFetch = [] }) => {
         mangeStaffCreate } = useActionStaff(params.idOrganization)
     const saveEmployee = () => {
         mangeStaffCreate("CREATE").then(response => {
-            //console.log("cargarrr", response)
             getStaffList()
         })
     }
     /**end new StaffList */
-    /**LIST OF StaffList */
+
     const [spinnerLoading, setSpinnerLoading] = useState(false)
     const [staffList, setStaffList] = useState([])
+
+    // SEARCH 
+    const [searchStaff, setSearchStaff] = useState([])
+    const [textSearch, setTextSearch] = useState([])
+
+    const search = () => {
+        if (textSearch.length > 0) {
+            let result = []
+            staffList.forEach(element => {
+                if (
+                    element.profile.first_name.toLowerCase().includes(textSearch.toLowerCase()) || 
+                    element.profile.last_name.toLowerCase().includes(textSearch.toLowerCase()) ||
+                    element.profile.email.toLowerCase().includes(textSearch.toLowerCase()) ||
+                    element.profile.country.toLowerCase().includes(textSearch.toLowerCase()) 
+                ) 
+                    {
+                    result.push(element)
+                }
+            });
+            setSearchStaff(result)
+        } else {
+            setSearchStaff(staffList)
+        }
+    }
+
+
+    useEffect(() => {
+        search()
+    }, [textSearch])
+
+    // END SEARCH
+
+
+
+    /**LIST OF StaffList */
+    
 
     const getStaffList = () => {
         if (typeof dataFetch.type !== "undefined") {
@@ -53,10 +89,13 @@ const StaffList = ({ dataFetch = [] }) => {
             organizationService.get(`${params.idOrganization}/employees?page=1`)
                 .then(response => {
                     setStaffList(response)
+                    setSearchStaff(response)
                     setSpinnerLoading(false)
                 })
         }
     }
+
+
 
     const getAdministratorList = () => {
         organizationService.get(`${params.idOrganization}/administrators`)
@@ -68,7 +107,6 @@ const StaffList = ({ dataFetch = [] }) => {
         setIsLoading(true)
         organizationService.delete(`${params.idOrganization}/employees/${idStaff}`)
             .then(response => {
-                //console.log('delete --->', response)
                 setIsLoading(false)
                 getStaffList()
             })
@@ -79,20 +117,13 @@ const StaffList = ({ dataFetch = [] }) => {
         navigate(`/organization/${params.idOrganization}/employee/${idStaff}/compliancePackages`)
     }
 
-    useEffect(() => {
-        getAdministratorList()
-        getStaffList()
-        getRoleList()
-    }, [])
     const defaultFilterMethod = (filter, row, column) => {
-        //console.log("filtering", filter)
         const id = filter.pivotId || filter.id
         return row[id] !== undefined ? String(row[id]).toLowerCase().startsWith(filter.value.toString().toLowerCase()) : true
     }
     const [changingAssigned, setIsChangingId] = useState(false)
     const handleAdministrador = (e, row) => {
         setIsChangingId(true)
-        //console.log(e.target.value, row.original.employee_id)
         //return
         organizationService.update(`${params.idOrganization}/employees/${row.original.employee_id}`, { assignee_id: e.target.value })
             .then(response => {
@@ -115,7 +146,6 @@ const StaffList = ({ dataFetch = [] }) => {
         })
     }
     const openEditMember = (row) => {
-        //console.log("editare lo sgte xd!", row)
         setDataUpdate({
             id_employee: row.employee_id,
             compliance_packages_names: row.compliance_packages_names.join(","),
@@ -139,6 +169,23 @@ const StaffList = ({ dataFetch = [] }) => {
             }).finally(() => setIsLoading(false))
 
     }
+    const [modalProfile, setModalProfile] = useState({
+        state: false,
+        info: null
+    })
+    const toggleProfile = (row) => {
+        if (row) {
+            setModalProfile({ state: !modalProfile.state, info: row.profile })
+            //console.log("ill open this", row.profile)
+        }
+    }
+
+    useEffect(() => {
+        getAdministratorList()
+        getStaffList()
+        getRoleList()
+    }, [])
+
     return (
         <div fallback={Loader}>
             <BreadCrumbs name='Staff' />
@@ -153,28 +200,30 @@ const StaffList = ({ dataFetch = [] }) => {
                                             <CardTitle tag="h4" className="border-bottom px-4 py-3 mb-0">
                                                 <Row>
                                                     <Col md="8" xs="8">
-                                                        <strong>Staff Members</strong>
+                                                        <h5>Staff Members</h5>
                                                     </Col>
                                                     <Col md="4" xs="4">
                                                         <Button className='float-end mb-2' color="primary" onClick={toggleModalStaffList}
                                                         >Add Staff Member</Button>
                                                         <Offcanvas direction="end" toggle={toggleModalStaffList} isOpen={modalStaffList} style={{ width: "48%" }} >
                                                             <OffcanvasHeader toggle={toggleModalStaffList}>
-                                                                Add New Staff Member
+                                                                <h5>Add New Staff Member</h5> 
                                                             </OffcanvasHeader>
                                                             <OffcanvasBody>
-                                                                <strong>
-                                                                    Please fill all fields
-                                                                </strong>
+                                                                <div className='mb-3'>
+                                                                    <small>
+                                                                        Please fill all fields
+                                                                    </small>
+                                                                </div>
                                                                 <CrudStaff role="CREATE" data={dataStaff} handle={handleInput} lists={roleList} />
                                                                 <div className='d-flex justify-content-end gap-2'>
                                                                     <div>
-                                                                        <Button className='' color="primary" onClick={saveEmployee} disabled={isLoading}
-                                                                        >{isLoading ? "Saving" : "Save"}</Button>
+                                                                        <Button className='text-priamry' color="light" onClick={toggleModalStaffList} disabled={isLoading}
+                                                                        >Close</Button>
                                                                     </div>
                                                                     <div>
-                                                                        <Button className='' color="dark" onClick={toggleModalStaffList} disabled={isLoading}
-                                                                        >Close</Button>
+                                                                        <Button className='' color="primary" onClick={saveEmployee} disabled={isLoading}
+                                                                        >{isLoading ? "Saving" : "Save"}</Button>
                                                                     </div>
                                                                 </div>
                                                             </OffcanvasBody>
@@ -183,22 +232,34 @@ const StaffList = ({ dataFetch = [] }) => {
                                                 </Row>
                                             </CardTitle>
                                             <CardBody className="p-4">
+                                                <div className='mb-4 row justify-content-end'>
+                                                    <div className='col-12 col-md-6 col-lg-4'>
+                                                        <input className='form-control ' type='text' value={textSearch} onChange={(e) => setTextSearch(e.target.value)} placeholder='Search'></input>
+                                                    </div>
+                                                </div>
+
                                                 {spinnerLoading ?
                                                     <Spinner color="primary">
                                                         Loading...
                                                     </Spinner>
                                                     :
                                                     <ReactTable
-                                                        filterable={true}
                                                         defaultFilterMethod={defaultFilterMethod}
                                                         loading={spinnerLoading}
-                                                        data={staffList}
+                                                        data={searchStaff}
                                                         columns={[
                                                             {
                                                                 id: 'profile',
                                                                 Header: 'Staff Member',
                                                                 accessor: (d) => d.profile.first_name + " " + d.profile.last_name,
                                                                 //accessor: (d) => d.profile.first_name,
+                                                                Cell: row => (
+                                                                    <div className='row' onClick={(e) => toggleProfile(row.original)} style={{ cursor: "pointer" }}>
+                                                                        <div className='col-12'>
+                                                                            {row.value}
+                                                                        </div>
+                                                                    </div>
+                                                                )
                                                             },
                                                             {
                                                                 id: 'role',
@@ -278,7 +339,7 @@ const StaffList = ({ dataFetch = [] }) => {
                                                                                     caret
                                                                                     color="primary"
                                                                                 >
-                                                                                    Dropdown
+
                                                                                 </DropdownToggle>
                                                                                 <DropdownMenu>
                                                                                     <DropdownItem disabled={isLoading}
@@ -353,7 +414,16 @@ const StaffList = ({ dataFetch = [] }) => {
                     </div>
                 </OffcanvasBody>
             </Offcanvas>
+            <Offcanvas direction="end" toggle={toggleProfile} isOpen={modalProfile.state} style={{ width: "33%" }} >
+                <OffcanvasBody>
+                    <Col xs="12" md="12" lg="12">
+                        <CloseButton onClick={toggleProfile} />
+                        <ProfileInfo data={modalProfile.info} />
+                    </Col>
+                </OffcanvasBody>
+            </Offcanvas>
         </div>
+
     )
 }
 export default StaffList

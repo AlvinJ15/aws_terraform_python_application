@@ -36,12 +36,12 @@ const Questionnaires = () => {
                             <Col sm="12">
                                 <div className="p-4">
                                     <Row>
-                                        <Col md="12" xs="12" >
-                                            <strong>Questionnaires</strong>
+                                        <div className='d-flex justify-content-between align-items-center'>
+                                            <h5>Questionnaires</h5>
                                             <Button className='float-end mb-2' color="primary"
                                                 onClick={toggleCrud}
                                             >{openCrud ? "Go back" : "Add Questionnaire"}</Button>
-                                        </Col>
+                                        </div>
                                     </Row>
                                     <div>
                                         <Row>
@@ -84,7 +84,7 @@ const Questionnaires = () => {
                                                                             </Button>
                                                                         </div>
                                                                         <div className=''>
-                                                                            <Button color="danger" onClick={toggleModalQuestionnaire}>
+                                                                            <Button outline color="danger" onClick={toggleModalQuestionnaire}>
                                                                                 Assign
                                                                             </Button>
                                                                         </div>

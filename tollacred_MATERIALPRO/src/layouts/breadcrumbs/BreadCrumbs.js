@@ -5,8 +5,7 @@ import { useLocation, Link } from 'react-router-dom';
 const BreadCrumbs = ({name = ''}) => {
   const location = useLocation();
   const firstUrl = location.pathname.split('/')[1];
-  const secondUrl = location.pathname.split('/')[2];
-  console.log(firstUrl, secondUrl);
+  const secondUrl = location.pathname.split('/')[2]; 
   return (
     <>
       <h4 className="text-capitalize">{secondUrl ? `${name}` : `${firstUrl}`}</h4>
