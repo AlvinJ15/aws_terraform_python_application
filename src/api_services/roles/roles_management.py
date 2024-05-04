@@ -13,7 +13,7 @@ def get_all_handler(event, context, stage):
 
     with DataBase.get_session(stage) as db:
         try:
-            roles = db.query(Role).filter_by(organization_id=organization_id)
+            roles = db.query(Role).filter_by(organization_id=organization_id).order_by(Role.name.asc()).all()
             return {"statusCode": 200,
                     "headers": {
                         'Access-Control-Allow-Headers': 'Content-Type',

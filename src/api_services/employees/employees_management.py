@@ -21,19 +21,21 @@ def get_all_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
     page_number = int(event['queryStringParameters'].get('page', 1))
     has_filters = event['queryStringParameters'].get('filters', False)
-    offset = (page_number - 1) * 100
+    offset = (page_number - 1) * 1000
     with DataBase.get_session(stage) as db:
         try:
             if has_filters:
                 query = get_employees_with_filter(db, organization_id, event['queryStringParameters'])
-                employees = query.limit(100).offset(offset).all()
+                employees = query.limit(1000).offset(offset).all()
             else:
-                employees = db.query(Employee).filter_by(organization_id=organization_id).limit(100).offset(offset).all()
+                employees = (
+                    db.query(Employee).filter_by(organization_id=organization_id).join(EmployeeProfile)
+                    .order_by(EmployeeProfile.first_name.asc()).limit(1000).offset(offset).all())
             return {"statusCode": 200,
                     "headers": {
                         'Access-Control-Allow-Headers': 'Content-Type',
                         'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+                        'Access-Control-Allow-Methods': 'OPTIONS, POST, GET'
                     },
                     "body": json.dumps([employee.to_dict() for employee in employees])}
         except Exception as err:

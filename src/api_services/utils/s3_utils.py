@@ -44,19 +44,22 @@ def upload_file_to_s3(path, file, content_type):
 
 
 def generate_file_link(path, client_method='get_object', content_type='text/plain'):
+    params = {
+        'Bucket': BUCKET_NAME,
+        'Key': path,
+    }
+    if client_method == 'put_object':
+        params['ContentType'] = content_type
+
     # Get a temporal URL for download the object
     try:
         s3_object_url = s3_client.generate_presigned_url(
             ClientMethod=client_method,
-            Params={
-                'Bucket': BUCKET_NAME,
-                'Key': path,
-                'ContentType': content_type
-            }
+            Params=params
         )
         return s3_object_url
     except Exception as e:
-        print(f'Error uploading the Document: {e}')
+        print(f'Error Obtaining the Document: {e}')
 
 
 def create_path_to_s3(path):

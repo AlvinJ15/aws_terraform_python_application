@@ -44,15 +44,15 @@ const CrudStaff = ({ role, data, handle, lists }) => {
                 <Label>Email</Label>
                 <Input type="email" value={data.email} placeholder="Enter email" onChange={handle} name="email" />
             </FormGroup>
-            {/* <FormGroup>
+            { <FormGroup>
                 <Label> Personnel Type</Label>
                 <Select
-                    closeMenuOnSelect={false}
+                    closeMenuOnSelect={true}
                     options={optionRoles}
-                    value={data.role_id}
+                    value={role.role_id}
                     onChange={handleSelect}
                 />
-            </FormGroup> */}
+            </FormGroup>}
 
 
         </>

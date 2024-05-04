@@ -7,11 +7,11 @@ export const downloadDocumentService = async (endpoint) => {
   try {
       const response = await apiManager.get('organizations/'+endpoint)
       const url =  await response.download_url
-      const link = document.createElement('a')
-      link.href = url
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
+      Object.assign(document.createElement('a'), {
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        href: url,
+      }).click();
       URL.revokeObjectURL(url);
   }
   catch (error) {

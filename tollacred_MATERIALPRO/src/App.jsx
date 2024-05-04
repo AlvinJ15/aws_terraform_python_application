@@ -19,7 +19,7 @@ function App() {
   const [isLogged, setIsLogged] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-        if (import.meta.env.VITE_ENV){
+        if (import.meta.env.VITE_ENV !== 'prod'){
             document.title = `Tollaniscred - ${import.meta.env.VITE_ENV}`;
         }
 

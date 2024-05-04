@@ -63,15 +63,15 @@ const useActionStaff = (idOrganization) => {
           first_name: dataStaff.first_name,
           last_name: dataStaff.last_name,
           email: dataStaff.email,
-          role_id: dataStaff.role_id,
-        }
+        },
+        role_id: dataStaff.role_id,
       }
       await organizationService.create(`${idOrganization}/employees`, profile)
         .then(response => {
-          //toggleModalStaffList()
+          toggleModalStaffList()
         })
     }
-    toggleModalStaffList()
+    //toggleModalStaffList()
   }
 
   return {
