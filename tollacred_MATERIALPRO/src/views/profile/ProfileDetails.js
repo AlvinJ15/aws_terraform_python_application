@@ -49,7 +49,9 @@ const ProfileDetails = () => {
     const updateEmployee = () => {
         const updateData = {...profile}
         const role_id = profile.role_id
-        updateData.date_of_birth = `${updateData.date_of_birth} 00:00:00`
+        updateData.date_of_birth = `${updateData.date_of_birth}`
+        if (!updateData.date_of_birth.includes('00:00:00'))
+            updateData.date_of_birth += ' 00:00:00';
         delete updateData.role_id
         update({profile: updateData, role_id: role_id})
     }
@@ -83,7 +85,7 @@ const ProfileDetails = () => {
                                                 <select className='form-control' name="gender" value={profile.gender} onChange={handleInput}>
                                                     <option value=''>Select a gender</option>
                                                     <option value='Male'>Male</option>
-                                                    <option value='Fale'>Fale</option>
+                                                    <option value='Female'>Female</option>
                                                     <option value='Other'>Other</option>
                                                 </select>
                                             </FormGroup>

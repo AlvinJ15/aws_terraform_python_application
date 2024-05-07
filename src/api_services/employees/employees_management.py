@@ -121,25 +121,26 @@ def update_handler(event, context, stage):
             if employee:
                 # employee_id is not an updatable attribute
                 profile = data.get("profile", {})
-                new_packages = data.get("compliance_packages", [])
+                new_packages = data.get("compliance_packages", None)
                 DataBase.pop_non_updatable_fields([
                     "employee_id", "organization_id", "profile", "created", "compliance_packages"
                 ], data)
                 updated_employee = update_object_from_dict(employee, data)
                 DataBase.pop_non_updatable_fields(["profile_id", "employee_id"], profile)
                 set_fields_from_dict(employee.profile, profile, ['date_of_birth'])
-                current_packages = db.query(EmployeeCompliancePackage).filter_by(employee_id=employee_id)
-                current_packages_id = [package.package_id for package in current_packages]
-                for current_package in current_packages:
-                    if current_package.package_id not in new_packages:
-                        db.delete(current_package)
-                for new_package in new_packages:
-                    if new_package not in current_packages_id:
-                        new_employee_package = EmployeeCompliancePackage()
-                        new_employee_package.package_id = DataBase.generate_uuid()
-                        new_employee_package.employee_id = employee_id
-                        new_employee_package.package_id = new_package
-                        db.add(new_employee_package)
+                if new_packages:
+                    current_packages = db.query(EmployeeCompliancePackage).filter_by(employee_id=employee_id)
+                    current_packages_id = [package.package_id for package in current_packages]
+                    for current_package in current_packages:
+                        if current_package.package_id not in new_packages:
+                            db.delete(current_package)
+                    for new_package in new_packages:
+                        if new_package not in current_packages_id:
+                            new_employee_package = EmployeeCompliancePackage()
+                            new_employee_package.package_id = DataBase.generate_uuid()
+                            new_employee_package.employee_id = employee_id
+                            new_employee_package.package_id = new_package
+                            db.add(new_employee_package)
                 db.commit()
                 db.refresh(employee)
                 return {"statusCode": 200,

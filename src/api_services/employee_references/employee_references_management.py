@@ -107,6 +107,22 @@ def create_handler(event, context, stage):
             new_reference.employee_id = employee_id
             db.add(new_reference)
             db.commit()
+
+            reference_id = new_reference.reference_id
+            event_data = {
+                'reference_action': 'CREATE',
+                'reference_id': reference_id,
+            }
+            # Lambda.invoke_lambda(, event_data)
+            import boto3
+            client = boto3.client('lambda')
+            if stage == 'dev':
+                stage = 'test'
+            client.invoke(
+                FunctionName=f'RefCheckAI-ReferenceCallsHandler-{stage.title()}',
+                InvocationType='Event',
+                Payload=json.dumps(event_data)
+            )
             return {
                 'statusCode': 201,
                 "headers": {

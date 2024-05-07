@@ -72,11 +72,11 @@ const ProfileReferences = () => {
                             <Form>
                                 <FormGroup>
                                     <Label >Name</Label>
-                                    <Input type="text" name="referee_email" placeholder="Name" value={dataReference.referee_email} onChange={handleData} />
+                                    <Input type="text" name="referee_name" placeholder="Name" value={dataReference.referee_name} onChange={handleData} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label >Email</Label>
-                                    <Input type="text" name="referee_name" placeholder="email" value={dataReference.referee_name} onChange={handleData} />
+                                    <Input type="text" name="referee_email" placeholder="email" value={dataReference.referee_email} onChange={handleData} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Label >Phone</Label>

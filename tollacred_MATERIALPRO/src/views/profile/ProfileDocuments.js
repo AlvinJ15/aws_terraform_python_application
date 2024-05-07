@@ -20,7 +20,8 @@ const ProfileDocuments = () => {
     const params = useParams()
     const navigate = useNavigate()
 
-    const [showMandatory, setShowMandatory] = useState(true)
+    const [showMandatory, setShowMandatory] = useState(true);
+    const [processingDocuments, setProcessingDocuments] = useState(2);
 
     // GET document
 
@@ -103,7 +104,6 @@ const ProfileDocuments = () => {
     const [mandatoryDocumentsMerged, setMandatoryDocumentsMerged] = useState([])
     const [nonMandatoryDocumentsMerged, setNonMandatoryDocumentsMerged] = useState([])
 
-
     useEffect(() => {
         if (!!documentsList) {
             let newListnonMandatory = documentsList.map((item) => {
@@ -133,8 +133,9 @@ const ProfileDocuments = () => {
                 }
                 return !containsValue;
             });
-            setNonMandatoryDocumentsMerged(newListnonMandatory)
+            setNonMandatoryDocumentsMerged(newListnonMandatory);
         }
+        setProcessingDocuments(processingDocuments - 1);
     }, [documentsList, profiledocumentsList, fullPerfilData])
 
     useEffect(() => {
@@ -168,6 +169,7 @@ const ProfileDocuments = () => {
             });
             setMandatoryDocumentsMerged(newListMandatory);
         }
+        setProcessingDocuments(processingDocuments - 1);
     }, [documentsList, fullPerfilData])
 
     function put(url, data) {
@@ -251,7 +253,7 @@ const ProfileDocuments = () => {
                                         </div>
                                         <Row>
                                             {
-                                                isLoading || loadingMandatory || isLoadingAllDocuments
+                                                isLoading || loadingMandatory || isLoadingAllDocuments || (processingDocuments > 0)
                                                     ? <Spinner>Is Loading ...</Spinner>
                                                     :
                                                     <ComponentCard>
