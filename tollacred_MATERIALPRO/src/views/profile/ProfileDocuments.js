@@ -341,11 +341,11 @@ const ProfileDocuments = () => {
                                             </ModalHeader>
                                             <ModalBody>
                                                 <div className='mb-3'>
-                                                    <label>Numero de Documento</label>
+                                                    <label>Document Number</label>
                                                     <input type='text' className='form-control' name='document_number' value={data.document_number} onChange={handleInput} /> 
                                                 </div>
                                                 <div  className='mb-3'>
-                                                <label>Fecha de expiración</label>
+                                                <label>Expiration Date</label>
                                                     <input type='date' className='form-control' name='expiry_date' value={data.expiry_date} onChange={handleInput} /> 
                                                 </div>
                                                 <div  className='mb-3'>
