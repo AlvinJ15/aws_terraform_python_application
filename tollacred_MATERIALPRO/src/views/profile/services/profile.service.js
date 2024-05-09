@@ -19,7 +19,7 @@ export const downloadDocumentService = async (endpoint) => {
   }
 }
 
-export const updateStateDocument = async (endpoint ,review) => {
+export const updateStateDocumentService = async (endpoint ,review) => {
 
   try {
     const formData = new FormData()
@@ -30,5 +30,15 @@ export const updateStateDocument = async (endpoint ,review) => {
   } catch (error) {
     console.error('my error', error)
   }
+}
 
+
+export const updateDocumentService = async (endpoint, formData) => {
+  try {
+    return await apiManager.put('organizations/'+ endpoint, formData,{
+        'Authorization': await getApiToken(),
+    })
+  } catch (error) {
+    console.error('my error', error)
+  }
 }

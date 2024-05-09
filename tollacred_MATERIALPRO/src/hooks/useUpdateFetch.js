@@ -5,12 +5,17 @@ const NAME_ENTITY = 'organizations'
 
 const useUpdateFetch = ({ endpoint = '', initData = {} }) => {
   const [data, setData] = useState(initData)
+  const [result, setResult] = useState(null)
   const [isFetching, setIsFetching] = useState(false)
   const [error, setError] = useState({})
 
 
   const handleInput = (e) => {
-    if (typeof e === 'object' && e.hasOwnProperty('nameSelect')) {
+    if(e.target.files){
+      const file =  e.target.files[0]
+      setData({...data, file: file})
+    }
+    else if (typeof e === 'object' && e.hasOwnProperty('nameSelect')) {
       const tempSelect = { ...data }
       const key = [e['nameSelect']]
       tempSelect[key] = e.value
@@ -59,6 +64,7 @@ const useUpdateFetch = ({ endpoint = '', initData = {} }) => {
     try {
       await apiManager.put(`${NAME_ENTITY}/${endpoint}`, updateData ?? data, option).
         then(response => {
+          setResult(response)
           setIsFetching(false)
         })
     }
@@ -68,7 +74,7 @@ const useUpdateFetch = ({ endpoint = '', initData = {} }) => {
     }
   }
 
-  return { data, setData, validate, isFetching, update, error, setError, handleInput }
+  return { data, setData, validate, isFetching, update, error, setError, handleInput, result }
 
 }
 

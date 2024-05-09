@@ -95,14 +95,14 @@ const HorizontalHeader = () => {
           {/******************************/}
           {/**********Notification DD**********/}
           {/******************************/}
-          <Button
-            outline
-            color="light"
-            size="sm"
-            onClick={() => dispatch(ToggleHorizontal(false))}
+          {/*<Button
+              outline
+              color="light"
+              size="sm"
+              onClick={() => dispatch(ToggleHorizontal(false))}
           >
             Change Sidebar
-          </Button>
+          </Button>*/}
           {/* <UncontrolledDropdown>
             <DropdownToggle className="bg-transparent border-0" color={topbarColor}>
               <Bell size={18} />

@@ -1,19 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {
     Row, Col, Card, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, Input,
-    DropdownItem, Modal, ModalHeader, ModalBody, Spinner
+    DropdownItem, Modal, ModalHeader, ModalBody, Spinner,
+    ModalFooter
 } from 'reactstrap';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ReactTable from 'react-table-v6';
 import 'react-table-v6/react-table.css';
 import ComponentCard from '../../components/ComponentCard';
 import {Link, useNavigate, useParams} from 'react-router-dom';
-import {downloadDocumentService, updateStateDocument} from './services/profile.service';
+import {downloadDocumentService, updateDocumentService, updateStateDocumentService} from './services/profile.service';
 import useFetch from '../../hooks/useFetch';
 import useCreateFetch from '../../hooks/useCreateFetch';
 import organizationService from '../organization/services/organization.service';
 import useDeleteFetch from '../../hooks/useDeleteFetch';
 import https from "https";
+import useUpdateFetch from '../../hooks/useUpdateFetch';
 
 
 const ProfileDocuments = () => {
@@ -72,8 +74,8 @@ const ProfileDocuments = () => {
 
     // UPDATE STATUS
 
-    const updateDocument = async (review) => {
-        updateStateDocument(
+    const updateStateDocument = async (review) => {
+        updateStateDocumentService(
             `${params.idOrganization}/employees/${params.idEmployee}/documents/${profileDocument.document_id}`,
             review,
         )
@@ -173,7 +175,7 @@ const ProfileDocuments = () => {
     }, [documentsList, fullPerfilData])
 
     function put(url, data) {
-        fetch(url, {
+        return fetch(url, {
           method: "PUT",
           body: data,
         });
@@ -223,6 +225,81 @@ const ProfileDocuments = () => {
                 refresh()
             })
     }
+
+    // EDIT DOCUMENT 
+
+    const initialDocument = {
+        document_number: '',
+        expiry_date: '',
+        document_type_id: '',
+        file: null,
+    }
+
+    const [modalDocument, setModalDocument] = useState(false)
+    const [rowSelect, setRowSelect] = useState({})
+    const [isUpdateDocument, setIsUpdateDocument] = useState(false)
+
+    const {data,setData, handleInput} = useUpdateFetch({initData : initialDocument })
+
+    const updateDocument = () => {
+        const formData = new FormData();
+        formData.append('file', '');
+        if (data.file){
+            formData.append('status', "Awaiting Approval");
+            formData.append('file_name', data.file.name);
+            formData.append('file_type', data.file.type);
+        }
+        formData.append('document_number', data.document_number)
+        if (data.expiry_date && !data.expiry_date.includes('00:00:00'))
+            data.expiry_date = `${data.expiry_date} 00:00:00`;
+        formData.append('expiry_date', data.expiry_date)
+        setData({...data ,  document_type_id: rowSelect.original.id }) 
+        updateDocumentService(`${params.idOrganization}/employees/${params.idEmployee}/documents/${rowSelect.original.document_id}`, formData)
+        .then(response => {
+            if (data.file){
+                console.log("Upload file to S3");
+                put(response.upload_url, data.file);
+            }
+            refreshProfiledocumentsList();
+            toggleModalDocument();
+        })
+    }
+
+    const createDocument = () => {
+        const formData = new FormData();
+        formData.append('file', '');
+        if (data.file){
+            formData.append('status', "Awaiting Approval");
+            formData.append('file_name', data.file.name);
+            formData.append('file_type', data.file.type);
+        }
+        formData.append('document_type_id', rowSelect.original.id);
+        formData.append('document_number', data.document_number)
+        if (data.expiry_date && !data.expiry_date.includes('00:00:00'))
+            data.expiry_date = `${data.expiry_date} 00:00:00`;
+        formData.append('expiry_date', data.expiry_date)
+        setSendingFile(true);
+        organizationService.createNoJson(`${params.idOrganization}/employees/${params.idEmployee}/documents`, formData)
+            .then(response => {
+                console.log("Upload file to S3");
+                put(response.upload_url, data.file).then( response => {
+                    refreshProfiledocumentsList();
+                    toggleModalDocument();
+                })
+            })
+            .catch(error => console.log(error))
+            .finally(() => {
+                setSendingFile(false);
+            })
+    }
+
+    const toggleModalDocument = (row, isUpdate=true) => {
+        setIsUpdateDocument(isUpdate)
+        setModalDocument(!modalDocument)
+        setRowSelect(row)
+    }
+
+
     return (
         <>
             <BreadCrumbs/>
@@ -251,6 +328,42 @@ const ProfileDocuments = () => {
                                                 className={!showMandatory ? `btn btn-primary` : `btn btn-outline-primary`}
                                                 onClick={() => setShowMandatory(false)}>Non Mandatory Documents</label>
                                         </div>
+
+                                        {/* Modal EDIT */}
+
+                                        <Modal isOpen={modalDocument} className={"primary"}>
+                                            <ModalHeader>
+                                                {
+                                                    isUpdateDocument ?
+                                                        <h5>Document Edit </h5> : <h5>Document Create </h5>
+                                                }
+
+                                            </ModalHeader>
+                                            <ModalBody>
+                                                <div className='mb-3'>
+                                                    <label>Document Number</label>
+                                                    <input type='text' className='form-control' name='document_number' value={data.document_number} onChange={handleInput} /> 
+                                                </div>
+                                                <div  className='mb-3'>
+                                                <label>Expiration Date</label>
+                                                    <input type='date' className='form-control' name='expiry_date' value={data.expiry_date} onChange={handleInput} /> 
+                                                </div>
+                                                <div  className='mb-3'>
+                                                    <input type='file' className='form-control' name='file' onChange={handleInput} /> 
+                                                </div>
+                                            </ModalBody>
+                                            <ModalFooter>
+                                                <Button className='text-primary bg-white' color="light" onClick={toggleModalDocument} >Cancel</Button>
+                                                {
+                                                    isUpdateDocument ? <Button color="primary" onClick={() => updateDocument()} >Update</Button>
+                                                        : <Button color="primary" onClick={() => createDocument()} >Create</Button>
+                                                }
+
+                                            </ModalFooter>
+                                        </Modal>
+
+                                        {/* End Modal Edit */}
+                                        
                                         <Row>
                                             {
                                                 isLoading || loadingMandatory || isLoadingAllDocuments || (processingDocuments > 0)
@@ -280,7 +393,8 @@ const ProfileDocuments = () => {
                                                                 },
                                                                 {
                                                                     Header: 'Expiry',
-                                                                    accessor: 'expiry_date',
+                                                                    id: 'expiry_date',
+                                                                    accessor: (d) => d.expiry_date ? d.expiry_date.replace(' 00:00:00', '') : '',
                                                                     show: showMandatory
                                                                 },
                                                                 {
@@ -307,11 +421,13 @@ const ProfileDocuments = () => {
                                                                                             {/* <Button>Upload</Button> */}
                                                                                             {!sendingFile ?
                                                                                                 <>
-                                                                                                    <Input type="file"
-                                                                                                           onChange={(e) => {
-                                                                                                               uploadFile(e, row)
-                                                                                                           }}
-                                                                                                           title="Choose a file please"/>
+                                                                                                    <Button className='text-primary bg-white' color="light" onClick={()=>toggleModalDocument(row, false)} >Upload</Button>
+
+                                                                                                    {/*<Input type="file"
+                                                                                                            onChange={(e) => {
+                                                                                                                uploadFile(e, row)
+                                                                                                            }}
+                                                                                                            title="Choose a file please"/>*/}
                                                                                                     {/* <label for="file">Select file</label> */}
                                                                                                 </>
                                                                                                 : "Waiting"}
@@ -335,9 +451,7 @@ const ProfileDocuments = () => {
                                                                                                     Review
                                                                                                 </DropdownItem>
                                                                                                 <DropdownItem
-                                                                                                    disabled={true}
-                                                                                                    onClick={() => {
-                                                                                                    }}
+                                                                                                    onClick={() => toggleModalDocument(row)}
                                                                                                 >
                                                                                                     Edit
                                                                                                 </DropdownItem>
@@ -395,21 +509,21 @@ const ProfileDocuments = () => {
                                     "Approved":
                                         <button className='btn btn-danger' disabled={isFetchingDelete}
                                                 style={{width: '120px'}}
-                                                onClick={() => updateDocument('Rejected')}>REJECT</button>
+                                                onClick={() => updateStateDocument('Rejected')}>REJECT</button>
                                     ,
                                     "Rejected":
                                         <button className='btn btn-success' disabled={isFetchingDelete}
                                                 style={{width: '120px'}}
-                                                onClick={() => updateDocument('Approved')}>APPROVE</button>
+                                                onClick={() => updateStateDocument('Approved')}>APPROVE</button>
                                 }[profileDocument.status] ||
                                 <>
                                     <button className='btn btn-danger' disabled={isFetchingDelete}
-                                            style={{width: '120px'}} onClick={() => updateDocument('Rejected')}>REJECT
+                                            style={{width: '120px'}} onClick={() => updateStateDocument('Rejected')}>REJECT
                                     </button>
                                     :
                                     <button className='btn btn-success' disabled={isFetchingDelete}
                                             style={{width: '120px'}}
-                                            onClick={() => updateDocument('Approved')}>APPROVE</button></>
+                                            onClick={() => updateStateDocument('Approved')}>APPROVE</button></>
                             }
                         </div>
                     </ModalBody>
