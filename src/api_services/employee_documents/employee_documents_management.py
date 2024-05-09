@@ -80,7 +80,7 @@ def create_handler(event, context, stage):
                     f"Ongoing/{employee_profile.get_name()} - "
                     f"{employee_profile.role}/01 License, Certification and Verification/"
                     f"{employee_profile.get_name()} - "
-                    f"{document_type.category} - {document_type.name}.{file_name}")
+                    f"{document_type.category} - {document_type.name}.{file_name.split('.')[-1]}")
             new_document.s3_path = path
             if new_document.status == 'Approved':
                 new_document.approval_date = DataBase.get_now()
@@ -119,24 +119,28 @@ def update_handler(event, context, stage):
             organization = db.query(Organization).filter_by(id=organization_id).first()
             employee_profile = db.query(EmployeeProfile).filter_by(employee_id=employee_id).first()
             data = get_data_from_multipart(event)
-            file = data.pop('file', None)
+            file_name = None
+            upload_url = None
+            if 'file_name' in data:
+                file_name = data.pop('file_name')
+                file_type = data.pop('file_type')
             date_fields = ['expiry_date', 'approval_date', 'upload_date']
             set_fields_from_dict(document, data, date_fields)
-            if file:
+            if file_name:
                 document_type = db.query(DocumentType).filter_by(id=document.document_type_id).first()
                 path = (f"{stage}/app_data/orgs/{organization.name} {DataBase.get_now().year}/"
                         f"Ongoing/{employee_profile.get_name()} - "
                         f"{employee_profile.role}/01 License, Certification and Verification/"
                         f"{employee_profile.get_name()} - "
-                        f"{document_type.category} - {document_type.name}.{file.multipart_filename.split('.')[-1]}")
-                s3_path = upload_file_to_s3(path, file.value, file.multipart_content_type)
-                document.s3_path = s3_path
+                        f"{document_type.category} - {document_type.name}.{file_name.split('.')[-1]}")
+                document.s3_path = path
                 document.upload_date = DataBase.get_now()
-            if document.status == 'Approved':
+                upload_url = generate_file_link(path, 'put_object', file_type)
+            if data.get('status') == 'Approved':
                 document.approval_date = DataBase.get_now()
-            else:
-                document.approval_date = None
             db.commit()
+            dict_document = document.to_dict()
+            dict_document['upload_url'] = upload_url
             return {
                 'statusCode': 201,
                 "headers": {
@@ -144,7 +148,7 @@ def update_handler(event, context, stage):
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Methods': 'OPTIONS,POST,GET, PUT'
                 },
-                'body': json.dumps(document.to_dict())
+                'body': json.dumps(dict_document)
             }
         except Exception as err:  # Handle general exceptions for robustness
             print_exception_stack()

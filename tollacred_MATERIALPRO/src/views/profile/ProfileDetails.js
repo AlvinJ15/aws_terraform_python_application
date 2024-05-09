@@ -52,6 +52,8 @@ const ProfileDetails = () => {
         updateData.date_of_birth = `${updateData.date_of_birth}`
         if (!updateData.date_of_birth.includes('00:00:00'))
             updateData.date_of_birth += ' 00:00:00';
+        if (updateData.date_of_birth.includes("null"))
+            delete updateData.date_of_birth;
         delete updateData.role_id
         update({profile: updateData, role_id: role_id})
     }
@@ -121,7 +123,7 @@ const ProfileDetails = () => {
                                                 !!isLoadingRole
                                                 ? <p>Loading...</p>
                                                 :   <FormGroup>
-                                                        <Label>Personnel Type</Label>
+                                                        <Label>Facility</Label>
                                                         <select className='form-select' name="role_id" value={profile.role_id} onChange={handleInput}>
                                                             {   !!roleList &&
                                                                 roleList.map((item, index) => 
@@ -141,6 +143,10 @@ const ProfileDetails = () => {
                                             <FormGroup>
                                                 <Label>Email</Label>
                                                 <Input type="email" placeholder="Enter a email" name="email" value={profile.email} onChange={handleInput} />
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <Label>Phone Number</Label>
+                                                <Input type="text" placeholder="Enter a Phone Number" name="phone_number" value={profile.phone_number} onChange={handleInput} />
                                             </FormGroup>
                                             <FormGroup>
                                                 <Label>Address</Label>

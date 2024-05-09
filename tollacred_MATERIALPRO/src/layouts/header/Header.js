@@ -101,14 +101,14 @@ const Header = () => {
           {/******************************/}
           {/**********Notification DD**********/}
           {/******************************/}
-          <Button
+          {/*<Button
             color="light"
             outline
             size="sm"
             onClick={() => dispatch(ToggleHorizontal(true))}
           >
             Change Sidebar
-          </Button>
+          </Button>*/}
           {/* <UncontrolledDropdown className="mx-1">
             <DropdownToggle className="bg-transparent border-0" color={topbarColor}>
               <Icon.MessageSquare size={18} />

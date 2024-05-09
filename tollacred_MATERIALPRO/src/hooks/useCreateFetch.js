@@ -5,6 +5,7 @@ const NAME_ENTITY = 'organizations'
 
 const useCreateFetch = ({endpoint='', initData = null}) =>{
   const [data, setData] = useState(initData)
+  const [result, setResult] = useState(null)
   const [isFetching, setIsFetching] = useState(false)
   const [error, setError] = useState({})
 
@@ -61,6 +62,7 @@ const useCreateFetch = ({endpoint='', initData = null}) =>{
         await apiManager.post(`${NAME_ENTITY}/${endpoint}`, data).
         then(response => {
           setIsFetching(false)
+          setResult(response)
       })
     }
     catch (error) {
@@ -69,7 +71,7 @@ const useCreateFetch = ({endpoint='', initData = null}) =>{
     }  
   }
 
-  return {data, setData, validate, isFetching, create, error, setError, handleInput }
+  return {data, setData, validate, isFetching, create, error, setError, handleInput, result }
 
 }
 

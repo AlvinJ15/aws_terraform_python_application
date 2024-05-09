@@ -30,6 +30,7 @@ class EmployeeProfile(Base):
     city = Column(String(255))
     state = Column(String(255))
     zip = Column(String(12))
+    phone_number = Column(String(30), nullable=False)
 
     def __init__(self, **kwargs):
         date_fields = ['date_of_birth']
@@ -44,6 +45,7 @@ class EmployeeProfile(Base):
             "last_name": self.last_name,
             "gender": self.gender,
             "email": self.email,
+            "phone_number": self.phone_number,
             "role": self.role,
             "grade": self.grade,
             "medical_category": self.medical_category,

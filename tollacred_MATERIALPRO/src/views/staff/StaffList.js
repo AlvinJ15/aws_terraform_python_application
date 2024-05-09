@@ -16,12 +16,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useActionStaff from './hooks/useActionStaff';
 import ProfileOff from '../profile/ProfileOff';
 import ProfileInfo from '../profile/ProfileInfo';
+import {useForm} from "react-hook-form";
 const StaffList = ({ dataFetch = [] }) => {
 
     const params = useParams()
     const navigate = useNavigate()
 
     const [administrators, setAdministrator] = useState([])
+    const { register, handleSubmit, formState: { errors } } = useForm(); // initialise the hook
 
     /**Adding new StaffList */
     const { dataStaff,
@@ -35,8 +37,10 @@ const StaffList = ({ dataFetch = [] }) => {
         error,
         mangeStaffCreate } = useActionStaff(params.idOrganization)
     const saveEmployee = () => {
+        setIsLoading(true);
         mangeStaffCreate("CREATE").then(response => {
-            getStaffList()
+            getStaffList();
+            setIsLoading(false);
         })
     }
     /**end new StaffList */
@@ -112,9 +116,9 @@ const StaffList = ({ dataFetch = [] }) => {
             })
     }
 
-    const navigateProfile = (idStaff) => {
+    const navigateManage = (idStaff) => {
         params.idEmployee = idStaff
-        navigate(`/organization/${params.idOrganization}/employee/${idStaff}/compliancePackages`)
+        navigate(`/organization/${params.idOrganization}/employee/${idStaff}/documents`)
     }
 
     const defaultFilterMethod = (filter, row, column) => {
@@ -215,17 +219,19 @@ const StaffList = ({ dataFetch = [] }) => {
                                                                         Please fill all fields
                                                                     </small>
                                                                 </div>
-                                                                <CrudStaff role="CREATE" data={dataStaff} handle={handleInput} lists={roleList} />
-                                                                <div className='d-flex justify-content-end gap-2'>
-                                                                    <div>
-                                                                        <Button className='text-priamry' color="light" onClick={toggleModalStaffList} disabled={isLoading}
-                                                                        >Close</Button>
+                                                                <Form onSubmit={handleSubmit(saveEmployee)}>
+                                                                    <CrudStaff role="CREATE" data={dataStaff} handle={handleInput} lists={roleList} register={register} errors={errors} />
+                                                                    <div className='d-flex justify-content-end gap-2'>
+                                                                        <div>
+                                                                            <Button className='text-priamry' type="submit" color="light" onClick={toggleModalStaffList} disabled={isLoading}
+                                                                            >Close</Button>
+                                                                        </div>
+                                                                        <div>
+                                                                            <Button type="submit" className='' color="primary" disabled={isLoading}
+                                                                            >{isLoading ? "Saving" : "Save"}</Button>
+                                                                        </div>
                                                                     </div>
-                                                                    <div>
-                                                                        <Button className='' color="primary" onClick={saveEmployee} disabled={isLoading}
-                                                                        >{isLoading ? "Saving" : "Save"}</Button>
-                                                                    </div>
-                                                                </div>
+                                                                </Form>
                                                             </OffcanvasBody>
                                                         </Offcanvas>
                                                     </Col>
@@ -263,8 +269,8 @@ const StaffList = ({ dataFetch = [] }) => {
                                                             },
                                                             {
                                                                 id: 'role',
-                                                                Header: 'Role',
-                                                                accessor: (d) => d.profile.role,
+                                                                Header: 'Facility',
+                                                                accessor: (d) => d.role ? d.role.name : '',
                                                             },
                                                             {
                                                                 id: 'assignee_id',
@@ -303,7 +309,7 @@ const StaffList = ({ dataFetch = [] }) => {
                                                             {
                                                                 id: 'speciality',
                                                                 Header: 'Specialty',
-                                                                accessor: (d) => d.profile.speciality,
+                                                                accessor: (d) => d.profile.specialty,
                                                             },
                                                             {
                                                                 Header: 'Compliance',
@@ -347,7 +353,7 @@ const StaffList = ({ dataFetch = [] }) => {
                                                                                     >
                                                                                         Edit
                                                                                     </DropdownItem>
-                                                                                    <DropdownItem disabled={isLoading} onClick={() => navigateProfile(employee_id.value)}>
+                                                                                    <DropdownItem disabled={isLoading} onClick={() => navigateManage(employee_id.value)}>
                                                                                         Manage
                                                                                     </DropdownItem>
                                                                                     <DropdownItem onClick={() => deleteStaff(employee_id.value)} disabled={isLoading}>
