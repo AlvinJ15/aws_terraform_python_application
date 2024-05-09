@@ -65,7 +65,7 @@ const Requeriments = () => {
         toggleModalRequeriment()
     }
     const updateRequeriment = () => {
-        update(`${params.idOrganization}/compliancePackages`).then(res => {
+        update(`${params.idOrganization}/compliancePackages/${dataRequerimentUpdate.package_id}`).then(res => {
             getRequerimentList()
             toggleModalRequeriment()
         })

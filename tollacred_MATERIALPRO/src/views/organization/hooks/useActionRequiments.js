@@ -83,7 +83,7 @@ const useActionRequeriments = (idOrganization, dataInicial = initialRequeriment)
         let body_endpoint = {
             package_id: dataRequeriment.id,
             name: dataRequeriment.name,
-            documentTypes: dataRequeriment.document_types,
+            document_types: dataRequeriment.document_types,
             roles: dataRequeriment.roles
         }
         try {
