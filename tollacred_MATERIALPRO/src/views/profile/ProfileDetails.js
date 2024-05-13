@@ -25,7 +25,7 @@ const initProfile = {
         last_name : '',
         medical_category : '',
         profile_id : '',
-        role : '',
+        facility : '',
         specialty : '',
         state : '',
         title :'',
@@ -39,8 +39,8 @@ const ProfileDetails = () => {
     // GET Employee
     const {data, isLoading, refresh} = useFetch({endpoint :`${params.idOrganization}/employees/${params.idEmployee}`, initData: initProfile})
     
-    // GET Roles
-    const {data: roleList, isLoading: isLoadingRole} = useFetch({endpoint :`${params.idOrganization}/roles`, initData: []})
+    // GET Facilities
+    const {data: facilityList, isLoading: isLoadingFacility} = useFetch({endpoint :`${params.idOrganization}/facilities`, initData: []})
  
     // UPDATE
 
@@ -48,19 +48,19 @@ const ProfileDetails = () => {
 
     const updateEmployee = () => {
         const updateData = {...profile}
-        const role_id = profile.role_id
+        const facility_id = profile.facility_id
         updateData.date_of_birth = `${updateData.date_of_birth}`
         if (!updateData.date_of_birth.includes('00:00:00'))
             updateData.date_of_birth += ' 00:00:00';
         if (updateData.date_of_birth.includes("null"))
             delete updateData.date_of_birth;
-        delete updateData.role_id
-        update({profile: updateData, role_id: role_id})
+        delete updateData.facility_id
+        update({profile: updateData, facility_id: facility_id})
     }
 
 
     useEffect(() => {    
-        setProfile({...data.profile, role_id: data.role_id}) 
+        setProfile({...data.profile, facility_id: data.facility_id}) 
     },[data])
 
  
@@ -120,14 +120,14 @@ const ProfileDetails = () => {
                                                 <Input type="date" placeholder="Enter specialty" name="date_of_birth" value={DateFormat(profile.date_of_birth)} onChange={handleInput} />
                                             </FormGroup>
                                             {
-                                                !!isLoadingRole
+                                                !!isLoadingFacility
                                                 ? <p>Loading...</p>
                                                 :   <FormGroup>
                                                         <Label>Facility</Label>
-                                                        <select className='form-select' name="role_id" value={profile.role_id} onChange={handleInput}>
-                                                            {   !!roleList &&
-                                                                roleList.map((item, index) => 
-                                                                <option key={index} value={item.role_id}>{item.name}</option>)
+                                                        <select className='form-select' name="facility_id" value={profile.facility_id} onChange={handleInput}>
+                                                            {   !!facilityList &&
+                                                                facilityList.map((item, index) => 
+                                                                <option key={index} value={item.facility_id}>{item.name}</option>)
                                                             }
             
                                                         </select>

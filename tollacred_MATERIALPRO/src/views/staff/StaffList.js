@@ -27,8 +27,8 @@ const StaffList = ({ dataFetch = [] }) => {
 
     /**Adding new StaffList */
     const { dataStaff,
-        roleList,
-        getRoleList,
+        facilityList,
+        getFacilityList,
         isLoading,
         setIsLoading,
         toggleModalStaffList,
@@ -187,7 +187,7 @@ const StaffList = ({ dataFetch = [] }) => {
     useEffect(() => {
         getAdministratorList()
         getStaffList()
-        getRoleList()
+        getFacilityList()
     }, [])
 
     return (
@@ -220,7 +220,7 @@ const StaffList = ({ dataFetch = [] }) => {
                                                                     </small>
                                                                 </div>
                                                                 <Form onSubmit={handleSubmit(saveEmployee)}>
-                                                                    <CrudStaff role="CREATE" data={dataStaff} handle={handleInput} lists={roleList} register={register} errors={errors} />
+                                                                    <CrudStaff facility="CREATE" data={dataStaff} handle={handleInput} lists={facilityList} register={register} errors={errors} />
                                                                     <div className='d-flex justify-content-end gap-2'>
                                                                         <div>
                                                                             <Button className='text-priamry' type="submit" color="light" onClick={toggleModalStaffList} disabled={isLoading}
@@ -268,9 +268,9 @@ const StaffList = ({ dataFetch = [] }) => {
                                                                 )
                                                             },
                                                             {
-                                                                id: 'role',
+                                                                id: 'facility',
                                                                 Header: 'Facility',
-                                                                accessor: (d) => d.role ? d.role.name : '',
+                                                                accessor: (d) => d.facility ? d.facility.name : '',
                                                             },
                                                             {
                                                                 id: 'assignee_id',

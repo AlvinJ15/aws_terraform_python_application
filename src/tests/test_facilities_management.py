@@ -14,9 +14,9 @@ BODY_JSON_FOLDER = f'{BASE_JSON_FOLDER}/body_request/roles_management'
 @patch("data_models.models.get_tinyint_class", mock_get_tinyint_class)
 @patch("api_services.utils.database_utils.DataBase.generate_uuid", MockDatabase.mock_generate_uuid)
 @patch("api_services.utils.database_utils.DataBase.get_now", MockDatabase.mock_now)
-class TestRoles:
+class TestFacilities:
     def setup_method(self, method):
-        from api_services.roles.roles_management import (
+        from api_services.facilities.facilities_management import (
             get_all_handler, get_single_handler, create_handler, update_handler, delete_single_handler
         )
         self.get_all_handler = get_all_handler

@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 
 from data_models.model_administrator import Administrator
 from data_models.model_compliance_package import CompliancePackage
-from data_models.model_roles import Role
+from data_models.model_facilities import Facility
 
 if TYPE_CHECKING:
     from data_models.model_employee_profile import EmployeeProfile
@@ -25,9 +25,9 @@ class Employee(Base):
         String(36, collation=get_collation_ids()),
         ForeignKey(Organization.id)
     )
-    role_id = Column(
+    facility_id = Column(
         String(36, collation=get_collation_ids()),
-        ForeignKey(Role.role_id)
+        ForeignKey(Facility.facility_id)
     )
     assignee_id = Column(
         String(36, collation=get_collation_ids()),
@@ -46,7 +46,7 @@ class Employee(Base):
     )
     admin = relationship("Administrator", backref="assigned_users")
     organization = relationship("Organization", backref="organization")
-    role = relationship("Role", backref="role")
+    facility = relationship("Facility", backref="facility")
 
     def __init__(self, **kwargs):
         date_fields = ['created']
@@ -56,8 +56,8 @@ class Employee(Base):
         return {
             "employee_id": self.employee_id,
             "organization_id": self.organization_id,
-            "role_id": self.role_id,
-            "role": self.role.to_dict() if self.role else None,
+            "facility_id": self.facility_id,
+            "facility": self.facility.to_dict() if self.facility else None,
             "assignee_id": self.assignee_id,
             "compliance_tags": self.compliance_tags,
             "user_tags": self.user_tags,

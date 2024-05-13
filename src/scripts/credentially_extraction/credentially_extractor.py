@@ -18,7 +18,7 @@ class CredentiallyExtractor:
         #self.extract_organization_details()
         #print('organization_details extraction finished')
         #self.extract_organization_roles()
-        #print('roles extraction finished')
+        #print('facilities extraction finished')
         #self.extract_document_types()
         #print('document_types extraction finished')
         #self.extract_reference_forms()

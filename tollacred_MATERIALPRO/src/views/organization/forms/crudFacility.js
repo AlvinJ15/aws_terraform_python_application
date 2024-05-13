@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import {
     Progress, Form, FormGroup, Label, Input, Alert
 } from 'reactstrap';
-const CrudRole = ({ role, data, handle }) => { 
+const CrudFacility = ({ facility, data, handle }) => { 
     return (
         <>
-            {role == "EDIT" &&
+            {facility == "EDIT" &&
                 <FormGroup style={{ display: "none" }}>
                     <Label>ID (Primary Key):</Label>
                     <Input type="text" value={data.id} placeholder="Enter a ID" onChange={handle} name="id" />
@@ -42,4 +42,4 @@ const CrudRole = ({ role, data, handle }) => {
         </>
     )
 }
-export default CrudRole
+export default CrudFacility

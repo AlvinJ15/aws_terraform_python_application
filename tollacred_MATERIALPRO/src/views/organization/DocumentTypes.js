@@ -29,7 +29,7 @@ const DocumentTypes = () => {
     const params = useParams();
     const [modalDocumentType, setModalDocumentType] = useState(false)
     const [modalManageDocument, setModalManageDocument] = useState(false)
-    const [activeRole, setActiveRole] = useState('CREATE');
+    const [activeFacility, setActiveFacility] = useState('CREATE');
 
     /**LIST OF DOCUMENTS */
     const { data: documentsList, isLoading, error, refresh } = useFetch({ endpoint: `${params.idOrganization}/documents` })
@@ -59,7 +59,7 @@ const DocumentTypes = () => {
     const { data: dataDocumentUpdate, setData: setDataDocumentUpdate, validateUpdate, isFetchingUpdate, update, error: errorEdit, setErrorUpdate, handleInput: handleInputUpdate } = useUpdateFetch({ endpoint: `${params.idOrganization}/documents/`, initData: dataUpdate })
 
     const openUpdateDocumentType = (data) => {
-        setActiveRole("EDIT") 
+        setActiveFacility("EDIT") 
         //return
         setDataDocumentUpdate(data);
 
@@ -104,7 +104,7 @@ const DocumentTypes = () => {
     }
 
     const openNewDocumentType = () => {
-        setActiveRole("CREATE")
+        setActiveFacility("CREATE")
         toggleModalDocumentType()
     }
     return (
@@ -130,17 +130,17 @@ const DocumentTypes = () => {
                                     <div>
                                         <Modal isOpen={modalDocumentType} toggle={toggleModalDocumentType} className={"primary"}>
                                             <ModalHeader toggle={toggleModalDocumentType}>
-                                                <h5>Document Type {activeRole == "CREATE" ? " Creation" : " Update"}</h5>
+                                                <h5>Document Type {activeFacility == "CREATE" ? " Creation" : " Update"}</h5>
                                             </ModalHeader>
                                             <ModalBody>
                                                 {!!Object.keys(errorCreate).length && <Alert color="danger">
                                                     {JSON.stringify(errorCreate)}
                                                 </Alert>}
-                                                <CrudDocumentType role={activeRole} data={activeRole == "CREATE" ? dataDocument : dataDocumentUpdate} handle={activeRole == "CREATE" ? handleInput : handleInputUpdate} />
+                                                <CrudDocumentType facility={activeFacility} data={activeFacility == "CREATE" ? dataDocument : dataDocumentUpdate} handle={activeFacility == "CREATE" ? handleInput : handleInputUpdate} />
                                             </ModalBody>
                                             <ModalFooter>
                                                 <Button className='text-primary bg-white' color="light" onClick={toggleModalDocumentType} disabled={isFetching}>Cancel</Button>
-                                                <Button color="primary" onClick={() => activeRole == "CREATE" ? createDocumentType() : updateDocumentType()} disabled={isFetching}>{isFetching || isFetchingUpdate ? 'Saving...' : 'Save'}</Button>{' '}
+                                                <Button color="primary" onClick={() => activeFacility == "CREATE" ? createDocumentType() : updateDocumentType()} disabled={isFetching}>{isFetching || isFetchingUpdate ? 'Saving...' : 'Save'}</Button>{' '}
                                                 {/* {JSON.stringify(initialDocumentTypes)}
                                                 {JSON.stringify(dataUpdate)} */}
                                             </ModalFooter>

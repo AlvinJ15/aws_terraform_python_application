@@ -63,9 +63,9 @@ class CredentiallyApiRequest:
         return response
 
     def get_roles_list(self) -> list:
-        api_url = f'mp/api/organisations/{self.organization_id}/roles'
+        api_url = f'mp/api/organisations/{self.organization_id}/facilities'
         response = self.__made_request(api_url)
-        self.__save_request(response, 'roles.json')
+        self.__save_request(response, 'facilities.json')
         return response
 
     def get_document_types_list(self) -> list:

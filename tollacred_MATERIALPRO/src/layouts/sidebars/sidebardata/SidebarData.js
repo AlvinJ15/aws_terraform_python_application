@@ -41,8 +41,8 @@ const SidebarData = [
         icon: <MaterialIcon icon="description" />,
       },
       {
-        title: 'Roles',
-        href: '/organization/roles',
+        title: 'Facilities',
+        href: '/organization/facilities',
         icon: <MaterialIcon icon="description" />,
       },
     ],

@@ -7,7 +7,7 @@ const initialDocument = {
     description: '',
     purpose: '',
     notifiacionCheckBox: false,
-    roles: [],
+    facilities: [],
 }
 
 const errorInitial = {
@@ -18,14 +18,14 @@ const errorInitial = {
 const useCreateDocument = () => {
 
   const [dataDocument, setDataDocument] = useState(initialDocument)
-  const [roleList, setRoleList] = useState([])
+  const [facilityList, setFacilityList] = useState([])
   const [modalDocument, setModalDocument] = useState(false);
   const [error, setError] = useState(errorInitial)
 
 
-  const getRoleList = () => {
-      organizationService.get('9cf728c0-288a-4d92-9524-04d58b2ab32d/roles')
-      .then(response => setRoleList(response))
+  const getFacilityList = () => {
+      organizationService.get('9cf728c0-288a-4d92-9524-04d58b2ab32d/facilities')
+      .then(response => setFacilityList(response))
   }
 
   const handleInput = (e) => {
@@ -39,7 +39,7 @@ const useCreateDocument = () => {
 
   const toggleModalDocument = () => { 
     setError(false); 
-    if(modalDocument) getRoleList()
+    if(modalDocument) getFacilityList()
     setModalDocument(!modalDocument) 
   }
   
@@ -68,13 +68,13 @@ const useCreateDocument = () => {
 
   return {
     dataDocument,
-    roleList,
+    facilityList,
     modalDocument,
     error,
     toggleModalDocument,
     handleInput,
     mangeDocument,
-    getRoleList
+    getFacilityList
   }
 
 }

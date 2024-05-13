@@ -7,11 +7,11 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import ComponentCard from '../../../components/ComponentCard';
 
 
-const CrudRequeriment = ({ role, data, handle, lists }) => {
+const CrudRequeriment = ({ facility, data, handle, lists }) => {
     const [documentTypeList, setDocumentTypeList] = useState([])
-    const [roleList, setRoleList] = useState([])
+    const [facilityList, setFacilityList] = useState([])
     useEffect(() => {
-        setRoleList(lists.roleList)
+        setFacilityList(lists.facilityList)
         setDocumentTypeList(lists.documentList)
     }, [])
     const options = {
@@ -54,21 +54,21 @@ const CrudRequeriment = ({ role, data, handle, lists }) => {
         //alert(`is selected: ${isSelected}, ${rowStr}`);
     }
 
-    const selectRowPropRole = {
+    const selectRowPropFacility = {
         mode: 'checkbox',
         clickToSelect: true,
         bgColor: 'pink',
-        selected: gettingSelectedes("roleList", "role_id", data.roles),
-        onSelect: onRowSelectRole
+        selected: gettingSelectedes("facilityList", "facility_id", data.facilities),
+        onSelect: onRowSelectFacility
     }
-    function onRowSelectRole(row, isSelected, e) { 
-        let roles = [...data.roles]
+    function onRowSelectFacility(row, isSelected, e) { 
+        let facilities = [...data.facilities]
         if (isSelected) {
-            roles.push(row.role_id)
+            facilities.push(row.facility_id)
         } else {
-            roles = roles.filter(item => item !== row.role_id)
+            facilities = facilities.filter(item => item !== row.facility_id)
         }
-        handle({ target: { name: "roles", value: roles } })
+        handle({ target: { name: "facilities", value: facilities } })
     }
     const cellEditProp = {// to edit in real-time
         mode: 'click',
@@ -76,7 +76,7 @@ const CrudRequeriment = ({ role, data, handle, lists }) => {
     };
     return (
         <>
-            {/* {JSON.stringify(lists.roleList)} */}
+            {/* {JSON.stringify(lists.facilityList)} */}
             {/* {JSON.stringify(data)} */}
             <FormGroup>
                 <Label>Package Name*</Label>
@@ -112,23 +112,23 @@ const CrudRequeriment = ({ role, data, handle, lists }) => {
                 : "No Document Type Found!"
             }
             <br />
-            {roleList.length > 0 ?
-                <ComponentCard title="Roles Types">
+            {facilityList.length > 0 ?
+                <ComponentCard title="Facilities Types">
                     <BootstrapTable
                         striped
                         hover
                         condensed
                         search
-                        data={roleList}
+                        data={facilityList}
                         //deleteRow
-                        selectRow={selectRowPropRole}
+                        selectRow={selectRowPropFacility}
                         pagination
                         //insertRow
                         //options={options}
                         //cellEdit={cellEditProp}
                         tableHeaderClass="mb-0"
                     >
-                        <TableHeaderColumn width="100" dataField="role_id" hidden isKey>
+                        <TableHeaderColumn width="100" dataField="facility_id" hidden isKey>
                             ID
                         </TableHeaderColumn>
                         <TableHeaderColumn width="100" dataField="name" >
@@ -142,7 +142,7 @@ const CrudRequeriment = ({ role, data, handle, lists }) => {
                         </TableHeaderColumn>
                     </BootstrapTable>
                 </ComponentCard>
-                : "No Roles Found!"
+                : "No Facilities Found!"
             }
         </>
     )

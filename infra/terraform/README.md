@@ -60,17 +60,17 @@ TOKEN=<id_token>
 Then invoke the api services (API_URL should be endpoint of our API GATEWAY obtained from AWS)
 
 ```sh
-curl -H "Authorization: ${TOKEN}" https://${API_URL}/dev/organizations/3f4eccd2-c57d-11ee-8592-127af369fb07/roles
+curl -H "Authorization: ${TOKEN}" https://${API_URL}/dev/organizations/3f4eccd2-c57d-11ee-8592-127af369fb07/facilities
 ```
 
 ### Testing and API endpoint (AWS Api Gateway Console)
 
 Go to API Gateway and select the resources to test
-In the Test tab, we can send a request body, with valid `role_id` and `organization_id`, for example:
+In the Test tab, we can send a request body, with valid `facility_id` and `organization_id`, for example:
 
 ```json
 {
-  "role_id": "98765432-1234-5678-90ab-cdef01234567",
+  "facility_id": "98765432-1234-5678-90ab-cdef01234567",
   "organization_id": "3f4eccd2-c57d-11ee-8592-127af369fb07",
   "name": "Registered Nurse",
   "description": "Provides direct patient care, administers medications, and monitors patient health.",

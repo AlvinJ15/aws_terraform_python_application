@@ -5,9 +5,9 @@ import {
 import '../../tables/ReactBootstrapTable.scss';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import ComponentCard from '../../../components/ComponentCard';
-const CrudQuestionnaire = ({ role, data, handle }) => {
+const CrudQuestionnaire = ({ facility, data, handle }) => {
     const [documentTypeList, setDocumentTypeList] = useState([])
-    const [roleList, setRoleList] = useState([])
+    const [facilityList, setFacilityList] = useState([])
     useEffect(() => {
 
     }, [])
@@ -29,7 +29,7 @@ const CrudQuestionnaire = ({ role, data, handle }) => {
     }
     return (
         <>
-            {/* {JSON.stringify(lists.roleList)} */}
+            {/* {JSON.stringify(lists.facilityList)} */}
             <FormGroup>
                 <Label>Questionnaire Name*</Label>
                 <Input type="text" value={data.name} placeholder="Enter a questionnaire Name" onChange={handle} name="name" />

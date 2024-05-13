@@ -21,7 +21,7 @@ const Requeriments = () => {
     const params = useParams()
     const [activeRol, setActiveRol] = useState("CREATE")
     /**Adding new Requeriment */
-    const { getDocumentList, dataRequeriment, setDataRequeriment, getRoleList, documentList, roleList, handleInput, error, modalRequeriment, toggleModalRequeriment, mangeRequerimentAction, isFetching } = useActionRequeriments(params.idOrganization)
+    const { getDocumentList, dataRequeriment, setDataRequeriment, getFacilityList, documentList, facilityList, handleInput, error, modalRequeriment, toggleModalRequeriment, mangeRequerimentAction, isFetching } = useActionRequeriments(params.idOrganization)
     /**end new Requeriment */
 
     /**LIST OF RequerimentS */
@@ -36,7 +36,7 @@ const Requeriments = () => {
 
     useEffect(() => {
         getDocumentList()
-        getRoleList()
+        getFacilityList()
         getRequerimentList()
     }, [])
     const addRequeriment = () => {
@@ -51,7 +51,7 @@ const Requeriments = () => {
         package_id: '',
         name: '',
         document_types: [],
-        roles: [],
+        facilities: [],
     })
     const { dataRequeriment: dataRequerimentUpdate, setDataRequeriment: setDataUpt, handleInput: handleInputUpdate, error: errorUpdate, updateRequerimentAction: update, isFetching: isFetchingUpdate } = useActionRequeriments(params.idOrganization, dataUpdate)
     const openEdit = (data) => {
@@ -60,7 +60,7 @@ const Requeriments = () => {
             package_id: data.package_id,
             name: data.name,
             document_types: data.document_types,
-            roles: data.roles,
+            facilities: data.facilities,
         })
         toggleModalRequeriment()
     }
@@ -168,8 +168,8 @@ const Requeriments = () => {
                                                 <div className='mb-2'>
                                                     <small>Add documents and checks necessary to fulfill compliance requirements.</small>
                                                 </div>
-                                                <CrudRequeriment role="CREATE" data={activeRol == "CREATE" ? dataRequeriment : dataRequerimentUpdate} handle={activeRol == "CREATE" ? handleInput : handleInputUpdate}
-                                                    lists={{ documentList: documentList, roleList: roleList }} />
+                                                <CrudRequeriment facility="CREATE" data={activeRol == "CREATE" ? dataRequeriment : dataRequerimentUpdate} handle={activeRol == "CREATE" ? handleInput : handleInputUpdate}
+                                                    lists={{ documentList: documentList, facilityList: facilityList }} />
                                             </OffcanvasBody>
                                             <div className='d-flex justify-content-end p-3'>
                                                 <Button color="primary" onClick={() => { activeRol == "CREATE" ? addRequeriment() : updateRequeriment() }} disabled={isFetching}>

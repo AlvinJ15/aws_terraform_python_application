@@ -6,20 +6,20 @@ const initialStaff = {
     first_name: '',
     last_name: '',
     email: '',
-    role_id: '',
+    facility_id: '',
 }
 
 const useActionStaff = (idOrganization) => {
 
     const [dataStaff, setDataStaff] = useState(initialStaff)
     const [modalStaffList, setModalStaffList] = useState(false);
-    const [roleList, setRoleList] = useState([])
+    const [facilityList, setFacilityList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
 
-    const getRoleList = () => {
-        organizationService.get(`${idOrganization}/roles`)
+    const getFacilityList = () => {
+        organizationService.get(`${idOrganization}/facilities`)
             .then(response => {
-                setRoleList(response); /*console.log(response)*/
+                setFacilityList(response); /*console.log(response)*/
             })
     }
 
@@ -30,7 +30,7 @@ const useActionStaff = (idOrganization) => {
 
     const handleInput = (e) => {
         if (typeof e === 'object' && !!e.label) {
-            dataStaff.role_id = e.value
+            dataStaff.facility_id = e.value
             setDataStaff(dataStaff)
         } else {
             const {type, name, value, checked} = e.target
@@ -65,7 +65,7 @@ const useActionStaff = (idOrganization) => {
                     email: dataStaff.email,
                     phone_number: dataStaff.phone_number
                 },
-                role_id: dataStaff.role_id,
+                facility_id: dataStaff.facility_id,
             }
             await organizationService.create(`${idOrganization}/employees`, profile)
                 .then(response => {
@@ -81,8 +81,8 @@ const useActionStaff = (idOrganization) => {
 
     return {
         dataStaff,
-        roleList,
-        getRoleList,
+        facilityList,
+        getFacilityList,
         isLoading,
         setIsLoading,
         toggleModalStaffList,

@@ -17,9 +17,9 @@ from data_models.model_employee_profile import EmployeeProfile
 from data_models.model_employee_questionnaire_response import EmployeeQuestionnaireResponse
 from data_models.model_organization import Organization
 from data_models.model_package_document import PackageDocument
-from data_models.model_package_role import PackageRole
+from data_models.model_package_facility import PackageFacility
 from data_models.model_questionnaire import Questionnaire
-from data_models.model_roles import Role
+from data_models.model_facilities import Facility
 from scripts.credentially_extraction.credentially_api_request import CredentiallyApiRequest
 from scripts.credentially_extraction.database_utils_local import DataBase
 from scripts.credentially_extraction.s3_utils_local import upload_file_to_s3
@@ -57,7 +57,7 @@ class CredentiallyDatabaseInsertion:
             self.fill_organization_details(db)
             print('organization_details extraction finished')
             self.create_roles(db)
-            print('roles extraction finished')
+            print('facilities extraction finished')
             self.create_document_types(db)
             print('document_types extraction finished')
             self.create_questionnaires(db)
@@ -108,13 +108,13 @@ class CredentiallyDatabaseInsertion:
         organization.zip = data.get('postcode')
 
     def create_roles(self, db):
-        data = json.load(open(f'{self.org_folder}/roles.json'))
+        data = json.load(open(f'{self.org_folder}/facilities.json'))
         mapping_type = {
             'NON_CLINICAL': 'Non-Clinical',
             'CLINICAL': 'Clinical'
         }
         for cred_role in data:
-            new_role = Role()
+            new_role = Facility()
             new_role.role_id = DataBase.generate_uuid()
             self.roles_id_map[cred_role['id']] = new_role.role_id
             new_role.organization_id = self.organization_id
@@ -188,9 +188,9 @@ class CredentiallyDatabaseInsertion:
             new_package.creation_date = DataBase.get_now()
             db.add(new_package)
             db.flush()
-            roles = cred_package.get('roles', [])
+            roles = cred_package.get('facilities', [])
             for role in roles:
-                new_package_role = PackageRole()
+                new_package_role = PackageFacility()
                 new_package_role.package_id = new_package.package_id
                 new_package_role.role_id = self.roles_id_map[role['roleId']]
                 db.add(new_package_role)
@@ -276,7 +276,7 @@ class CredentiallyDatabaseInsertion:
         new_employee.profile.last_name = employee_info.get('Last Name')
         new_employee.profile.gender = employee_info.get('Gender')
         new_employee.profile.email = employee.get('email')
-        new_employee.profile.role = employee['personnelType']['name']
+        new_employee.profile.facility = employee['personnelType']['name']
         new_employee.profile.grade = employee_info.get('Grade')
         new_employee.profile.medical_category = employee_info.get('Medical Category')
         new_employee.profile.specialty = employee_info.get('Specialty')
@@ -367,7 +367,7 @@ class CredentiallyDatabaseInsertion:
             path = (
                 f'{STAGE}/app_data/orgs/{self.organization.name} {DataBase.get_now().year}/'
                 f'Ongoing/{new_employee.profile.get_name()} - '
-                f'{new_employee.profile.role}/01 License, Certification and Verification/'
+                f'{new_employee.profile.facility}/01 License, Certification and Verification/'
                 f'{new_employee.profile.get_name()} - '
                 f'{document_type.category} - {document_type.name}.'
                 f'{document["activeFile"].get("originName").split(".")[-1]}'

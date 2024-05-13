@@ -47,7 +47,7 @@ const Questionnaires = () => {
                                         <Row>
 
                                             {openCrud ?
-                                                <CrudQuestionnaire role="CREATE" data={dataQuestionnaire} handle={handleInput} />
+                                                <CrudQuestionnaire facility="CREATE" data={dataQuestionnaire} handle={handleInput} />
                                                 :
                                                 <ComponentCard title="List" >
                                                     {

@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship, query
 
 from data_models.model_onboarding import Onboarding
 from data_models.model_organization import Organization
-from data_models.model_roles import Role
+from data_models.model_facilities import Facility
 from data_models.models import Base, get_collation_ids, get_tinyint_class
 
 TYPE_VALUES = [
@@ -43,7 +43,7 @@ class OnboardingStep(Base):
     mandatory = Column(Boolean, nullable=False)
     additional_properties = Column(JSON)
 
-    roles = relationship(Role, secondary="step_roles", backref="steps", lazy="select", viewonly=True,
+    facilities = relationship(Facility, secondary="step_facilities", backref="steps", lazy="select", viewonly=True,
                          cascade="all, delete-orphan")
 
     def to_dict(self):
@@ -57,5 +57,5 @@ class OnboardingStep(Base):
             "order": self.order,
             "mandatory": self.mandatory,
             "additional_properties": self.additional_properties,
-            "roles": [role.role_id for role in self.roles]
+            "facilities": [facility.facility_id for facility in self.facilities]
         }

@@ -12,15 +12,15 @@ from data_models.model_employee_reference import EmployeeReference
 from data_models.model_onboarding import Onboarding
 from data_models.model_onboarding_step import OnboardingStep
 from data_models.model_organization_document import OrganizationDocument
-from data_models.model_organization_document_role import OrganizationDocumentRole
+from data_models.model_organization_document_facility import OrganizationDocumentFacility
 from data_models.model_questionnaire import Questionnaire
-from data_models.model_roles import Role
+from data_models.model_facilities import Facility
 from data_models.model_organization import Organization
 from data_models.model_compliance_package import CompliancePackage
 from data_models.model_document_type import DocumentType
-from data_models.model_package_role import PackageRole
+from data_models.model_package_facility import PackageFacility
 from data_models.model_package_document import PackageDocument
-from data_models.model_step_role import StepRole
+from data_models.model_step_facility import StepFacility
 
 from data_models.models import Base
 
@@ -46,18 +46,18 @@ Base.metadata.reflect(engine)
 
 classes_list = [
     Organization,
-    Role,
+    Facility,
     CompliancePackage,
     DocumentType,
-    PackageRole,
+    PackageFacility,
     PackageDocument,
     OrganizationDocument,
-    OrganizationDocumentRole,
+    OrganizationDocumentFacility,
     Questionnaire,
     Onboarding,
     OnboardingStep,
-    StepRole,
-        Administrator,
+    StepFacility,
+    Administrator,
     Employee,
     EmployeeProfile,
     EmployeeDocument,

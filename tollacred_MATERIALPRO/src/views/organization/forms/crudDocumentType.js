@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import {
     Progress, Form, FormGroup, Label, Input, Alert
 } from 'reactstrap';
-const CrudDocumentType = ({ role, data, handle }) => { 
+const CrudDocumentType = ({ facility, data, handle }) => { 
     return (
         <>
-            {role == "EDIT" &&
+            {facility == "EDIT" &&
                 <FormGroup style={{ display: "none" }}>
                     <Label>ID (Primary Key):</Label>
                     <Input type="text" value={data.id} placeholder="Enter a ID" onChange={handle} name="id" />
                 </FormGroup >
             }
-            {/* {role != "CREATE" &&
+            {/* {facility != "CREATE" &&
                 <FormGroup >
                     <Label>Organization ID:</Label>
                     <Input type="text" value={data.organizationId} placeholder="Enter a document Name" onChange={handle} name="organizationId" />
@@ -44,7 +44,7 @@ const CrudDocumentType = ({ role, data, handle }) => {
                         Certificate
                     </Label>
                 </FormGroup>
-                {role != "DELETE" &&
+                {facility != "DELETE" &&
                     <FormGroup>
                         <Label>Expiration (in months):</Label>
                         <Input type="Number" value={data.expiration} placeholder="" name="expiration" onChange={handle} />

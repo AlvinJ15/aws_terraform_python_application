@@ -6,7 +6,7 @@ module "source_code" {
   source = "../source_code"
 }
 
-resource "aws_lambda_function" "lambda_function_roles" {
+resource "aws_lambda_function" "lambda_function_facilities" {
   for_each = local.methods_names
 
   function_name    = each.key
@@ -38,22 +38,22 @@ resource "aws_lambda_function" "lambda_function_roles" {
   }
 }
 
-resource "aws_lambda_permission" "permissions_roles" {
+resource "aws_lambda_permission" "permissions_facilities" {
   for_each = local.methods_names
 
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.lambda_function_roles[each.key].function_name
+  function_name = aws_lambda_function.lambda_function_facilities[each.key].function_name
   principal     = "apigateway.amazonaws.com"
 
-  source_arn = "arn:aws:execute-api:${var.aws_region}:${var.account_id}:${var.rest_api.id}/*/${aws_api_gateway_method.methods_roles[each.key].http_method}${local.resources[each.value.resource].path}"
+  source_arn = "arn:aws:execute-api:${var.aws_region}:${var.account_id}:${var.rest_api.id}/*/${aws_api_gateway_method.methods_facilities[each.key].http_method}${local.resources[each.value.resource].path}"
 }
 
-resource "aws_lambda_permission" "secretsmanager_access_roles" {
+resource "aws_lambda_permission" "secretsmanager_access_facilities" {
   for_each = local.methods_names
 
   statement_id  = "AllowSecretsManagerAccess"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.lambda_function_roles[each.key].function_name
+  function_name = aws_lambda_function.lambda_function_facilities[each.key].function_name
   principal     = "secretsmanager.amazonaws.com"
 }

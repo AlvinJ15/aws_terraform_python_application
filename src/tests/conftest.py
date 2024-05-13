@@ -22,11 +22,11 @@ def initialize_db():
     from data_models.model_onboarding_step import OnboardingStep
     from data_models.model_organization import Organization
     from data_models.model_questionnaire import Questionnaire
-    from data_models.model_roles import Role
-    from data_models.model_step_role import StepRole
+    from data_models.model_facilities import Facility
+    from data_models.model_step_facility import StepFacility
     from data_models.model_compliance_package import CompliancePackage
     from data_models.model_package_document import PackageDocument
-    from data_models.model_package_role import PackageRole
+    from data_models.model_package_facility import PackageFacility
     from data_models.model_administrator import Administrator
     from data_models.model_employee import Employee
     from data_models.model_employee_profile import EmployeeProfile
@@ -34,15 +34,15 @@ def initialize_db():
     from data_models.model_employee_reference import EmployeeReference
 
     table_insert_data(Organization)
-    table_insert_data(Role)
+    table_insert_data(Facility)
     table_insert_data(DocumentType)
     table_insert_data(Onboarding)
     table_insert_data(OnboardingStep)
-    table_insert_data(StepRole)
+    table_insert_data(StepFacility)
     table_insert_data(Questionnaire)
     table_insert_data(CompliancePackage)
     table_insert_data(PackageDocument)
-    table_insert_data(PackageRole)
+    table_insert_data(PackageFacility)
     table_insert_data(Administrator)
     table_insert_data(Employee)
     table_insert_data(EmployeeProfile)

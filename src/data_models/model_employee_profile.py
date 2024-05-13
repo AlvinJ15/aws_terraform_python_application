@@ -20,7 +20,7 @@ class EmployeeProfile(Base):
     last_name = Column(String(255))
     gender = Column(String(255))
     email = Column(String(255), nullable=False)
-    role = Column(String(255))
+    facility = Column(String(255))
     grade = Column(String(255))
     medical_category = Column(String(255))
     specialty = Column(String(255))
@@ -46,7 +46,7 @@ class EmployeeProfile(Base):
             "gender": self.gender,
             "email": self.email,
             "phone_number": self.phone_number,
-            "role": self.role,
+            "facility": self.facility,
             "grade": self.grade,
             "medical_category": self.medical_category,
             "specialty": self.specialty,

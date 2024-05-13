@@ -9,8 +9,8 @@ module "organization_management" {
   lambda_exec              = aws_iam_role.lambda_exec
 }
 
-module "role_management" {
-  source                   = "./role_management"
+module "facility_management" {
+  source                   = "./facility_management"
   rest_api                 = aws_api_gateway_rest_api.rest_api
   api_status_response      = var.api_status_response
   account_id               = var.account_id

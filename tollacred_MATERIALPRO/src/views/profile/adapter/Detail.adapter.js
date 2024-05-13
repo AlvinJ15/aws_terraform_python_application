@@ -1,4 +1,4 @@
-const DetailAdapter = ({address, city, country, date_of_birth, email, employee_id, first_name, gender, grade, last_name, medical_category, profile_id, role, specialty, state, title, zip}) => {
+const DetailAdapter = ({address, city, country, date_of_birth, email, employee_id, first_name, gender, grade, last_name, medical_category, profile_id, facility, specialty, state, title, zip}) => {
   return {
     address : address ?? '------',
     city : city ?? '------',
@@ -12,7 +12,7 @@ const DetailAdapter = ({address, city, country, date_of_birth, email, employee_i
     last_name : last_name ?? '------',
     medical_category : medical_category ?? '------',
     profile_id : profile_id ?? '------',
-    role : role ?? '------',
+    facility : facility ?? '------',
     specialty : specialty ?? '------',
     state : state ?? '------',
     title : title ?? '------',

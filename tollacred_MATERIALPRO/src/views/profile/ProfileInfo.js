@@ -17,7 +17,7 @@ const ProfileInfo = ({ data = {} }) => {
         email: '',
         phone: '',
         address: '',
-        role: '',
+        facility: '',
         specialty: ''
     })
     //if data is not empty set dataProfile
@@ -37,7 +37,7 @@ const ProfileInfo = ({ data = {} }) => {
                             <CardTitle tag="h4" className="mt-2 mb-0">
                                 {dataProfile.title + " " + dataProfile.first_name + " " + dataProfile.last_name}
                             </CardTitle>
-                            <CardSubtitle className="text-muted">{dataProfile.role}</CardSubtitle>
+                            <CardSubtitle className="text-muted">{dataProfile.facility}</CardSubtitle>
                             <CardSubtitle className="text-muted">{dataProfile.specialty}</CardSubtitle>
                             <Row className="text-center justify-content-md-center mt-3">
                                 <Col xs="4">

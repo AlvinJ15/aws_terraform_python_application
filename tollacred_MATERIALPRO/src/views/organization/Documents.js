@@ -21,7 +21,7 @@ const initialDocument = {
     description: '',
     purpose: '',
     notifiacionCheckBox: false,
-    roles: [],
+    facilities: [],
 }
 
 const Documents = () => {
@@ -50,8 +50,8 @@ const Documents = () => {
 
     /** GET LIST OF Document */
     const { data: documentsList, isLoading, refresh } = useFetch({ endpoint: `${params.idOrganization}/documents` })
-    /** GET LIST OF Roles */
-    const { data: roleList, isLoading: isLoadingRole } = useFetch({ endpoint: `${params.idOrganization}/roles` })
+    /** GET LIST OF Facilities */
+    const { data: facilityList, isLoading: isLoadingFacility } = useFetch({ endpoint: `${params.idOrganization}/facilities` })
     /** DELETE OF Document */
     const { isLoading: isLoadingDelete, destroy } = useDeleteFetch({ endpoint: `${params.idOrganization}/documents` })
 
@@ -72,7 +72,7 @@ const Documents = () => {
                                     <div  className='d-flex justify-content-between align-items-center'>
                                         <h5>Documents</h5>
                                         {
-                                            !isLoadingRole && <Button className='float-end mb-2' color="primary" onClick={toggleModalDocument}>
+                                            !isLoadingFacility && <Button className='float-end mb-2' color="primary" onClick={toggleModalDocument}>
                                                 Add Organization Documents
                                             </Button>
                                         }
@@ -143,7 +143,7 @@ const Documents = () => {
                                                 {error.status && <Alert color="danger">
                                                     {error.message}
                                                 </Alert>}
-                                                <CrudDocument role="CREATE" data={dataDocument} handle={handleInput} />
+                                                <CrudDocument facility="CREATE" data={dataDocument} handle={handleInput} />
                                             </ModalBody>
                                             <ModalFooter>
                                                 <Button color="primary" onClick={() => mangeDocument("CREATE")}>Save</Button>{' '}
@@ -160,7 +160,7 @@ const Documents = () => {
                                                         Add documents and checks necessary to fulfill compliance requirements.
                                                     </small>
                                                 </div>
-                                                <CrudDocument role="CREATE" data={dataDocument} handle={handleInput} lists={{ roleList: roleList }} />
+                                                <CrudDocument facility="CREATE" data={dataDocument} handle={handleInput} lists={{ facilityList: facilityList }} />
                                                 <hr></hr>
                                                 <div className='d-flex justify-content-end gap-3'>
                                                     <button className='btn btn-light text-primary' onClick={() => setModalDocument(false)} isabled={isFetching}> Cancel</button>

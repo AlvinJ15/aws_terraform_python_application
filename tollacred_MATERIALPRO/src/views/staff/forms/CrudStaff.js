@@ -4,14 +4,14 @@ import {
 } from 'reactstrap';
 import Select from 'react-select'
 
-const CrudStaff = ({role, data, handle, lists, register, errors}) => {
-    const [optionRoles, setOptionRoles] = useState([])
+const CrudStaff = ({facility, data, handle, lists, register, errors}) => {
+    const [optionFacilities, setOptionFacilities] = useState([])
 
     const optionAdapter = () => {
         let options = []
         lists.map(item => {
             options.push({
-                value: item.role_id,
+                value: item.facility_id,
                 label: item.name
             })
         })
@@ -23,11 +23,11 @@ const CrudStaff = ({role, data, handle, lists, register, errors}) => {
     }
 
     useEffect(() => {
-        setOptionRoles(optionAdapter())
+        setOptionFacilities(optionAdapter())
     }, [])
     return (
         <>
-            {role == "EDIT" &&
+            {facility == "EDIT" &&
                 <FormGroup style={{display: "none"}}>
                     <Label>ID (Primary Key):</Label>
                     <Input type="text" value={data.id} placeholder="Enter a ID" onChange={handle} name="id"/>
@@ -69,8 +69,8 @@ const CrudStaff = ({role, data, handle, lists, register, errors}) => {
                 <Label> Facility</Label>
                 <Select
                     closeMenuOnSelect={true}
-                    options={optionRoles}
-                    value={role.role_id}
+                    options={optionFacilities}
+                    value={facility.facility_id}
                     onChange={handleSelect}
                 />
             </FormGroup>}

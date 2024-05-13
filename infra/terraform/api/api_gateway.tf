@@ -15,7 +15,7 @@ resource "aws_api_gateway_deployment" "deployment" {
   rest_api_id = aws_api_gateway_rest_api.rest_api.id
   depends_on = [
     module.organization_management,
-    module.role_management,
+    module.facility_management,
     module.document_type_management,
     module.compliance_package_management,
     module.questionnaire_management,

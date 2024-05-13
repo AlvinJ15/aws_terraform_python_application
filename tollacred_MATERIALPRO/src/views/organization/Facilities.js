@@ -5,7 +5,7 @@ import {
 } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
-import CrudRole from './forms/crudRole';
+import CrudFacility from './forms/crudFacility';
 
 import 'react-table-v6/react-table.css';
 import { useParams } from 'react-router-dom';
@@ -16,75 +16,75 @@ import useDeleteFetch from '../../hooks/useDeleteFetch';
 import useUpdateFetch from '../../hooks/useUpdateFetch';
 import organizationService from "@/views/organization/services/organization.service.js";
 
-const initialRoles = {
+const initialFacilities = {
     name: '',
     description: '',
     type: '',
 }
 
 
-const Roles = () => {
+const Facilities = () => {
 
     const params = useParams();
-    const [modalRole, setModalRole] = useState(false)
-    const [modalManageRole, setModalManageRole] = useState(false)
-    const [activeRole, setActiveRole] = useState('CREATE');
+    const [modalFacility, setModalFacility] = useState(false)
+    const [modalManageFacility, setModalManageFacility] = useState(false)
+    const [activeFacility, setActiveFacility] = useState('CREATE');
 
-    /**LIST OF ROLES */
-    const { data: rolesList, isLoading, error, refresh } = useFetch({ endpoint: `${params.idOrganization}/roles` })
+    /**LIST OF FACILITIES */
+    const { data: facilitiesList, isLoading, error, refresh } = useFetch({ endpoint: `${params.idOrganization}/facilities` })
 
 
 
-    /**CREATE ROLES */
-    const { data: dataRole, setData: setDataRole, validate, isFetching, create, error: errorCreate, setError, handleInput } = useCreateFetch({ endpoint: `${params.idOrganization}/roles`, initData: initialRoles })
+    /**CREATE FACILITIES */
+    const { data: dataFacility, setData: setDataFacility, validate, isFetching, create, error: errorCreate, setError, handleInput } = useCreateFetch({ endpoint: `${params.idOrganization}/facilities`, initData: initialFacilities })
 
-    const createRole = () => {
+    const createFacility = () => {
 
         if (!!!validate({ dataValidate: ['name'] })) {
             create()
                 .then(res => {
                     refresh()
-                    toggleModalRole()
+                    toggleModalFacility()
                 })
         }
     }
-    /* update roles */
+    /* update facilities */
     const [dataUpdate, setDataUpdate] = useState({
         name: '',
         description: '',
         category: '',
         expiration: 0,
     })
-    const { data: dataRoleUpdate, setData: setDataRoleUpdate, validateUpdate, isFetchingUpdate, update, error: errorEdit, setErrorUpdate, handleInput: handleInputUpdate } = useUpdateFetch({ endpoint: `${params.idOrganization}/roles`, initData: dataUpdate })
+    const { data: dataFacilityUpdate, setData: setDataFacilityUpdate, validateUpdate, isFetchingUpdate, update, error: errorEdit, setErrorUpdate, handleInput: handleInputUpdate } = useUpdateFetch({ endpoint: `${params.idOrganization}/facilities`, initData: dataUpdate })
 
-    const openUpdateRole = (data) => {
-        setActiveRole("EDIT") 
+    const openUpdateFacility = (data) => {
+        setActiveFacility("EDIT") 
         //return
-        setDataRoleUpdate(data)
+        setDataFacilityUpdate(data)
         setDataUpdate(data)
-        toggleModalRole()
+        toggleModalFacility()
     }
-    const updateRole = () => {
+    const updateFacility = () => {
         //update().then(res => {
         //    refresh()
-        //    toggleModalRole()
+        //    toggleModalFacility()
         //})
-        organizationService.update(`${params.idOrganization}/roles/${dataRoleUpdate.role_id}`, dataRoleUpdate)
+        organizationService.update(`${params.idOrganization}/facilities/${dataFacilityUpdate.facility_id}`, dataFacilityUpdate)
             .then(response => {
-                setDataUpdate(dataRoleUpdate);
+                setDataUpdate(dataFacilityUpdate);
                 refresh();
-                toggleModalRole();
+                toggleModalFacility();
             });
     }
-    //**DELETE ROLE */
+    //**DELETE FACILITY */
     const [modalDelete, setModalDelete] = useState({
         estate: false,
         id: '',
     })
     const toggleModalDelete = () => { setModalDelete({ ...modalDelete, estate: !modalDelete.estate }) }
-    const { isFetching: isFetchingDelete, destroy, error: errorDelete } = useDeleteFetch({ endpoint: `${params.idOrganization}/roles` })
+    const { isFetching: isFetchingDelete, destroy, error: errorDelete } = useDeleteFetch({ endpoint: `${params.idOrganization}/facilities` })
 
-    const deleteRole = (idDocuemntType) => {
+    const deleteFacility = (idDocuemntType) => {
         //return
         destroy(idDocuemntType)
             .then(res => {
@@ -94,15 +94,15 @@ const Roles = () => {
             })
     }
 
-    const toggleModalRole = () => {
+    const toggleModalFacility = () => {
         setError({});
-        setDataRole(initialRoles);
-        setModalRole(!modalRole)
+        setDataFacility(initialFacilities);
+        setModalFacility(!modalFacility)
     }
 
-    const openNewRole = () => {
-        setActiveRole("CREATE")
-        toggleModalRole()
+    const openNewFacility = () => {
+        setActiveFacility("CREATE")
+        toggleModalFacility()
     }
     return (
         <><BreadCrumbs />
@@ -114,31 +114,31 @@ const Roles = () => {
                                 <div className="p-4">
                                     <div className='d-flex align-items-center justify-content-between'>
                                         <div>
-                                            <h5>Roles</h5>
+                                            <h5>Facilities</h5>
                                         </div>
                                         <div className='d-flex gap-2'>
                                             <div>
-                                                <Button color="primary" className='float-end mb-2' onClick={openNewRole}>Add New</Button>
+                                                <Button color="primary" className='float-end mb-2' onClick={openNewFacility}>Add New</Button>
                                             </div>
                                         </div>
 
                                     </div>
                                     <hr />
                                     <div>
-                                        <Modal isOpen={modalRole} toggle={toggleModalRole} className={"primary"}>
-                                            <ModalHeader toggle={toggleModalRole}>
-                                               <h5> Role {activeRole == "CREATE" ? " Creation" : " Update"}</h5>
+                                        <Modal isOpen={modalFacility} toggle={toggleModalFacility} className={"primary"}>
+                                            <ModalHeader toggle={toggleModalFacility}>
+                                               <h5> Facility {activeFacility == "CREATE" ? " Creation" : " Update"}</h5>
                                             </ModalHeader>
                                             <ModalBody>
                                                 {!!Object.keys(errorCreate).length && <Alert color="danger">
                                                     {JSON.stringify(errorCreate)}
                                                 </Alert>}
-                                                <CrudRole role={activeRole} data={activeRole == "CREATE" ? dataRole : dataRoleUpdate} handle={activeRole == "CREATE" ? handleInput : handleInputUpdate} />
+                                                <CrudFacility facility={activeFacility} data={activeFacility == "CREATE" ? dataFacility : dataFacilityUpdate} handle={activeFacility == "CREATE" ? handleInput : handleInputUpdate} />
                                             </ModalBody>
                                             <ModalFooter>
-                                                <Button color="primary" onClick={() => activeRole == "CREATE" ? createRole() : updateRole()} disabled={isFetching || isFetchingUpdate}>{isFetching || isFetchingUpdate ? 'Saving...' : 'Save'}</Button>{' '}
-                                                <Button className='text-primary' color="light" onClick={toggleModalRole} disabled={isFetching}>Cancel</Button>
-                                                {/* {JSON.stringify(initialRoles)}
+                                                <Button color="primary" onClick={() => activeFacility == "CREATE" ? createFacility() : updateFacility()} disabled={isFetching || isFetchingUpdate}>{isFetching || isFetchingUpdate ? 'Saving...' : 'Save'}</Button>{' '}
+                                                <Button className='text-primary' color="light" onClick={toggleModalFacility} disabled={isFetching}>Cancel</Button>
+                                                {/* {JSON.stringify(initialFacilities)}
                                                 {JSON.stringify(dataUpdate)} */}
                                             </ModalFooter>
                                         </Modal>
@@ -153,7 +153,7 @@ const Roles = () => {
                                     : <Col sm="12">
                                         <center>
                                             <ReactTable style={{}}
-                                                data={rolesList}
+                                                data={facilitiesList}
                                                 columns={[
                                                     {
                                                         Header: 'Name',
@@ -173,11 +173,11 @@ const Roles = () => {
                                                         id: 'id',
                                                         Header: 'Actions',
                                                         sorteable: false,
-                                                        accessor: 'role_id',
+                                                        accessor: 'facility_id',
                                                         Cell: id => (
                                                             <div className='d-flex gap-3 justify-content-center'>
                                                                 <div className=''>
-                                                                    <Button color="primary" onClick={() => openUpdateRole(id.original)}>
+                                                                    <Button color="primary" onClick={() => openUpdateFacility(id.original)}>
                                                                         Edit
                                                                     </Button>
                                                                 </div>
@@ -206,7 +206,7 @@ const Roles = () => {
                 <ModalBody className='p-4'>
                     <h5 className='text-center text-muted fw-light mb-3'>It can not be undone</h5>
                     <div className='d-flex justify-content-center gap-3'>
-                        <button className='btn btn-success' style={{ width: '120px' }} onClick={() => deleteRole(modalDelete.id)}>YES</button>
+                        <button className='btn btn-success' style={{ width: '120px' }} onClick={() => deleteFacility(modalDelete.id)}>YES</button>
                         <button className='btn btn-danger' style={{ width: '120px' }} onClick={toggleModalDelete}>NO</button>
                     </div>
                 </ModalBody>
@@ -214,4 +214,4 @@ const Roles = () => {
         </>
     )
 }
-export default Roles
+export default Facilities

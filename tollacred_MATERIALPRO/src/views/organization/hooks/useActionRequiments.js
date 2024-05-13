@@ -8,7 +8,7 @@ const initialRequeriment = {
     id: '',
     name: '',
     document_types: [],
-    roles: [],
+    facilities: [],
 }
 
 const useActionRequeriments = (idOrganization, dataInicial = initialRequeriment) => {
@@ -16,7 +16,7 @@ const useActionRequeriments = (idOrganization, dataInicial = initialRequeriment)
     const [isLogin, setIsLogin] = useState(false)
 
     const [documentList, setDocumentList] = useState([])
-    const [roleList, setRoleList] = useState([])
+    const [facilityList, setFacilityList] = useState([])
     const [modalRequeriment, setModalRequeriment] = useState(false);
     const [isFetching, setIsFetching] = useState(false)
 
@@ -25,9 +25,9 @@ const useActionRequeriments = (idOrganization, dataInicial = initialRequeriment)
             .then(response => setDocumentList(response))
     }
 
-    const getRoleList = () => {
-        organizationService.get(`${idOrganization}/roles`)
-            .then(response => setRoleList(response))
+    const getFacilityList = () => {
+        organizationService.get(`${idOrganization}/facilities`)
+            .then(response => setFacilityList(response))
     }
 
 
@@ -65,7 +65,7 @@ const useActionRequeriments = (idOrganization, dataInicial = initialRequeriment)
             let body_endpoint = {
                 name: dataRequeriment.name,
                 documentTypes: dataRequeriment.document_types,
-                roles: dataRequeriment.roles
+                facilities: dataRequeriment.facilities
             }
             try {
                 await apiManager.post(`${NAME_ENTITY}/${endpoint}`, body_endpoint).
@@ -84,7 +84,7 @@ const useActionRequeriments = (idOrganization, dataInicial = initialRequeriment)
             package_id: dataRequeriment.id,
             name: dataRequeriment.name,
             document_types: dataRequeriment.document_types,
-            roles: dataRequeriment.roles
+            facilities: dataRequeriment.facilities
         }
         try {
             await apiManager.put(`${NAME_ENTITY}/${endpoint}`, body_endpoint).
@@ -101,9 +101,9 @@ const useActionRequeriments = (idOrganization, dataInicial = initialRequeriment)
         setDataRequeriment,
         isLogin,
         getDocumentList,
-        getRoleList,
+        getFacilityList,
         documentList,
-        roleList,
+        facilityList,
         handleInput,
         error,
         modalRequeriment,

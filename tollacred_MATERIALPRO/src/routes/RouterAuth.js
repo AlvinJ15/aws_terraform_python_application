@@ -26,7 +26,7 @@ const Requeriments = Loadable(lazy(() => import('../views/organization/Requerime
 const Documents = Loadable(lazy(() => import('../views/organization/Documents')));
 const Questionnaires = Loadable(lazy(() => import('../views/organization/Questionnaires')));
 const Onboarding = Loadable(lazy(() => import('../views/organization/Onboarding')));
-const Roles = Loadable(lazy(() => import('../views/organization/Roles')));
+const Facilities = Loadable(lazy(() => import('../views/organization/Facilities')));
 const StaffList = Loadable(lazy(() => import('../views/staff/StaffList')));
 const StaffApproval = Loadable(lazy(() => import('../views/staff/StaffApproval')));
 const StaffArchived = Loadable(lazy(() => import('../views/staff/StaffArchived')));
@@ -61,7 +61,7 @@ const AuthRoutes = [
       { path: '/organization/:idOrganization/documents', name: 'documents', exact: true, element: <Documents /> },
       { path: '/organization/:idOrganization/questionnaires', name: 'questionnaires', exact: true, element: <Questionnaires /> },
       { path: '/organization/:idOrganization/onboarding', name: 'onboarding', exact: true, element: <Onboarding /> },
-      { path: '/organization/:idOrganization/roles', name: 'roles', exact: true, element: <Roles /> },
+      { path: '/organization/:idOrganization/facilities', name: 'facilities', exact: true, element: <Facilities /> },
 
       { path: '/organization/:idOrganization/staff', name: 'list', exact: true, element: <StaffList /> },
       { path: '/staff/approval', name: 'approval', exact: true, element: <StaffApproval /> },

@@ -7,26 +7,26 @@ import '../../tables/ReactBootstrapTable.scss';
 import '../../form-pickers/tagselect.scss';
 
 
-const CrudDocument = ({ role, data, handle, lists }) => {
-    const [optionRoles, setOptionRoles] = useState([])
+const CrudDocument = ({ facility, data, handle, lists }) => {
+    const [optionFacilities, setOptionFacilities] = useState([])
 
-    const optionRoleAdapter = () => {
+    const optionFacilityAdapter = () => {
         let options = []
-        lists.roleList.map(roleOption => {
+        lists.facilityList.map(facilityOption => {
             options.push({ 
-                value: roleOption.role_id, 
-                label: roleOption.name,
+                value: facilityOption.facility_id, 
+                label: facilityOption.name,
             })
         })
         return options
     }
 
     const handleSelect = (e) => {
-        handle({nameSelect : 'roles', value : e})
+        handle({nameSelect : 'facilities', value : e})
     }
 
     useEffect(() => {
-        setOptionRoles(optionRoleAdapter)
+        setOptionFacilities(optionFacilityAdapter)
     }, [])
 
     return (
@@ -61,18 +61,18 @@ const CrudDocument = ({ role, data, handle, lists }) => {
             </FormGroup>
 
             {
-                optionRoles.length > 0 ?
-                    <ComponentCard title="Roles Types">
+                optionFacilities.length > 0 ?
+                    <ComponentCard title="Facilities Types">
 
                         <Select
                             closeMenuOnSelect={false}
-                            options={optionRoles}
-                            value={data.roles}
+                            options={optionFacilities}
+                            value={data.facilities}
                             onChange={handleSelect}
                             isMulti
                         />
                     </ComponentCard>
-                    : "No Roles Found!"
+                    : "No Facilities Found!"
             }
         </>
     )
