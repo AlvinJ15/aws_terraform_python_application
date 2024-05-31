@@ -1,6 +1,9 @@
 // apiManager.js
 
 //api token should be taken by getCookie in another  method/file
+import ApiManager from "@/config/ApiManager.js";
+import {useParams} from "react-router-dom";
+
 const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
 const CLIENT_SECRET = import.meta.env.VITE_CLIENT_SECRET;
 const COGNITO_DOMAIN = import.meta.env.VITE_COGNITO_DOMAIN;
@@ -13,7 +16,7 @@ function redirectToLogin() {
     window.location.href = LOGIN_URL
 }
 
-function getCookie(name) {
+export function getCookie(name) {
     const cookies = document.cookie.split(';');
     for (const cookie of cookies) {
         const [key, value] = cookie.trim().split('=');
@@ -129,10 +132,22 @@ async function makeTokenRequest(method, url, data = null, headers = null, is_jso
         throw error;
     }
 }
+
 const authManager = {
     async tokenExist() {
         let token = await getApiToken();
         return token !== undefined;
+    },
+
+    getUserId(){
+        return getCookie('LOGGED_USER_ID');
+    },
+
+    async setUserId(currentUser) {
+        setCookie('LOGGED_USER_ID', currentUser.employee_id, {
+            expires: 86400,
+            path: '/'
+        })
     }
 };
 

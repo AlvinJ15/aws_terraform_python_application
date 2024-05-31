@@ -3,12 +3,14 @@ from urllib.parse import quote_plus, quote
 from sqlalchemy.schema import CreateTable
 
 from data_models.model_administrator import Administrator
+from data_models.model_conversation import Conversation
 from data_models.model_employee import Employee
 from data_models.model_employee_compliance_package import EmployeeCompliancePackage
 from data_models.model_employee_document import EmployeeDocument
 from data_models.model_employee_profile import EmployeeProfile
 from data_models.model_employee_questionnaire_response import EmployeeQuestionnaireResponse
 from data_models.model_employee_reference import EmployeeReference
+from data_models.model_message import Message
 from data_models.model_onboarding import Onboarding
 from data_models.model_onboarding_step import OnboardingStep
 from data_models.model_organization_document import OrganizationDocument
@@ -21,6 +23,7 @@ from data_models.model_document_type import DocumentType
 from data_models.model_package_facility import PackageFacility
 from data_models.model_package_document import PackageDocument
 from data_models.model_step_facility import StepFacility
+from data_models.model_user import User
 
 from data_models.models import Base
 
@@ -31,7 +34,7 @@ connection_string = (
     f"mysql+pymysql://{os.getenv('DB_USERNAME')}:"
     f"{os.getenv('DB_PASSWORD')}"
     f"@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}"
-    f"/{os.getenv('DB_NAME')}"
+    f"/{'tollacred_dev'}"
 )
 
 # TODO: Refactor password handling for special characters compatibility (#@!...)
@@ -63,7 +66,10 @@ classes_list = [
     EmployeeDocument,
     EmployeeReference,
     EmployeeQuestionnaireResponse,
-    EmployeeCompliancePackage
+    EmployeeCompliancePackage,
+    User,
+    Conversation,
+    Message,
 ]
 
 # Generate SQL statement without executing it

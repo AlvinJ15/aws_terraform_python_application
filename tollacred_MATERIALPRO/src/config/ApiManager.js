@@ -79,6 +79,23 @@ const apiManager = {
         }
     },
 
+    blank: async (endpoint) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': await getApiToken(),
+                }
+            });
+            return response.json();
+
+        } catch (error) {
+            console.error(`got an error in the request DELETE a ${endpoint}:`, error);
+            throw error;
+        }
+    },
+
     default: async (endpoint) => {
         try {
             const response = await fetch(`endpoint`, {

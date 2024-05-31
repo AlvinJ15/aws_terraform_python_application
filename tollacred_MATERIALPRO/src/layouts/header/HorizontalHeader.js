@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 //import { Link } from 'react-router-dom';
 import {
   Navbar,
@@ -19,14 +19,16 @@ import { useSelector, useDispatch } from 'react-redux';
 // import MessageDD from './MessageDD';
 // import NotificationDD from './NotificationDD';
 // import MegaDD from './MegaDD';
-import user1 from '../../assets/images/users/user1.jpg';
+import user4 from '../../assets/images/users/user4.jpg';
 
 import { ToggleMobileSidebar } from '../../store/customizer/CustomizerSlice';
 import ProfileDD from './ProfileDD';
 import { ToggleHorizontal, } from '../../store/customizer/CustomizerSlice';
 import HorizontalLogo from '../logo/HorizontalLogo';
 import { deleteCookie } from '../../config/AuthManager';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
+import ApiManager from "@/config/ApiManager.js";
+import AuthManager from "@/config/AuthManager.js";
 
 
 const HorizontalHeader = () => {
@@ -37,6 +39,17 @@ const HorizontalHeader = () => {
   const LayoutHorizontal = useSelector((state) => state.customizer.isLayoutHorizontal);
 
   const navigate = useNavigate()
+  const params = useParams()
+  const [currentUser, setCurrentUser] = useState(null);
+  async function getCurrentUser() {
+      const loggedUser = await ApiManager.get(`organizations/${params.idOrganization}/administrators/current`);
+      setCurrentUser(loggedUser)
+      AuthManager.setUserId(loggedUser);
+  }
+  useEffect(() => {
+    if (params.idOrganization)
+      getCurrentUser();
+  }, []);
 
   const  logout = async () => {
     await deleteCookie('API_TOKEN')
@@ -151,10 +164,13 @@ const HorizontalHeader = () => {
           {/******************************/}
           <UncontrolledDropdown>
             <DropdownToggle tag="span" className="p-2 cursor-pointer ">
-              <img src={user1} alt="profile" className="rounded-circle" width="30" />
+              <img src={user4} alt="profile" className="rounded-circle" width="30" />
             </DropdownToggle>
             <DropdownMenu className="ddWidth">
-              <ProfileDD />
+              {
+                currentUser ? <ProfileDD loggedUser={currentUser} /> : ''
+              }
+
 
               <div className="p-2 px-3">
                 <Button color="danger" size="sm" onClick={logout}>

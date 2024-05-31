@@ -3,9 +3,9 @@ import { NavItem, NavLink, Nav } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Link, useLocation, useParams } from 'react-router-dom';
 
-const NavSubItem = ({ to, icon, title, items, suffix, activeBck, suffixColor, ddType }) => {
+const NavSubItem = ({ to, icon, title, subMenu, suffix, activeBck, suffixColor, ddType }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [subMenu, setSubMenu] = useState(items);
+  //const [subMenu, setSubMenu] = useState(items);
   const [isloading, setIsLoading] = useState(false)
 
   const params = useParams()
@@ -16,6 +16,7 @@ const NavSubItem = ({ to, icon, title, items, suffix, activeBck, suffixColor, dd
 
   }
   return (
+      title !== 'User Not Found' ?
     <NavItem className={`collapsed && getActive ? 'activeParent' : '' ${ddType}`}>
       <NavLink to={to} className="gap-3 cursor-pointer" onClick={Handletoggle}>
         <span className="sidebarIcon d-flex align-items-center">{icon}</span>
@@ -43,7 +44,7 @@ const NavSubItem = ({ to, icon, title, items, suffix, activeBck, suffixColor, dd
           ))
         }
       </Nav>
-    </NavItem>
+    </NavItem> : ''
   );
 };
 
@@ -51,7 +52,7 @@ NavSubItem.propTypes = {
   title: PropTypes.string,
   to: PropTypes.string,
   icon: PropTypes.node,
-  items: PropTypes.array,
+  subMenu: PropTypes.array,
   suffix: PropTypes.any,
   activeBck: PropTypes.string,
   suffixColor: PropTypes.string,

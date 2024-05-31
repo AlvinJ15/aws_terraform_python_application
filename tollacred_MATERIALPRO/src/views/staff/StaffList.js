@@ -60,8 +60,12 @@ const StaffList = ({ dataFetch = [] }) => {
                     element.profile.first_name.toLowerCase().includes(textSearch.toLowerCase()) || 
                     element.profile.last_name.toLowerCase().includes(textSearch.toLowerCase()) ||
                     element.profile.email.toLowerCase().includes(textSearch.toLowerCase()) ||
-                    element.profile.country.toLowerCase().includes(textSearch.toLowerCase()) 
-                ) 
+                    element.profile.country.toLowerCase().includes(textSearch.toLowerCase()) ||
+                    (element.profile.specialty && element.profile.specialty.toLowerCase().includes(textSearch.toLowerCase())) ||
+
+                    element.assignee.toLowerCase().includes(textSearch.toLowerCase()) ||
+                    element.facility.name.toLowerCase().includes(textSearch.toLowerCase())
+                )
                     {
                     result.push(element)
                 }
@@ -118,6 +122,7 @@ const StaffList = ({ dataFetch = [] }) => {
 
     const navigateManage = (idStaff) => {
         params.idEmployee = idStaff
+        params.idUser = idStaff
         navigate(`/organization/${params.idOrganization}/employee/${idStaff}/documents`)
     }
 
@@ -278,9 +283,9 @@ const StaffList = ({ dataFetch = [] }) => {
                                                                 accessor: 'assignee_id',
                                                                 Cell: row => (
                                                                     <div className='row'>
-                                                                        <select defaultValue={row.value} className="form-select" onChange={(e) => handleAdministrador(e, row)} disabled={changingAssigned} >
+                                                                        <select className="form-select" onChange={(e) => handleAdministrador(e, row)} disabled={changingAssigned} >
                                                                             {administrators.map((admin, index) => (
-                                                                                <option key={index} value={admin.admin_id}>{admin.first_name + " " + admin.last_name}</option>
+                                                                                <option key={index} value={admin.admin_id} selected={admin.admin_id === row.value}>{admin.first_name + " " + admin.last_name}</option>
                                                                             ))}
                                                                         </select>
                                                                         {/* <Select

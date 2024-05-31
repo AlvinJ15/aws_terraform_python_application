@@ -9,6 +9,7 @@ from email.mime.application import MIMEApplication
 ses_client = boto3.client('ses')
 SENDER_REFEVALS = 'refevals@tollaniscred.com'
 SENDER_CREDENTIALLY = 'automation@tollaniscred.com'
+SENDER_NOTIFICATION = 'notifications@tollaniscred.com'
 DEFAULT_CC = 'shubham.aggarwal@tollanis.com'
 CHARSET = "utf-8"
 
@@ -103,6 +104,10 @@ class SES:
     @classmethod
     def send_email_refevals(cls, recipient, subject, body):
         cls.send_email(recipient, subject, body, SENDER_REFEVALS)
+
+    @classmethod
+    def send_notification_email(cls, recipient, subject, body):
+        cls.send_email(recipient, subject, body, SENDER_NOTIFICATION, cc=None)
 
     @classmethod
     def send_email_credentially(cls, recipient, subject, body, file=None, filename=None):

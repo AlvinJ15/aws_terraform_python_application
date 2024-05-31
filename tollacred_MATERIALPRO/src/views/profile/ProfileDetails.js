@@ -30,7 +30,8 @@ const initProfile = {
         state : '',
         title :'',
         zip : '',
-    }
+    },
+    assignee: ''
 }
 
 const ProfileDetails = () => {

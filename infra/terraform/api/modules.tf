@@ -141,6 +141,42 @@ module "administrator_management" {
   id_resource_organization = module.organization_management.base_organizations_id_resource
 }
 
+module "conversation_management" {
+  source                   = "./conversation_management"
+  rest_api                 = aws_api_gateway_rest_api.rest_api
+  api_status_response      = var.api_status_response
+  account_id               = var.account_id
+  api_authorizer           = aws_api_gateway_authorizer.api_authorizer
+  aws_region               = var.aws_region
+  cognito_user_arn         = var.cognito_user_arn
+  lambda_exec              = aws_iam_role.lambda_exec
+  id_resource_organization = module.organization_management.base_organizations_id_resource
+}
+
+module "user_conversation_management" {
+  source                   = "./user_conversation_management"
+  rest_api                 = aws_api_gateway_rest_api.rest_api
+  api_status_response      = var.api_status_response
+  account_id               = var.account_id
+  api_authorizer           = aws_api_gateway_authorizer.api_authorizer
+  aws_region               = var.aws_region
+  cognito_user_arn         = var.cognito_user_arn
+  lambda_exec              = aws_iam_role.lambda_exec
+  id_resource_employee     = module.employee_management.base_employees_id_resource
+}
+
+module "message_management" {
+  source                   = "./message_management"
+  rest_api                 = aws_api_gateway_rest_api.rest_api
+  api_status_response      = var.api_status_response
+  account_id               = var.account_id
+  api_authorizer           = aws_api_gateway_authorizer.api_authorizer
+  aws_region               = var.aws_region
+  cognito_user_arn         = var.cognito_user_arn
+  lambda_exec              = aws_iam_role.lambda_exec
+  id_resource_conversation = module.conversation_management.base_conversations_id_resource
+}
+
 module "employee_reference_submission" {
   source                   = "./lambda_functions/process_reference_evaluation_submissions"
   lambda_exec              = aws_iam_role.lambda_exec
@@ -153,5 +189,10 @@ module "expiry_soon_employees_documents" {
 
 module "expired_employees_documents" {
   source                   = "./lambda_functions/process_expired_employee_documents"
+  lambda_exec              = aws_iam_role.lambda_exec
+}
+
+module "inbound_messages_sms_clicksend" {
+  source                   = "./lambda_functions/process_inbound_messages_sms_clicksend"
   lambda_exec              = aws_iam_role.lambda_exec
 }

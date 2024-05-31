@@ -25,7 +25,10 @@ resource "aws_api_gateway_deployment" "deployment" {
     module.employee_document_management,
     module.employee_questionnaire_response_management,
     module.employee_reference_management,
-    module.administrator_management
+    module.administrator_management,
+    module.conversation_management,
+    module.message_management,
+    module.user_conversation_management
   ]
   lifecycle {
     create_before_destroy = true
@@ -174,7 +177,8 @@ resource "aws_iam_policy" "lambda_policy_secrets" {
         "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:tollaniscred_auto_stage-S0EWSH",
         "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:tollaniscred_auto_dev-LqRD2e",
         "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:tollacred_auto-vTGnv5",
-        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:Paperform_access_token-B9wnrv"
+        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:Paperform_access_token-B9wnrv",
+        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:click_send_credentials-6tOON8"
       ]
     }
   ]

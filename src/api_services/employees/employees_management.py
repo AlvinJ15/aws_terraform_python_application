@@ -1,6 +1,6 @@
 import json
 
-from api_services.employees.employees_utils import get_employees_with_filter
+from api_services.employees.employees_utils import get_employees_with_filter, notify_assignee
 from api_services.utils.database_utils import DataBase
 from api_services.utils.decorators_utils import add_cors_headers, handle_exceptions, set_stage
 from api_services.utils.s3_utils import create_path_to_s3, delete_file_from_s3, delete_entire_folder
@@ -11,6 +11,7 @@ from data_models.model_employee_profile import EmployeeProfile
 from data_models.model_employee_questionnaire_response import EmployeeQuestionnaireResponse
 from data_models.model_employee_reference import EmployeeReference
 from data_models.model_organization import Organization
+from data_models.model_user import User
 from data_models.models import update_object_from_dict, set_fields_from_dict
 
 
@@ -71,6 +72,10 @@ def create_handler(event, context, stage):
         new_employee.created = DataBase.get_now()
         new_employee.organization_id = organization_id
         db.add(new_employee)
+        new_user = User()
+        new_user.user_id = new_employee.employee_id
+        new_user.created_at = DataBase.get_now()
+        db.add(new_user)
         db.flush()
 
         new_employee_profile = EmployeeProfile(**profile)
@@ -103,6 +108,7 @@ def update_handler(event, context, stage):
             employee_id=employee_id
         ).first()
         if employee:
+            send_notification_assignee = 'assignee_id' in data and data['assignee_id'] != employee.assignee_id
             # employee_id is not an updatable attribute
             profile = data.get("profile", {})
             new_packages = data.get("compliance_packages", None)
@@ -127,6 +133,8 @@ def update_handler(event, context, stage):
                         db.add(new_employee_package)
             db.commit()
             db.refresh(employee)
+            if send_notification_assignee:
+                notify_assignee(db, stage, employee, data)
             return {
                 "statusCode": 200,
                 "body": json.dumps(updated_employee.to_dict())

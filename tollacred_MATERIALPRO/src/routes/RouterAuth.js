@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import Loadable from '../layouts/loader/Loadable';
+import ChatStaff from '../views/staff/chat/ChatStaff';
 /****Layouts*****/
 
 const FullLayout = Loadable(lazy(() => import('../layouts/FullLayout')));
@@ -67,10 +68,13 @@ const AuthRoutes = [
       { path: '/staff/approval', name: 'approval', exact: true, element: <StaffApproval /> },
       { path: '/staff/archived', name: 'archived', exact: true, element: <StaffArchived /> },
 
+      { path: '/organization/:idOrganization/conversations', name: 'chat', exact: true, element: <ChatStaff /> },
+
       { path: '/organization/:idOrganization/employee/:idEmployee/compliancePackages', name: 'dashboard', exact: true, element: <ProfileDashboard /> },
       { path: '/organization/:idOrganization/employee/:idEmployee/profile', name: 'details', exact: true, element: <ProfileDetails /> },
       { path: '/organization/:idOrganization/employee/:idEmployee/documents', name: 'documents', exact: true, element: <ProfileDocuments /> },
       { path: '/organization/:idOrganization/employee/:idEmployee/references', name: 'references', exact: true, element: <ProfileReferences /> },
+      { path: '/organization/:idOrganization/user/:idUser/conversation', name: 'chat', exact: true, element: <ChatStaff /> },
 
       { path: '/profile/organizationdocuments', name: 'organizationdocuments', exact: true, element: <ProfileOrganizationDocuments /> },
       { path: '/profile/registration', name: 'registration', exact: true, element: <ProfileRegistration /> },

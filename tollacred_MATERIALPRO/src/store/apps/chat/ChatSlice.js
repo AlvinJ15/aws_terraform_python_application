@@ -1,57 +1,77 @@
-import axios from 'axios';
 import { createSlice } from '@reduxjs/toolkit';
+import MessageService from "@/views/staff/chat/services/message.service.js";
 
-const API_URL = '/api/data/chat/ChatData';
 
 const initialState = {
-  chats: [],
-  chatContent: 1,
+  conversations: [],
+  selectedConversation: null,
   chatSearch: '',
+  chatMessages: null
 };
 
 export const ChatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    getChats: (state, action) => {
-      state.chats = action.payload;
+    setConversations: (state, action) => {
+      state.conversations = action.payload;
+    },
+    pushConversation: (state, action) => {
+      state.conversations.push(action.payload);
+    },
+    pushConversations: (state, action) => {
+      state.conversations = state.conversations.concat(action.payload);
     },
     SearchChat: (state, action) => {
       state.chatSearch = action.payload;
     },
-    SelectChat: (state, action) => {
-      state.chatContent = action.payload;
+    selectConversation: (state, action) => {
+      state.selectedConversation = action.payload;
+    },
+    setMessages: (state, action) => {
+      state.chatMessages = action.payload.reverse();
+    },
+    pushMessages: (state, action) => {
+      state.chatMessages = action.payload.reverse().concat(state.chatMessages);
     },
     sendMsg: {
       reducer: (state, action) => {
-        state.chats = state.chats.map((chat) =>
-          chat.id === action.payload.id
-            ? {
-                ...chat,
-                ...chat.chatHistory[0][1].to.push(action.payload.chatMsg),
-              }
-            : chat,
-        );
+        state.chatMessages.push(action.payload)
       },
 
-      prepare: (id, chatMsg) => {
+      prepare: (chatMsg) => {
         return {
-          payload: { id, chatMsg },
+          payload: chatMsg,
         };
       },
     },
   },
 });
 
-export const { SearchChat, getChats, sendMsg, SelectChat } = ChatSlice.actions;
+export const {
+  SearchChat,
+  setConversations,
+  pushConversation,
+  pushConversations,
+  setMessages,
+  pushMessages,
+  sendMsg,
+  selectConversation
+} = ChatSlice.actions;
 
-export const fetchChats = () => async (dispatch) => {
+export const sendMessage = (organizationId, conversationId, fromUserId, toUserId, chatMsg) => async (dispatch) => {
   try {
-    const response = await axios.get(`${API_URL}`);
-    dispatch(getChats(response.data));
+    let msgContent = {
+      sender_id: fromUserId,
+      receiver_id: toUserId,
+      content: chatMsg,
+      conversation_id: conversationId,
+    }
+    const response = await MessageService.createMessage(organizationId, conversationId, msgContent)
+    dispatch(sendMsg(response));
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err)
   }
-};
+}
 
 export default ChatSlice.reducer;

@@ -7,6 +7,13 @@ locals {
       method    = "GET",
       responses = var.api_status_response
       resource  = "base_resource"
+    },
+    get_logged_user_id = {
+      handler   = "api_services/administrators/administrators_management.get_logged_user_id"
+      path      = ""
+      method    = "GET",
+      responses = var.api_status_response
+      resource  = "current_administrator_resource"
     }
   }
 }
@@ -17,9 +24,16 @@ resource "aws_api_gateway_resource" "base_resource_administrators" {
   path_part   = local.base_path
 }
 
+resource "aws_api_gateway_resource" "base_current_resource_administrator" {
+  rest_api_id = var.rest_api.id
+  parent_id   = aws_api_gateway_resource.base_resource_administrators.id
+  path_part   = "current"
+}
+
 locals {
   resources = {
-    base_resource = aws_api_gateway_resource.base_resource_administrators
+    base_resource = aws_api_gateway_resource.base_resource_administrators,
+    current_administrator_resource = aws_api_gateway_resource.base_current_resource_administrator,
   }
 }
 

@@ -77,6 +77,12 @@ const SidebarData = [
     ],
   },
   {
+    title: 'Conversations',
+    href: '/organization/:idOrganization/conversations',
+    icon: <MaterialIcon icon="chat" />,
+    id: 2.85,
+  },
+  {
     title: 'My Profile',
     icon: <MaterialIcon icon="face" />,
     id: 2.9,
@@ -100,6 +106,11 @@ const SidebarData = [
       {
         title: 'References ',
         href: '/organization/:idOrganization/employee/:idEmployee/references',
+        icon: <MaterialIcon icon="check" />,
+      },
+      {
+        title: 'Chat ',
+        href: '/organization/:idOrganization/user/:idUser/conversation',
         icon: <MaterialIcon icon="check" />,
       },
       // {

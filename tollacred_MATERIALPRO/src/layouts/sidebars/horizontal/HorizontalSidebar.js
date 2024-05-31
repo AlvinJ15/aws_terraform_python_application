@@ -1,131 +1,154 @@
-import { Container, Nav } from 'reactstrap';
-import { useSelector } from 'react-redux';
-import { useLocation, useParams } from 'react-router-dom';
+import {Container, Nav} from 'reactstrap';
+import {useSelector} from 'react-redux';
+import {useLocation, useParams} from 'react-router-dom';
 import SidebarDatax from '../sidebardata/HorizontalSidebarData';
 import NavSubItem from './NavSubItem';
 import NavSingleItem from './NavSingleItem';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import organizationService from '../../../views/organization/services/organization.service';
+import _ from 'lodash';
 
 const HorizontalSidebar = () => {
-  const activeBg = useSelector((state) => state.customizer.sidebarBg);
-  const location = useLocation();
-  const params = useParams();
-  const currentURL = location.pathname.split('/').slice(0, -1).join('/');
-  const isFixed = useSelector((state) => state.customizer.isSidebarFixed);
-  const isMobileSidebar = useSelector((state) => state.customizer.isMobileSidebar);
+    const activeBg = useSelector((state) => state.customizer.sidebarBg);
+    const location = useLocation();
+    const params = useParams();
+    const currentURL = location.pathname.split('/').slice(0, -1).join('/');
+    const isFixed = useSelector((state) => state.customizer.isSidebarFixed);
+    const isMobileSidebar = useSelector((state) => state.customizer.isMobileSidebar);
 
 
-  const [SidebarData, setSidebarData] = useState(SidebarDatax)
-  const [perfil, setPerfil] = useState({
-    id: '',
-    name: "User Not Found"
-  })
-  const getNameProfile = () => {
-    if (params.idEmployee != perfil.id)
-      organizationService.get(`${params.idOrganization}/employees/${params.idEmployee}`)
-        .then(response => {
-          setPerfil({
-            id: response.profile.employee_id,
-            name: `${response.profile.first_name} ${response.profile.last_name}`
-          })
-        })
-    //return params.idEmployee ? params.idEmployee : params.idOrganization
-  }
-  return (
-    <div
-      className={`horizontalNav shadow bg-${activeBg}  ${isFixed ? 'fixedSidebar' : ''} ${isMobileSidebar ? 'showSidebar' : ''
-        }`}
-    >
-      <Container>
-        {
-          !!SidebarData &&
-          <Nav className={activeBg === 'white' ? '' : 'lightText'}>
+    const [sidebarData, setSidebarData] = useState(null)
+    const [isFetching, setisFetching] = useState(false)
+    const [perfil, setPerfil] = useState({
+        id: '',
+        name: "User Not Found"
+    })
 
-            <NavSingleItem
-              className={location.pathname === SidebarData[1].href ? 'activeLink' : ''}
-              to={SidebarData[1].href}
-              title={SidebarData[1].title}
-              suffix={SidebarData[1].suffix}
-              suffixColor={SidebarData[1].suffixColor}
-              icon={SidebarData[1].icon}
-            />
-
-            {SidebarData.map((navi, index) => {
-              if (index < 2) {
-                return
-              }
-              if (!!params.idOrganization && !!(params.idOrganization !== ':idOrganization')) {
-
-                if (navi.title == 'My Profile' && !!!params.idEmployee) {
-                  return;
+    function replaceParamsInHrefs(data, params) {
+        return data.map((item) => {
+            if (item.href) {
+                let updatedHref = item.href;
+                if (params.idOrganization && updatedHref.includes(':idOrganization')) {
+                    updatedHref = updatedHref.replace(':idOrganization', params.idOrganization);
                 }
-                if (navi.caption) {
-                  return (
-                    <div
-                      className="navCaption fw-bold mt-4 d-none d-sm-block d-md-none"
-                      key={index}
-                    >
-                      {navi.caption}
-                    </div>
-                  );
+                if (params.idEmployee && updatedHref.includes(':idEmployee')) {
+                    updatedHref = updatedHref.replace(':idEmployee', params.idEmployee);
                 }
-                if (navi.children) {
-                  navi.children.map((item, index) => { //organization is 2nd
-                    if (!!params.idEmployee && (params.idEmployee !== ':idEmployee')) {
-                      item.href = item.href.replace(':idOrganization', params.idOrganization)
-                      item.href = item.href.replace(':idEmployee', params.idEmployee)
-                      /*** ad hoc change*/
-                      let new_url = item.href.toString().split("/")
-                      if (new_url.length >= 4 && new_url[3] == "employee") {
-                        new_url[4] = params.idEmployee
-                        item.href = new_url.join("/")
-                      }
-                      /*byee*/
-                      if (typeof params.idEmployee != "undefined" && navi.id == 2.9) {
-                        getNameProfile()
-                        navi.title = perfil.name
-                      } 
+                if (params.idEmployee && updatedHref.includes(':idUser')) {
+                    updatedHref = updatedHref.replace(':idUser', params.idEmployee);
+                }
+                // Add more if statements for other expected variables
+                item.href = updatedHref;
+            }
+
+            if (item.children) {
+                item.children = replaceParamsInHrefs(item.children, params);
+            }
+
+            return item;
+        });
+    }
+
+    useEffect(() => {
+        const copiedData = _.cloneDeep(SidebarDatax);
+        const updatedData = replaceParamsInHrefs(copiedData, params);
+        setSidebarData(updatedData);
+        if (params.idEmployee)
+            getNameProfile();
+        else
+            setPerfil({
+                id: '',
+                name: "User Not Found"
+            })
+
+    }, [params])
+
+    const getNameProfile = () => {
+        setisFetching(true);
+        organizationService.get(`${params.idOrganization}/employees/${params.idEmployee}`)
+            .then(response => {
+                setPerfil({
+                    id: response.profile.employee_id,
+                    name: `${response.profile.first_name} ${response.profile.last_name}`
+                })
+                setisFetching(false)
+            })
+        //return params.idEmployee ? params.idEmployee : params.idOrganization
+    }
+
+    return (
+        sidebarData && !isFetching ?
+            <div
+                className={`horizontalNav shadow bg-${activeBg}  ${isFixed ? 'fixedSidebar' : ''} ${isMobileSidebar ? 'showSidebar' : ''
+                }`}
+            >
+                <Container>
+                    {
+
+                        <Nav className={activeBg === 'white' ? '' : 'lightText'}>
+
+                            <NavSingleItem
+                                className={location.pathname === sidebarData[1].href ? 'activeLink' : ''}
+                                to={sidebarData[1].href}
+                                title={sidebarData[1].title}
+                                suffix={sidebarData[1].suffix}
+                                suffixColor={sidebarData[1].suffixColor}
+                                icon={sidebarData[1].icon}
+                            />
+
+                            {sidebarData.map((navi, index) => {
+                                if (index < 2) {
+                                    return
+                                }
+                                if (!!params.idOrganization && (params.idOrganization !== ':idOrganization')) {
+
+                                    if (navi.title === 'My Profile') {
+                                        navi.title = perfil.name;
+                                    }
+                                    if (navi.caption) {
+                                        return (
+                                            <div
+                                                className="navCaption fw-bold mt-4 d-none d-sm-block d-md-none"
+                                                key={index}
+                                            >
+                                                {navi.caption}
+                                            </div>
+                                        );
+                                    }
+                                    if (navi.children) {
+                                        return (
+                                            <NavSubItem
+                                                key={index}
+                                                icon={navi.icon}
+                                                title={navi.title}
+                                                subMenu={navi.children}
+                                                suffix={navi.suffix}
+                                                ddType={navi.ddType}
+                                                activeBck={activeBg}
+                                                suffixColor={navi.suffixColor}
+                                                isUrl={currentURL === navi.href}
+                                            />
+                                        );
+                                    }
+                                    return (
+                                        <NavSingleItem
+                                            key={index}
+                                            //toggle={() => toggle(navi.id)}
+                                            className={location.pathname === navi.href ? 'activeLink' : ''}
+                                            to={navi.href}
+                                            title={navi.title}
+                                            suffix={navi.suffix}
+                                            suffixColor={navi.suffixColor}
+                                            icon={navi.icon}
+                                        />
+                                    );
+                                }
+                            })}
+                        </Nav>
                     }
-                    let final_url = item.href.toString().split("/")[2]
-                    //item.href = item.href.replace(':idOrganization', params.idOrganization)
-                    item.href = item.href.replace(final_url, params.idOrganization)
-                    return { ...item, href: item.href }
-                  })
-
-                  return (
-                    <NavSubItem
-                      key={index}
-                      icon={navi.icon}
-                      title={navi.title}
-                      items={navi.children}
-                      suffix={navi.suffix}
-                      ddType={navi.ddType}
-                      activeBck={activeBg}
-                      suffixColor={navi.suffixColor}
-                      isUrl={currentURL === navi.href}
-                    />
-                  );
-                }
-                return (
-                  <NavSingleItem
-                    key={index}
-                    //toggle={() => toggle(navi.id)}
-                    className={location.pathname === navi.href ? 'activeLink' : ''}
-                    to={navi.href}
-                    title={navi.title}
-                    suffix={navi.suffix}
-                    suffixColor={navi.suffixColor}
-                    icon={navi.icon}
-                  />
-                );
-              }
-            })}
-          </Nav>
-        }
-      </Container>
-    </div>
-  );
+                </Container>
+            </div> : ''
+    );
 };
 
 export default HorizontalSidebar;

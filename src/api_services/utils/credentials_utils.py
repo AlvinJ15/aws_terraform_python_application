@@ -58,6 +58,31 @@ def retrieve_credentials_paperform():
         raise e
 
 
+def retrieve_credentials_clicksend():
+    secret_name = "click_send_credentials"
+    region_name = "us-east-1"
+
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
+    )
+
+    try:
+        # Get the secret value from Secrets Manager
+        get_secret_value_response = client.get_secret_value(SecretId=secret_name)
+        credential_values = json.loads(get_secret_value_response['SecretString'])
+        return {
+            'USERNAME': credential_values['USERNAME'],
+            'API_KEY': credential_values['API_KEY'],
+        }
+
+    except ClientError as e:
+        print(e.response)
+        raise e
+
+
 def resolve_secret_name(stage):
     if stage == 'prod':
         return 'tollacred_auto'
