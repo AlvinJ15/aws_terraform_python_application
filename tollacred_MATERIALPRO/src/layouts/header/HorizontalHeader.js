@@ -43,8 +43,10 @@ const HorizontalHeader = () => {
   const [currentUser, setCurrentUser] = useState(null);
   async function getCurrentUser() {
       const loggedUser = await ApiManager.get(`organizations/${params.idOrganization}/administrators/current`);
-      setCurrentUser(loggedUser)
-      AuthManager.setUserId(loggedUser);
+      if (loggedUser.profile){
+        setCurrentUser(loggedUser);
+        AuthManager.setUserId(loggedUser);
+      }
   }
   useEffect(() => {
     if (params.idOrganization)

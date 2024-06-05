@@ -31,7 +31,9 @@ const initProfile = {
         title :'',
         zip : '',
     },
-    assignee: ''
+    assignee: '',
+    role_type: '',
+    start_date: ''
 }
 
 const ProfileDetails = () => {
@@ -51,17 +53,22 @@ const ProfileDetails = () => {
         const updateData = {...profile}
         const facility_id = profile.facility_id
         updateData.date_of_birth = `${updateData.date_of_birth}`
+        updateData.start_date = `${updateData.start_date}`
         if (!updateData.date_of_birth.includes('00:00:00'))
             updateData.date_of_birth += ' 00:00:00';
+        if (!updateData.start_date.includes('00:00:00'))
+            updateData.start_date += ' 00:00:00';
         if (updateData.date_of_birth.includes("null"))
             delete updateData.date_of_birth;
+        if (updateData.start_date.includes("null"))
+            delete updateData.start_date;
         delete updateData.facility_id
-        update({profile: updateData, facility_id: facility_id})
+        update({profile: updateData, facility_id: facility_id, start_date: updateData.start_date, role_type: updateData.role_type})
     }
 
 
     useEffect(() => {    
-        setProfile({...data.profile, facility_id: data.facility_id}) 
+        setProfile({...data.profile, facility_id: data.facility_id, role_type: data.role_type, start_date: data.start_date})
     },[data])
 
  
@@ -119,6 +126,18 @@ const ProfileDetails = () => {
                                             <FormGroup>
                                                 <Label>Date of Birth</Label>
                                                 <Input type="date" placeholder="Enter specialty" name="date_of_birth" value={DateFormat(profile.date_of_birth)} onChange={handleInput} />
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <Label>Role Type</Label>
+                                                <select className='form-control' name="role_type" value={profile.role_type} onChange={handleInput}>
+                                                    <option value=''>Select a Role Type</option>
+                                                    <option value='Travel'>Travel</option>
+                                                    <option value='Per Diem'>Per Diem</option>
+                                                </select>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <Label>Start Date</Label>
+                                                <Input type="date" placeholder="Enter start Date" name="start_date" value={DateFormat(profile.start_date)} onChange={handleInput} />
                                             </FormGroup>
                                             {
                                                 !!isLoadingFacility

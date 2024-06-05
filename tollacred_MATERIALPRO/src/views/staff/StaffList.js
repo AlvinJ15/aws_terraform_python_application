@@ -243,11 +243,15 @@ const StaffList = ({ dataFetch = [] }) => {
                                                 </Row>
                                             </CardTitle>
                                             <CardBody className="p-4">
-                                                <div className='mb-4 row justify-content-end'>
-                                                    <div className='col-12 col-md-6 col-lg-4'>
-                                                        <input className='form-control ' type='text' value={textSearch} onChange={(e) => setTextSearch(e.target.value)} placeholder='Search'></input>
-                                                    </div>
-                                                </div>
+                                                {/*
+                                                    <div className='mb-4 row justify-content-end'>
+                                                        <div className='col-12 col-md-6 col-lg-4'>
+                                                            <input className='form-control ' type='text' value={textSearch}
+                                                                   onChange={(e) => setTextSearch(e.target.value)}
+                                                                   placeholder='Search'></input>
+                                                        </div>
+                                                    </div>*/
+                                                }
 
                                                 {spinnerLoading ?
                                                     <Spinner color="primary">
@@ -280,28 +284,22 @@ const StaffList = ({ dataFetch = [] }) => {
                                                             {
                                                                 id: 'assignee_id',
                                                                 Header: 'Assigned',
-                                                                accessor: 'assignee_id',
+                                                                accessor: 'assignee',
                                                                 Cell: row => (
                                                                     <div className='row'>
-                                                                        <select className="form-select" onChange={(e) => handleAdministrador(e, row)} disabled={changingAssigned} >
+                                                                        <select className="form-select"
+                                                                                onChange={(e) => handleAdministrador(e, row)}
+                                                                                disabled={changingAssigned}>
+                                                                            <option disabled selected value></option>
                                                                             {administrators.map((admin, index) => (
-                                                                                <option key={index} value={admin.admin_id} selected={admin.admin_id === row.value}>{admin.first_name + " " + admin.last_name}</option>
+                                                                              <option key={index} value={admin.admin_id}
+                                                                                      selected={admin.admin_id === row.original.assignee_id}>{admin.first_name + " " + admin.last_name}</option>
                                                                             ))}
                                                                         </select>
-                                                                        {/* <Select
-                                                                getOptionLabel={op => op.first_name + " " + op.last_name} getOptionValue={op => op.email}
-                                                                closeMenuOnSelect={true}
-                                                                options={administrators}
-                                                                value={administrators.filter(function (option) {
-                                                                    return option.email === row.assignee;
-                                                                })}
-                                                                //defaultValue={row.assignee}
-                                                                //styles={colourStyles}
-                                                            /> */}
                                                                     </div>
                                                                 )
                                                             },
-                                                            {
+                                                            /*{
                                                                 id: "compliance_packages",
                                                                 Header: 'Compliance Packages',
                                                                 accessor: 'compliance_packages_names',
@@ -309,34 +307,45 @@ const StaffList = ({ dataFetch = [] }) => {
                                                                     <div className='row'>
                                                                         {row.value?.join(",")}
                                                                     </div>
-                                                                )
-                                                            },
+                                                                ),
+                                                                sortable: false,
+                                                                filterable: false,
+                                                            },*/
                                                             {
                                                                 id: 'speciality',
                                                                 Header: 'Specialty',
                                                                 accessor: (d) => d.profile.specialty,
+
                                                             },
                                                             {
-                                                                Header: 'Compliance',
-                                                                accessor: 'status',
+                                                                Header: 'Role Type',
+                                                                accessor: 'role_type',
+                                                                sortable: false,
+                                                                filterable: false,
                                                             },
                                                             {
+                                                                Header: 'Start Date',
+                                                                accessor: 'start_date',
+                                                                sortable: true,
+                                                                filterable: false,
+                                                            },
+                                                            /*{
                                                                 Header: 'Compliance Tags',
                                                                 accessor: 'compliance_tags',
-                                                            },
-                                                            {
-                                                                id: "signed_off",
-                                                                Header: 'Signed Off',
-                                                                accessor: () => "-"
-                                                            },
-                                                            {
+                                                                sortable: false,
+                                                                filterable: false,
+                                                            },*/
+                                                            /*{
                                                                 Header: 'Notes',
                                                                 accessor: 'notes',
-                                                            },
+                                                                sortable: false,
+                                                                filterable: false,
+                                                            },*/
                                                             {
                                                                 id: 'employee_id',
                                                                 Header: 'Actions',
-                                                                sorteable: false,
+                                                                sortable: false,
+                                                                filterable: false,
                                                                 accessor: 'employee_id',
                                                                 Cell: employee_id => (
                                                                     <div className=''>
@@ -373,7 +382,8 @@ const StaffList = ({ dataFetch = [] }) => {
                                                             },
                                                         ]}
                                                         defaultPageSize={10}
-                                                        className="-striped -highlight"
+                                                        className="-striped -highlight react-table"
+                                                        filterable
                                                     // SubComponent={row => {
                                                     //     return (
                                                     //         <div>

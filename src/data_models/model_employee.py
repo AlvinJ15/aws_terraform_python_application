@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from sqlalchemy import Column, String, ForeignKey, DateTime
+from sqlalchemy import Column, String, ForeignKey, DateTime, Enum
 from sqlalchemy.orm import relationship
 
 from data_models.model_administrator import Administrator
@@ -14,6 +14,8 @@ else:
     EmployeeProfile = "EmployeeProfile"
 from data_models.model_organization import Organization
 from data_models.models import get_collation_ids, Base, set_fields_from_dict
+
+ROLE_TYPE_VALUES = ['Travel', 'Per Diem']
 
 
 class Employee(Base):
@@ -36,6 +38,8 @@ class Employee(Base):
     compliance_tags = Column(String(255))
     user_tags = Column(String(255))
     notes = Column(String(255))
+    role_type = Column(Enum(*ROLE_TYPE_VALUES), nullable=False)
+    start_date = Column(DateTime)
     status = Column(String(255))
     created = Column(DateTime, nullable=False)
 
@@ -62,8 +66,10 @@ class Employee(Base):
             "compliance_tags": self.compliance_tags,
             "user_tags": self.user_tags,
             "notes": self.notes,
+            "role_type": self.role_type,
+            "start_date": self.start_date.strftime("%Y-%m-%d") if self.start_date else None,
             "status": self.status,
-            "created": self.created.strftime("%Y-%m-%d %H:%M:%S"),
+            "created": self.created.strftime("%Y-%m-%d"),
             "profile": self.profile.to_dict(),
             "assignee": self.admin.email if self.admin else '',
             "compliance_packages_names": [package.name for package in self.compliance_packages]
