@@ -329,6 +329,10 @@ const StaffList = ({ dataFetch = [] }) => {
                                                                 sortable: true,
                                                                 filterable: false,
                                                             },
+                                                            {
+                                                                Header: 'Compliance',
+                                                                accessor: 'status',
+                                                            },
                                                             /*{
                                                                 Header: 'Compliance Tags',
                                                                 accessor: 'compliance_tags',

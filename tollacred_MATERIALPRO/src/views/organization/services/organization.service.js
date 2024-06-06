@@ -52,6 +52,13 @@ const organizationService = {
       throw error;
     }
   },
+  getDocuments: async (organizationId) => {
+    try {
+        return await apiManager.get(`organizations/${organizationId}/documents`)
+    } catch (error) {
+        console.error('my error', error)
+    }
+  },
 };
 
 export default organizationService;
