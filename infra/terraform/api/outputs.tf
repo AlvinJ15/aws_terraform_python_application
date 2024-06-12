@@ -1,4 +1,3 @@
-output "api_gateway_url" {
-  description = "URL to invoke the API"
-  value       = aws_api_gateway_deployment.deployment.invoke_url
+output "rest_api" {
+  value = aws_api_gateway_rest_api.rest_api
 }

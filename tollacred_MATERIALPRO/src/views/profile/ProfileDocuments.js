@@ -48,10 +48,9 @@ const ProfileDocuments = () => {
 
   const [profileDocument, setProfileDocument] = useState({})
 
-  const updateModal = (id) => {
+  const updateModal = (document) => {
     setModalAbierto(true)
-    const temp = profiledocumentsList.find(document => document.document_id == id)
-    setProfileDocument(temp)
+    setProfileDocument(document)
   }
 
   // UPDATE STATUS
@@ -408,7 +407,7 @@ const ProfileDocuments = () => {
                                               </DropdownToggle>
                                               <DropdownMenu>
                                                 <DropdownItem
-                                                  onClick={() => updateModal(row.original.document_id)}
+                                                  onClick={() => updateModal(row.original)}
                                                 >
                                                   Review
                                                 </DropdownItem>

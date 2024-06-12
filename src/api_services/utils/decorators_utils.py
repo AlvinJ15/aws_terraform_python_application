@@ -1,4 +1,5 @@
 import logging
+import os
 import traceback
 
 
@@ -35,6 +36,7 @@ def add_cors_headers(func):
 
 def set_stage(func):
     def wrapper(event, context):
-        stage = event.get('requestContext', {}).get('stage')
+        function_name = os.environ['AWS_LAMBDA_FUNCTION_NAME']
+        stage = (function_name.split('-')[-1]).lower()
         return func(event, context, stage)
     return wrapper
