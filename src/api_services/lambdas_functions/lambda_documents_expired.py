@@ -32,6 +32,7 @@ def expired_handler(event, context, stage):
                     employee.compliance_tags += ',DOCUMENTS_EXPIRED'
             else:
                 employee.compliance_tags = 'DOCUMENTS_EXPIRED'
+            employee.status = 'NOT_COMPLIANT'
 
         rows = [
             build_employee_row(document, employees_dict[document.employee_id]) for document in employee_documents

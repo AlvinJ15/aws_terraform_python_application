@@ -4,10 +4,12 @@ import base64
 from streaming_form_data import StreamingFormDataParser
 from streaming_form_data.targets import ValueTarget
 
+from api_services.employees.employees_utils import check_employee_compliance
 from api_services.utils.database_utils import DataBase
 from api_services.utils.decorators_utils import add_cors_headers, handle_exceptions, set_stage
 from api_services.utils.s3_utils import upload_file_to_s3, generate_file_link, delete_file_from_s3
 from data_models.model_document_type import DocumentType
+from data_models.model_employee import Employee
 from data_models.model_employee_profile import EmployeeProfile
 from data_models.model_organization import Organization
 from data_models.model_employee_document import EmployeeDocument
@@ -56,6 +58,7 @@ def create_handler(event, context, stage):
     with DataBase.get_session(stage) as db:
         organization = db.query(Organization).filter_by(id=organization_id).first()
         employee_profile = db.query(EmployeeProfile).filter_by(employee_id=employee_id).first()
+        employee = db.query(Employee).filter_by(employee_id=employee_id).first()
         data = get_data_from_multipart(event)
         file_name = data.pop('file_name')
         file_type = data.pop('file_type')
@@ -76,6 +79,7 @@ def create_handler(event, context, stage):
         new_document.upload_date = DataBase.get_now()
         db.add(new_document)
         db.commit()
+        check_employee_compliance(db, employee)
         dict_document = new_document.to_dict()
         dict_document['upload_url'] = generate_file_link(path, 'put_object', file_type)
     return {
@@ -99,6 +103,8 @@ def update_handler(event, context, stage):
 
         organization = db.query(Organization).filter_by(id=organization_id).first()
         employee_profile = db.query(EmployeeProfile).filter_by(employee_id=employee_id).first()
+        employee = db.query(Employee).filter_by(employee_id=employee_id).first()
+
         data = get_data_from_multipart(event)
         file_name = None
         upload_url = None
@@ -120,6 +126,7 @@ def update_handler(event, context, stage):
         if data.get('status') == 'Approved':
             document.approval_date = DataBase.get_now()
         db.commit()
+        check_employee_compliance(db, employee)
         dict_document = document.to_dict()
         dict_document['upload_url'] = upload_url
         return {
@@ -135,15 +142,17 @@ def delete_single_handler(event, context, stage):
     document_id = event["pathParameters"]["document_id"]
 
     with DataBase.get_session(stage) as db:
-        organization_document = db.query(EmployeeDocument).filter_by(document_id=document_id).first()
-        document_path = organization_document.s3_path
-        if organization_document:
-            db.delete(organization_document)
+        employee_document = db.query(EmployeeDocument).filter_by(document_id=document_id).first()
+        employee = db.query(Employee).filter_by(employee_id=employee_document.employee_id).first()
+        document_path = employee_document.s3_path
+        if employee_document:
+            db.delete(employee_document)
             db.commit()  # Commit the deletion to the database
+            check_employee_compliance(db, employee)
             delete_file_from_s3(document_path)
             return {
                 "statusCode": 200,
-                "body": json.dumps({"deleted_id": organization_document.document_id})
+                "body": json.dumps({"deleted_id": employee_document.document_id})
             }
         else:
             return {"statusCode": 404, "body": "EmployeeDocument not found"}
@@ -185,3 +194,5 @@ def get_data_from_multipart(event):
     }
 
     return {key: value for key, value in values.items() if value}
+
+

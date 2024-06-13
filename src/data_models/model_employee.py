@@ -44,6 +44,7 @@ class Employee(Base):
     created = Column(DateTime, nullable=False)
 
     profile = relationship(EmployeeProfile, backref="employee", uselist=False)
+    documents = relationship("EmployeeDocument", backref="employee")
     compliance_packages = relationship(
         CompliancePackage, secondary="employee_compliance_packages", backref="employee_questionnaire_responses",
         lazy="select", viewonly=True, cascade="all, delete-orphan"

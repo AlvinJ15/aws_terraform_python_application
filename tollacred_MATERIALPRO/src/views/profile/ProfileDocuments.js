@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
   Row, Col, Card, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, Input,
   DropdownItem, Modal, ModalHeader, ModalBody, Spinner,
-  ModalFooter
+  ModalFooter, Progress
 } from 'reactstrap';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ReactTable from 'react-table-v6';
@@ -29,6 +29,7 @@ const ProfileDocuments = () => {
 
   const [showMandatory, setShowMandatory] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingPercentage, setLoadingPercentage] = useState(0);
   const [newUpdated, setNewUpdated] = useState(0);
 
 
@@ -177,8 +178,10 @@ const ProfileDocuments = () => {
     error: errorDelete
   } = useDeleteFetch({endpoint: `${params.idOrganization}/employees/${params.idEmployee}/documents`})
   const deleteDocumentFile = (idDocuemntType) => {
+    setIsLoading(true);
     EmployeeService.deleteEmployeedocument(params.idOrganization, params.idEmployee, idDocuemntType)
-    .then(res => {
+      .then(res => {
+        setIsLoading(false);
         toggleModalDelete();
         setNewUpdated(newUpdated + 1);
       })
@@ -200,6 +203,8 @@ const ProfileDocuments = () => {
   const {data, setData, handleInput} = useUpdateFetch({initData: initialDocument})
 
   const updateDocument = () => {
+    setIsLoading(true);
+    setLoadingPercentage(10);
     const formData = new FormData();
     formData.append('file', '');
     if (data.file) {
@@ -214,16 +219,23 @@ const ProfileDocuments = () => {
     setData({...data, document_type_id: rowSelect.original.id})
     updateDocumentService(`${params.idOrganization}/employees/${params.idEmployee}/documents/${rowSelect.original.document_id}`, formData)
       .then(response => {
+        setLoadingPercentage(50);
         if (data.file) {
           console.log("Upload file to S3");
-          put(response.upload_url, data.file);
+          put(response.upload_url, data.file).then( response => {
+              setLoadingPercentage(100);
+              isLoading(false);
+              setNewUpdated(newUpdated + 1);
+              toggleModalDocument();
+            }
+          );
         }
-        setNewUpdated(newUpdated + 1);
-        toggleModalDocument();
       })
   }
 
   const createDocument = () => {
+    setIsLoading(true);
+    setLoadingPercentage(10);
     const formData = new FormData();
     formData.append('file', '');
     if (data.file) {
@@ -239,8 +251,11 @@ const ProfileDocuments = () => {
     setSendingFile(true);
     organizationService.createNoJson(`${params.idOrganization}/employees/${params.idEmployee}/documents`, formData)
       .then(response => {
+        setLoadingPercentage(50);
         console.log("Upload file to S3");
         put(response.upload_url, data.file).then(response => {
+          setLoadingPercentage(100);
+          setIsLoading(false);
           setNewUpdated(newUpdated + 1);
           toggleModalDocument();
         })
@@ -312,11 +327,23 @@ const ProfileDocuments = () => {
                         </div>
                       </ModalBody>
                       <ModalFooter>
-                        <Button className='text-primary bg-white' color="light"
-                                onClick={toggleModalDocument}>Cancel</Button>
                         {
-                          isUpdateDocument ? <Button color="primary" onClick={() => updateDocument()}>Update</Button>
-                            : <Button color="primary" onClick={() => createDocument()}>Create</Button>
+                          isLoading ?
+                            <Progress
+                              className="mb-3" striped color="primary" value={loadingPercentage}
+                              style={{height: '30px', width: '100%'}}>
+                              {`${loadingPercentage}%`}
+                            </Progress>
+                            :
+                            <div>
+                              <Button className='text-primary bg-white' color="light"
+                                      onClick={toggleModalDocument}>Cancel</Button>
+                              {
+                                isUpdateDocument ?
+                                  <Button color="primary" onClick={() => updateDocument()}>Update</Button>
+                                  : <Button color="primary" onClick={() => createDocument()}>Create</Button>
+                              }
+                            </div>
                         }
 
                       </ModalFooter>
@@ -492,17 +519,21 @@ const ProfileDocuments = () => {
       }
 
       <Modal isOpen={modalDelete.state} toggle={toggleModalDelete}>
-        <ModalHeader toggle={toggleModalDelete}>Confirme Delete Item </ModalHeader>
-        <ModalBody className='p-4'>
-          <h5 className='text-center text-muted fw-light mb-3'>It can not be undone</h5>
-          <div className='d-flex justify-content-center gap-3'>
-            <button className='btn btn-success' style={{width: '120px'}}
-                    onClick={() => deleteDocumentFile(modalDelete.id)}>YES
-            </button>
-            <button className='btn btn-danger' style={{width: '120px'}} onClick={toggleModalDelete}>NO
-            </button>
-          </div>
-        </ModalBody>
+        <ModalHeader toggle={toggleModalDelete}>Confirm Delete Document </ModalHeader>
+        {
+          isLoading ? <Spinner>Deleting ...</Spinner>
+            :
+            <ModalBody className='p-4'>
+              <h5 className='text-center text-muted fw-light mb-3'>It can not be undone</h5>
+              <div className='d-flex justify-content-center gap-3'>
+                <button className='btn btn-success' style={{width: '120px'}}
+                        onClick={() => deleteDocumentFile(modalDelete.id)}>YES
+                </button>
+                <button className='btn btn-danger' style={{width: '120px'}} onClick={toggleModalDelete}>NO
+                </button>
+              </div>
+            </ModalBody>
+        }
       </Modal>
     </>
   )

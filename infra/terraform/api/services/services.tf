@@ -97,7 +97,8 @@ resource "aws_s3_bucket_policy" "lambda_access" {
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          "arn:aws:iam::${var.account_id}:role/serverless_lambda-*"
+          "arn:aws:iam::${var.account_id}:role/serverless_lambda-Prod",
+          "arn:aws:iam::${var.account_id}:role/serverless_lambda-Dev"
         ]
       },
       "Action": [

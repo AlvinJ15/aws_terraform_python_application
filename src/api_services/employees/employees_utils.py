@@ -1,6 +1,12 @@
+from datetime import datetime
+
 from api_services.utils.ses_utils import SES
 from data_models.model_administrator import Administrator
+from data_models.model_compliance_package import CompliancePackage
+from data_models.model_document_type import DocumentType
 from data_models.model_employee import Employee
+from data_models.model_employee_compliance_package import EmployeeCompliancePackage
+from data_models.model_employee_document import EmployeeDocument
 from data_models.model_employee_profile import EmployeeProfile
 
 
@@ -38,3 +44,23 @@ def notify_assignee(db, stage, employee, data):
         subject=f'New candidate assigned: {employee.profile.get_name()}',
         body=email_body,
     )
+
+
+def check_employee_compliance(db, employee):
+    current_datetime = datetime.now()
+    documents_map = {}
+
+    document: EmployeeDocument
+    for document in employee.documents:
+        documents_map[document.document_type_id] = document
+
+    package: CompliancePackage
+    for package in employee.compliance_packages:
+        document_types = package.document_types
+        for document_type in document_types:
+            if document_type.id not in documents_map or documents_map[document_type.id].expiry_date < current_datetime:
+                employee.status = 'NOT_COMPLIANT'
+                db.commit()
+                return
+    employee.status = 'COMPLIANT'
+    db.commit()
