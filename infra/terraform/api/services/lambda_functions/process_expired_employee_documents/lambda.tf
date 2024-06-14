@@ -15,7 +15,7 @@ resource "aws_lambda_function" "lambda_function_expired_employees_documents" {
   handler          = "api_services/lambdas_functions/lambda_documents_expired.expired_handler"
   depends_on       = [module.lambda_layers]
   layers           = [module.lambda_layers.layer_arn]
-  timeout          = 30
+  timeout          = 500
 
   vpc_config {
     ipv6_allowed_for_dual_stack = false
