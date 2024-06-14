@@ -12,7 +12,7 @@ from data_models.model_employee_document import EmployeeDocument
 @handle_exceptions
 @set_stage
 def expiry_soon_handler(event, context, stage):
-    with DataBase.get_session('prod') as db:
+    with DataBase.get_session(stage) as db:
         current_datetime = datetime.now()
         sixty_days_from_now = current_datetime + timedelta(days=60)
         employee_documents = db.query(EmployeeDocument).filter(
