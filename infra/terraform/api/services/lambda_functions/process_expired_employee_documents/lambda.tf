@@ -35,7 +35,7 @@ resource "aws_lambda_function" "lambda_function_expired_employees_documents" {
 }
 
 resource "aws_cloudwatch_event_rule" "lambda_invocation_expired_employees_documents" {
-  name                = "daily_expired_employees_documents"
+  name                = "${var.project_name}-DailyExpiredEmployeesDocuments-${var.env}"
   description         = "Invokes Lambda function daily at 5:00 AM (UTC) ~ 00:00 EST"
   schedule_expression = "cron(0 5 ? * * *)"
 }
