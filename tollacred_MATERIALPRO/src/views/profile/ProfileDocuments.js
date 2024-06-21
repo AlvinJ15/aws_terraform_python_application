@@ -224,11 +224,16 @@ const ProfileDocuments = () => {
           console.log("Upload file to S3");
           put(response.upload_url, data.file).then( response => {
               setLoadingPercentage(100);
-              isLoading(false);
+              setIsLoading(false);
               setNewUpdated(newUpdated + 1);
               toggleModalDocument();
             }
           );
+        } else {
+          setLoadingPercentage(100);
+          setIsLoading(false);
+          setNewUpdated(newUpdated + 1);
+          toggleModalDocument();
         }
       })
   }

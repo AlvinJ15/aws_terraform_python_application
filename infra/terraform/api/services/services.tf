@@ -28,7 +28,8 @@ resource "aws_api_gateway_deployment" "deployment" {
     module.administrator_management,
     module.conversation_management,
     module.message_management,
-    module.user_conversation_management
+    module.user_conversation_management,
+    module.file_management
   ]
 
   stage_name        = "prod"

@@ -7,7 +7,7 @@ from streaming_form_data.targets import ValueTarget
 from api_services.employees.employees_utils import check_employee_compliance
 from api_services.utils.database_utils import DataBase
 from api_services.utils.decorators_utils import add_cors_headers, handle_exceptions, set_stage
-from api_services.utils.s3_utils import upload_file_to_s3, generate_file_link, delete_file_from_s3
+from api_services.utils.s3_utils import upload_file_to_s3, generate_file_link, delete_file_from_s3, list_files_from_path
 from data_models.model_document_type import DocumentType
 from data_models.model_employee import Employee
 from data_models.model_employee_profile import EmployeeProfile
@@ -20,32 +20,28 @@ from data_models.models import set_fields_from_dict
 @handle_exceptions
 @set_stage
 def get_all_handler(event, context, stage):
-    employee_id = event["pathParameters"]["employee_id"]
-    with DataBase.get_session(stage) as db:
-        organization_documents = db.query(EmployeeDocument).filter_by(employee_id=employee_id)
-        return {
-            "statusCode": 200,
-            "body": json.dumps([document.to_dict() for document in organization_documents])
-        }
+    path = build_path(stage, event['queryStringParameters']['path'])
+    print("PATH:", path)
+    files = list_files_from_path(path)
+    print(files)
+    return {
+        "statusCode": 200,
+        "body": json.dumps({
+            "files": files
+        })
+    }
 
 
 @add_cors_headers
 @handle_exceptions
 @set_stage
 def get_single_handler(event, context, stage):
-    document_id = event["pathParameters"]["document_id"]
-
-    with DataBase.get_session(stage) as db:
-        organization_document = db.query(EmployeeDocument).filter_by(document_id=document_id).first()
-        if organization_document:
-            json_object = organization_document.to_dict()
-            json_object['download_url'] = generate_file_link(organization_document.s3_path)
-            return {
-                "statusCode": 200,
-                "body": json.dumps(json_object)
-            }
-        else:
-            return {"statusCode": 404, "body": "EmployeeDocument not found"}
+    path = build_path(stage, event['queryStringParameters']['path'])
+    json_object = {'download_url': generate_file_link(path)}
+    return {
+        "statusCode": 200,
+        "body": json.dumps(json_object)
+    }
 
 
 @add_cors_headers
@@ -53,38 +49,14 @@ def get_single_handler(event, context, stage):
 @set_stage
 def create_handler(event, context, stage):
     organization_id = event["pathParameters"]["organization_id"]
-    employee_id = event["pathParameters"]["employee_id"]
-
-    with DataBase.get_session(stage) as db:
-        organization = db.query(Organization).filter_by(id=organization_id).first()
-        employee_profile = db.query(EmployeeProfile).filter_by(employee_id=employee_id).first()
-        employee = db.query(Employee).filter_by(employee_id=employee_id).first()
-        data = get_data_from_multipart(event)
-        file_name = data.pop('file_name')
-        file_type = data.pop('file_type')
-        if not data.get('approver_id'):
-            data['approver_id'] = None
-        new_document = EmployeeDocument(**data)
-        new_document.document_id = DataBase.generate_uuid()
-        new_document.employee_id = employee_id
-        document_type = db.query(DocumentType).filter_by(id=new_document.document_type_id).first()
-        path = (f"{stage}/app_data/orgs/{organization.name} {DataBase.get_now().year}/"
-                f"Ongoing/{employee_profile.get_name()} - "
-                f"{employee_profile.facility}/01 License, Certification and Verification/"
-                f"{employee_profile.get_name()} - "
-                f"{document_type.category} - {document_type.name}.{file_name.split('.')[-1]}")
-        new_document.s3_path = path
-        if new_document.status == 'Approved':
-            new_document.approval_date = DataBase.get_now()
-        new_document.upload_date = DataBase.get_now()
-        db.add(new_document)
-        db.commit()
-        check_employee_compliance(db, employee)
-        dict_document = new_document.to_dict()
-        dict_document['upload_url'] = generate_file_link(path, 'put_object', file_type)
+    path = build_path(stage, event['queryStringParameters']['path'])
+    data = json.loads(event["body"])
+    path = f"{path}/{data['file_name']}"
+    json_object = {}
+    json_object['upload_url'] = generate_file_link(path, 'put_object', data.get('file_type'))
     return {
         'statusCode': 201,
-        'body': json.dumps(dict_document)
+        'body': json.dumps(json_object)
     }
 
 
@@ -198,3 +170,5 @@ def get_data_from_multipart(event):
     return {key: value for key, value in values.items() if value}
 
 
+def build_path(stage, path):
+    return f"{stage}/{path}"

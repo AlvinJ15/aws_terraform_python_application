@@ -1,16 +1,19 @@
 import os
 
+import boto3
 from boto3 import Session
 from boto3 import resource
 import mimetypes
 
 from botocore.config import Config
+from botocore.exceptions import ClientError
 
 session = Session()
 s3_client = session.client("s3")
 # s3_client = session.client("s3", config=Config(signature_version='v4'))
 
 BUCKET_NAME = 'tollacred'
+s3 = boto3.client('s3')
 
 
 def upload_files(local_folder, bucket_name, exclude_file=None):
@@ -25,7 +28,8 @@ def upload_files(local_folder, bucket_name, exclude_file=None):
                 continue
 
             mime_type = mimetypes.guess_type(file_path)
-            s3_client.upload_file(file_path, bucket_name, relative_path, ExtraArgs={'ContentType': mime_type[0] if mime_type[0] else ""})
+            s3_client.upload_file(file_path, bucket_name, relative_path,
+                                  ExtraArgs={'ContentType': mime_type[0] if mime_type[0] else ""})
             print(f"Uploaded: {relative_path}")
 
 
@@ -96,3 +100,104 @@ def delete_entire_folder(path):
                 'Objects': objects_to_delete
             }
         )
+
+
+def list_files_from_path(path: str):
+    # delimiter = "/"
+    # response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=path, Delimiter=delimiter)
+    # print("RESPONSE: ", response)
+    # folders = [prefix['Prefix'] for prefix in response.get('CommonPrefixes', [])]
+    # return folders
+
+    child_objects = get_child_folders(path)
+    if child_objects:
+        print(f"Information for objects within path '{path}':")
+        print("CHILD OBJECTS: ", child_objects)
+    return child_objects
+
+
+def is_folder(object_key):
+    return object_key.endswith('/')
+
+
+def get_child_folders(parent_path):
+    try:
+        # List objects with delimiter to identify folders (avoid listing objects within folders)
+        response_folders = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=parent_path, Delimiter='/', FetchOwner=True)
+        print("LAST:", response_folders)
+        response2 = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=parent_path,  FetchOwner=True)
+        print("ALL OBJECTS: ", response2)
+
+        # Extract child folder prefixes
+        child_folders = [
+            {
+                "object_key": prefix['Prefix'],
+                "modification_date": '-',
+                "size": "-",  # Size not available for folders
+                "type": "folder",
+                "owner": "-"
+             }
+            for prefix in response_folders.get('CommonPrefixes', [])
+        ]
+
+        child_files = [get_file_info(object_key) for object_key in response_folders.get('Contents', []) if object_key['Key'][-1] != '/' ]
+
+        return child_folders + child_files
+
+    except ClientError as e:
+        print(f"Error getting child folders for path '{parent_path}': {e}")
+        return []
+
+
+def get_file_info(object_info):
+    object_date = object_info['LastModified']
+    object_size = object_info['Size']
+    formatted_date = object_date.strftime('%Y-%m-%d %H:%M:%S')
+    return {
+        "object_key": object_info.get('Key'),
+        "modification_date": formatted_date,
+        "size": object_size,  # Size not available for folders
+        "type": "file",
+        "owner": object_info.get('Owner', {}).get('DisplayName')
+    }
+
+def get_child_objects(parent_path):
+    try:
+        # List objects with no delimiter to get all objects directly under the path
+        response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=parent_path)
+
+        objects = response.get('Contents', [])
+        return objects
+
+    except ClientError as e:
+        print(f"Error getting child objects for path '{parent_path}': {e}")
+        return []
+
+
+def get_folder_info(parent_path):
+    """
+    Retrieves information for all child folders and files directly under
+    the specified path, excluding sub-folders and sub-files.
+    """
+    info = []
+
+    # Get child objects (folders and files) directly under the path
+    child_objects = get_child_objects(parent_path)
+
+    # Separate child folders and files
+    child_folders = [obj['Key'] for obj in child_objects if is_folder(obj['Key'])]
+    child_files = [obj['Key'] for obj in child_objects if not is_folder(obj['Key'])]
+
+    # Add information for child folders
+    for folder in child_folders:
+        folder_info = get_file_info(folder)
+        if folder_info:
+            info.append(folder_info)
+
+    # Add information for child files
+    for file in child_files:
+        file_info = get_file_info(file)
+        if file_info:
+            info.append(file_info)
+
+    return info

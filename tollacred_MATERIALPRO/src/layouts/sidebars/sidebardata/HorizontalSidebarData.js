@@ -83,6 +83,11 @@ const SidebarData = [
     id: 2.85,
   },
   {
+    title: 'Files',
+    href: '/organization/:idOrganization/files',
+    icon: <MaterialIcon icon="folder" />,
+  },
+  {
     title: 'My Profile',
     icon: <MaterialIcon icon="face" />,
     id: 2.9,

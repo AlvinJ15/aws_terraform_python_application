@@ -1,7 +1,6 @@
 import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import Loadable from '../layouts/loader/Loadable';
-import ChatStaff from '../views/staff/chat/ChatStaff';
 /****Layouts*****/
 
 const FullLayout = Loadable(lazy(() => import('../layouts/FullLayout')));
@@ -41,6 +40,12 @@ const ProfileOrganizationDocuments = Loadable(lazy(() => import('../views/profil
 const ProfileRegistration = Loadable(lazy(() => import('../views/profile/ProfileRegistration'))); 
 const ProfileReferences = Loadable(lazy(() => import('../views/profile/ProfileReferences')));
 
+/***** conversations pages */
+const ChatStaff = Loadable(lazy(() => import('../views/staff/chat/ChatStaff')));
+
+/***** file explorer pages */
+const FileExplorer = Loadable(lazy(() => import('../views/file-explorer/FilesTable')));
+
 const ProfileQuestionnaires = Loadable(lazy(() => import('../views/profile/ProfileQuestionnaires')));
 const ProfileOnboarding = Loadable(lazy(() => import('../views/profile/ProfileOnboarding')));
 const ProfileChecks = Loadable(lazy(() => import('../views/profile/ProfileChecks')));
@@ -69,6 +74,8 @@ const AuthRoutes = [
       { path: '/staff/archived', name: 'archived', exact: true, element: <StaffArchived /> },
 
       { path: '/organization/:idOrganization/conversations', name: 'chat', exact: true, element: <ChatStaff /> },
+
+      { path: '/organization/:idOrganization/files', name: 'files', exact: true, element: <FileExplorer /> },
 
       { path: '/organization/:idOrganization/employee/:idEmployee/compliancePackages', name: 'dashboard', exact: true, element: <ProfileDashboard /> },
       { path: '/organization/:idOrganization/employee/:idEmployee/profile', name: 'details', exact: true, element: <ProfileDetails /> },

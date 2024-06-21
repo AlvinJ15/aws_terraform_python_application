@@ -208,6 +208,20 @@ module "message_management" {
   id_resource_conversation = module.conversation_management.base_conversations_id_resource
 }
 
+module "file_management" {
+  source                   = "./file_explorer_management"
+  env                      = var.env
+  rest_api                 = local.rest_api
+  project_name             = var.project_name
+  api_status_response      = var.api_status_response
+  account_id               = var.account_id
+  api_authorizer           = aws_api_gateway_authorizer.api_authorizer
+  aws_region               = var.aws_region
+  cognito_user_arn         = var.cognito_user_arn
+  lambda_exec              = aws_iam_role.lambda_exec
+  id_resource_organization = module.organization_management.base_organizations_id_resource
+}
+
 module "employee_reference_submission" {
   source                   = "./lambda_functions/process_reference_evaluation_submissions"
   env                      = var.env
