@@ -1,11 +1,11 @@
-import { Link, useParams } from 'react-router-dom';
-import { BlogData } from '../../data/organization.data';
+import {Link, useParams} from 'react-router-dom';
+import {BlogData} from '../../data/organization.data';
 import HorizontalLogo from '../logo/HorizontalLogo';
 
 const FooterLayout = ({className}) => {
   const params = useParams()
 
-  return(
+  return (
     <footer className={`${className} bg-primary`}>
       <div className='container-lg'>
         <div className="py-4">
@@ -13,11 +13,27 @@ const FooterLayout = ({className}) => {
             <HorizontalLogo></HorizontalLogo>
             <div className='d-flex gap-5'>
               {
-                BlogData.map((item, index) => 
-                  <Link className='text-decoration-none text-white' to={`/organization/${item.id}/details`} key={index}>
-                    <h6 className='text-white fw-normal'>{item.title}</h6>
-                  </Link>
-                )
+                params.idOrganization !== 'e5a88912-a95b-47a8-9a2f-f0f0594c7a3b' ?
+                  BlogData.flatMap((item, index) =>
+                    <Link className='text-decoration-none text-white' to={`/organization/${item.id}/details`}
+                          key={index}>
+                      <h6 className='text-white fw-normal'>{item.title}</h6>
+                    </Link>
+                  )
+                  :
+                  BlogData.flatMap((item, index) => {
+                      if (item.id === 'e5a88912-a95b-47a8-9a2f-f0f0594c7a3b')
+                        return (
+                          <Link className='text-decoration-none text-white' to={`/organization/${item.id}/details`}
+                                key={index}>
+                            <h6 className='text-white fw-normal'>{item.title}</h6>
+                          </Link>
+                        )
+                      else {
+                        return []
+                      }
+                    }
+                  )
               }
             </div>
           </div>
