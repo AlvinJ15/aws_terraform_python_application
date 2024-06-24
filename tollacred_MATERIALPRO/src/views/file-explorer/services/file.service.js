@@ -11,9 +11,10 @@ const FileService = {
         }
     },
 
-    getSingleFile: async (organizationId, file_name) => {
+    getSingleFile: async (organizationId, path) => {
+        const file_name = path.split('/').pop();
         try {
-            return await apiManager.get(`organizations/${organizationId}/files/${file_name}`)
+            return await apiManager.get(`organizations/${organizationId}/files/${file_name}?path=${path}`)
         } catch (error) {
             console.error('my error', error)
         }
