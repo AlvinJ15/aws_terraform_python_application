@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import organizationService from "../services/organization.service"
+import OrganizationService from "../services/organization.service.js"
 import apiManager from "../../../config/ApiManager"
 
 const NAME_ENTITY = 'organizations'
@@ -21,12 +21,12 @@ const useActionRequeriments = (idOrganization, dataInicial = initialRequeriment)
     const [isFetching, setIsFetching] = useState(false)
 
     const getDocumentList = () => {
-        organizationService.get(`${idOrganization}/documents`)
+        OrganizationService.get(`${idOrganization}/documents`)
             .then(response => setDocumentList(response))
     }
 
     const getFacilityList = () => {
-        organizationService.get(`${idOrganization}/facilities`)
+        OrganizationService.get(`${idOrganization}/facilities`)
             .then(response => setFacilityList(response))
     }
 

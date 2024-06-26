@@ -5,7 +5,7 @@ import SidebarDatax from '../sidebardata/HorizontalSidebarData';
 import NavSubItem from './NavSubItem';
 import NavSingleItem from './NavSingleItem';
 import {useEffect, useState} from 'react';
-import organizationService from '../../../views/organization/services/organization.service';
+import OrganizationService from '../../../views/organization/services/organization.service.js';
 import _ from 'lodash';
 
 const HorizontalSidebar = () => {
@@ -65,7 +65,7 @@ const HorizontalSidebar = () => {
 
     const getNameProfile = () => {
         setisFetching(true);
-        organizationService.get(`${params.idOrganization}/employees/${params.idEmployee}`)
+        OrganizationService.get(`${params.idOrganization}/employees/${params.idEmployee}`)
             .then(response => {
                 setPerfil({
                     id: response.profile.employee_id,

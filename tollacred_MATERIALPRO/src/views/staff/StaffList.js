@@ -9,7 +9,7 @@ import ReactTable from 'react-table-v6';
 import CrudStaff from './forms/CrudStaff';
 // import Select from 'react-select'
 import Loader from '../../layouts/loader/Loader';
-import organizationService from '../organization/services/organization.service';
+import OrganizationService from '../organization/services/organization.service.js';
 
 import 'react-table-v6/react-table.css';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -94,7 +94,7 @@ const StaffList = ({ dataFetch = [] }) => {
         } else {
             setSpinnerLoading(true)
 
-            organizationService.get(`${params.idOrganization}/employees?page=1`)
+            OrganizationService.get(`${params.idOrganization}/employees?page=1`)
                 .then(response => {
                     setStaffList(response)
                     setSearchStaff(response)
@@ -106,14 +106,14 @@ const StaffList = ({ dataFetch = [] }) => {
 
 
     const getAdministratorList = () => {
-        organizationService.get(`${params.idOrganization}/administrators`)
+        OrganizationService.get(`${params.idOrganization}/administrators`)
             .then(response => setAdministrator(response))
     }
 
     const deleteStaff = (idStaff) => {
         params.idEmployee = idStaff
         setIsLoading(true)
-        organizationService.delete(`${params.idOrganization}/employees/${idStaff}`)
+        OrganizationService.delete(`${params.idOrganization}/employees/${idStaff}`)
             .then(response => {
                 setIsLoading(false)
                 getStaffList()
@@ -134,7 +134,7 @@ const StaffList = ({ dataFetch = [] }) => {
     const handleAdministrador = (e, row) => {
         setIsChangingId(true)
         //return
-        organizationService.update(`${params.idOrganization}/employees/${row.original.employee_id}`, { assignee_id: e.target.value })
+        OrganizationService.update(`${params.idOrganization}/employees/${row.original.employee_id}`, { assignee_id: e.target.value })
             .then(response => {
                 //getAdministratorList()
                 setIsChangingId(false)
@@ -171,7 +171,7 @@ const StaffList = ({ dataFetch = [] }) => {
             notes: dataUpdate.notes,
             status: dataUpdate.compliance_packages_names
         }
-        organizationService.update(`${params.idOrganization}/employees/${dataUpdate.id_employee}`, dataSend)
+        OrganizationService.update(`${params.idOrganization}/employees/${dataUpdate.id_employee}`, dataSend)
             .then(response => {
                 getStaffList()
                 toggleModalEdit()

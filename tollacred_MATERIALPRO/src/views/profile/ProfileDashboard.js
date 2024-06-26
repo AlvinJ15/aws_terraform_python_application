@@ -8,7 +8,7 @@ import ReactTable from 'react-table-v6';
 import 'react-table-v6/react-table.css';
 import ComponentCard from '../../components/ComponentCard';
 import ProfileOff from './ProfileOff';
-import organizationService from '../organization/services/organization.service';
+import OrganizationService from '../organization/services/organization.service.js';
 import { useParams } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';

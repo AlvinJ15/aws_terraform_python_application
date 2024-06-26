@@ -9,7 +9,7 @@ import ReactTable from 'react-table-v6';
 import 'react-table-v6/react-table.css';
 import ComponentCard from '../../components/ComponentCard';
 import CrudRequeriment from './forms/crudRequeriment'
-import organizationService from './services/organization.service';
+import OrganizationService from './services/organization.service.js';
 import { useNavigate, useParams } from 'react-router-dom';
 import useActionRequeriments from './hooks/useActionRequiments';
 import useDeleteFetch from '../../hooks/useDeleteFetch';
@@ -29,7 +29,7 @@ const Requeriments = () => {
     const [loadingList, setLoadingList] = useState(true)
     const getRequerimentList = () => {
         setLoadingList(true)
-        organizationService.get(`${params.idOrganization}/compliancePackages`)
+        OrganizationService.get(`${params.idOrganization}/compliancePackages`)
             .then(response => { setRequerimentsList(response); setLoadingList(false) })
             .catch(error => navigate('*'))
     }

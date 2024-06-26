@@ -1,5 +1,5 @@
 import { useState } from "react"
-import organizationService from "../services/organization.service"
+import OrganizationService from "../services/organization.service.js"
 
 const initilaError = {
   status: false,
@@ -66,7 +66,7 @@ const useActionManageDocument = (idOrganization) => {
         let endpoint = `${idOrganization}/documents`
         switch (action) {
             case "CREATE":
-                organizationService.create(endpoint, dataDocument).then(response => {
+                OrganizationService.create(endpoint, dataDocument).then(response => {
                   if(response.id){
                     alert("Document created successfully")
                     setModalDocumentType(!modalDocumentType)

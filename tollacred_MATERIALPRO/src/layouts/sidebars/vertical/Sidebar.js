@@ -9,7 +9,7 @@ import NavSubMenu from './NavSubMenu';
 import user1 from '../../../assets/images/users/user4.jpg';
 import probg from '../../../assets/images/bg/download.jpg';
 import { useParams } from 'react-router-dom';
-import organizationService from '../../../views/organization/services/organization.service';
+import OrganizationService from '../../../views/organization/services/organization.service.js';
 
 const Sidebar = () => {
   const location = useLocation();
@@ -28,7 +28,7 @@ const Sidebar = () => {
 
   const getNameProfile = () => {
     if (params.idEmployee != perfil.id)
-      organizationService.get(`${params.idOrganization}/employees/${params.idEmployee}`)
+      OrganizationService.get(`${params.idOrganization}/employees/${params.idEmployee}`)
         .then(response => {
           setPerfil({
             id: response.profile.employee_id,

@@ -14,7 +14,7 @@ import useCreateFetch from '../../hooks/useCreateFetch';
 import ReactTable from 'react-table-v6';
 import useDeleteFetch from '../../hooks/useDeleteFetch';
 import useUpdateFetch from '../../hooks/useUpdateFetch';
-import organizationService from "@/views/organization/services/organization.service.js";
+import OrganizationService from "@/views/organization/services/organization.service.js";
 
 const initialFacilities = {
     name: '',
@@ -69,7 +69,7 @@ const Facilities = () => {
         //    refresh()
         //    toggleModalFacility()
         //})
-        organizationService.update(`${params.idOrganization}/facilities/${dataFacilityUpdate.facility_id}`, dataFacilityUpdate)
+        OrganizationService.update(`${params.idOrganization}/facilities/${dataFacilityUpdate.facility_id}`, dataFacilityUpdate)
             .then(response => {
                 setDataUpdate(dataFacilityUpdate);
                 refresh();

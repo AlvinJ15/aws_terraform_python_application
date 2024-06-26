@@ -6,7 +6,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ReactTable from 'react-table-v6';
 import 'react-table-v6/react-table.css';
-import organizationService from '../organization/services/organization.service';
+import OrganizationService from '../organization/services/organization.service.js';
 import { useParams } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 
@@ -46,7 +46,7 @@ const ProfileReferences = () => {
 
     const saveReference = () => {
         setIsLoading(true)
-        organizationService.create(`${params.idOrganization}/employees/${params.idEmployee}/references`, dataReference)
+        OrganizationService.create(`${params.idOrganization}/employees/${params.idEmployee}/references`, dataReference)
             .then(response => getProfileDocumentList())
             .catch(error => console.log(error))
             .finally(() => { setIsLoading(false); toggleModalDocument() })

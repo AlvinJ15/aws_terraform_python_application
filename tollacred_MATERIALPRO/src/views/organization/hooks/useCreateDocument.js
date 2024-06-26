@@ -1,5 +1,5 @@
 import { useState } from "react"
-import organizationService from "../services/organization.service"
+import OrganizationService from "../services/organization.service.js"
 
 const initialDocument = {
     id: '',
@@ -24,7 +24,7 @@ const useCreateDocument = () => {
 
 
   const getFacilityList = () => {
-      organizationService.get('9cf728c0-288a-4d92-9524-04d58b2ab32d/facilities')
+      OrganizationService.get('9cf728c0-288a-4d92-9524-04d58b2ab32d/facilities')
       .then(response => setFacilityList(response))
   }
 

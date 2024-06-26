@@ -4,6 +4,7 @@ import {useLocation, useParams, useNavigate} from "react-router-dom";
 import FileService from "@/views/file-explorer/services/file.service.js";
 import 'react-table-v6/react-table.css';
 import * as Icon from 'react-feather';
+import AwsHelper from "@/utilities/awsHelper.js";
 
 const FileActionButtons = ({ newUpdated, setNewUpdated }) => {
 
@@ -17,11 +18,8 @@ const FileActionButtons = ({ newUpdated, setNewUpdated }) => {
   const [loadingPercentage, setLoadingPercentage] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  function put(url, data) {
-    return fetch(url, {
-      method: "PUT",
-      body: data,
-    });
+  const documentTags = {
+    file_visibility: 'file_explorer'
   }
 
   const uploadDocument = () => {
@@ -40,7 +38,7 @@ const FileActionButtons = ({ newUpdated, setNewUpdated }) => {
           setLoadingPercentage(50);
           if (selectedFile) {
             console.log("Upload file to S3");
-            put(response.upload_url, selectedFile).then( response => {
+            AwsHelper.uploadFile(response.upload_url, selectedFile, documentTags).then( response => {
                 setNewUpdated(newUpdated + 1);
                 setLoadingPercentage(100);
                 setIsLoading(false);

@@ -55,6 +55,9 @@ def generate_file_link(path, client_method='get_object', content_type='text/plai
     if client_method == 'put_object':
         params['ContentType'] = content_type
 
+    # For enable tags, sent header 'x-amz-tagging' on client upload
+    params['Tagging'] = ''
+
     # Get a temporal URL for download the object
     try:
         s3_object_url = s3_client.generate_presigned_url(

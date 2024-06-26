@@ -8,7 +8,7 @@ import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ReactTable from 'react-table-v6';
 import 'react-table-v6/react-table.css';
 import ComponentCard from '../../components/ComponentCard';
-import organizationService from '../organization/services/organization.service';
+import OrganizationService from '../organization/services/organization.service.js';
 
 const ProfileOnboarding = () => {
     useEffect(() => {
@@ -17,7 +17,7 @@ const ProfileOnboarding = () => {
     /**LIST OF ProfileOnboarding */
     const [profileOnboardingList, setProfileOnboardingList] = useState([])
     const getOnboarding = () => {
-        organizationService.get('9cf728c0-288a-4d92-9524-04d58b2ab32d/onboarding')
+        OrganizationService.get('9cf728c0-288a-4d92-9524-04d58b2ab32d/onboarding')
         .then(response => {
             setProfileOnboardingList(response)
         })

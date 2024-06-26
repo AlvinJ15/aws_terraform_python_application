@@ -8,13 +8,13 @@ import BreadCrumbs from '../../layouts/breadcrumbs/BreadCrumbs';
 import ReactTable from 'react-table-v6';
 import 'react-table-v6/react-table.css';
 import ComponentCard from '../../components/ComponentCard';
-import organizationService from '../organization/services/organization.service';
+import OrganizationService from '../organization/services/organization.service.js';
 const ProfileQuestionnaires = () => {
     /**LIST OF ProfileQuestionnaires */
     const [profileQuestionnairesList, setProfileQuestionnairesList] = useState([])
     
     const getQuestionnaires = () => {
-        organizationService.get('9cf728c0-288a-4d92-9524-04d58b2ab32d/questionnaires').then(response => {
+        OrganizationService.get('9cf728c0-288a-4d92-9524-04d58b2ab32d/questionnaires').then(response => {
             setProfileQuestionnairesList(response) 
         })
     }

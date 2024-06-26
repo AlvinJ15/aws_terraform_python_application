@@ -10,17 +10,11 @@ import 'react-table-v6/react-table.css';
 import ComponentCard from '../../components/ComponentCard';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import {downloadDocumentService, updateDocumentService, updateStateDocumentService} from './services/profile.service';
-import useFetch from '../../hooks/useFetch';
-import useCreateFetch from '../../hooks/useCreateFetch';
-import organizationService from '../organization/services/organization.service';
 import useDeleteFetch from '../../hooks/useDeleteFetch';
-import https from "https";
 import useUpdateFetch from '../../hooks/useUpdateFetch';
-import {selectConversation, setConversations, setMessages} from "@/store/apps/chat/ChatSlice.js";
-import ConversationService from "@/views/staff/chat/services/conversation.service.js";
-import MessageService from "@/views/staff/chat/services/message.service.js";
 import EmployeeService from "@/views/profile/services/employee.service.js";
-import OrganizationService from "../organization/services/organization.service";
+import OrganizationService from "../organization/services/organization.service.js";
+import AwsHelper from "@/utilities/awsHelper.js";
 
 
 const ProfileDocuments = () => {
@@ -154,13 +148,6 @@ const ProfileDocuments = () => {
     });
   }, [newUpdated]);
 
-  function put(url, data) {
-    return fetch(url, {
-      method: "PUT",
-      body: data,
-    });
-  }
-
   //sending file
   const [file, setFile] = useState(new FormData())
   const [sendingFile, setSendingFile] = useState(false)
@@ -202,6 +189,10 @@ const ProfileDocuments = () => {
 
   const {data, setData, handleInput} = useUpdateFetch({initData: initialDocument})
 
+  const documentTags = {
+    file_visibility: 'all'
+  }
+
   const updateDocument = () => {
     setIsLoading(true);
     setLoadingPercentage(10);
@@ -222,7 +213,7 @@ const ProfileDocuments = () => {
         setLoadingPercentage(50);
         if (data.file) {
           console.log("Upload file to S3");
-          put(response.upload_url, data.file).then( response => {
+          AwsHelper.uploadFile(response.upload_url, data.file, documentTags).then( response => {
               setLoadingPercentage(100);
               setIsLoading(false);
               setNewUpdated(newUpdated + 1);
@@ -254,11 +245,11 @@ const ProfileDocuments = () => {
       data.expiry_date = `${data.expiry_date} 00:00:00`;
     formData.append('expiry_date', data.expiry_date)
     setSendingFile(true);
-    organizationService.createNoJson(`${params.idOrganization}/employees/${params.idEmployee}/documents`, formData)
+    OrganizationService.createNoJson(`${params.idOrganization}/employees/${params.idEmployee}/documents`, formData)
       .then(response => {
         setLoadingPercentage(50);
         console.log("Upload file to S3");
-        put(response.upload_url, data.file).then(response => {
+        AwsHelper.uploadFile(response.upload_url, data.file, documentTags).then(response => {
           setLoadingPercentage(100);
           setIsLoading(false);
           setNewUpdated(newUpdated + 1);
@@ -312,7 +303,7 @@ const ProfileDocuments = () => {
                       <ModalHeader>
                         {
                           isUpdateDocument ?
-                            <h5>Document Edit </h5> : <h5>Document Create </h5>
+                            'Document Edit' : 'Document Create'
                         }
 
                       </ModalHeader>

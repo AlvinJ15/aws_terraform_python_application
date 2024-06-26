@@ -14,7 +14,7 @@ import useCreateFetch from '../../hooks/useCreateFetch';
 import ReactTable from 'react-table-v6';
 import useDeleteFetch from '../../hooks/useDeleteFetch';
 import useUpdateFetch from '../../hooks/useUpdateFetch';
-import organizationService from "@/views/organization/services/organization.service.js";
+import OrganizationService from "@/views/organization/services/organization.service.js";
 
 const initialDocumentTypes = {
     name: '',
@@ -72,7 +72,7 @@ const DocumentTypes = () => {
         //    toggleModalDocumentType()
         //})
 
-        organizationService.update(`${params.idOrganization}/documents/${dataDocumentUpdate.id}`, dataDocumentUpdate)
+        OrganizationService.update(`${params.idOrganization}/documents/${dataDocumentUpdate.id}`, dataDocumentUpdate)
             .then(response => {
                 setDataUpdate(dataDocumentUpdate);
                 refresh();

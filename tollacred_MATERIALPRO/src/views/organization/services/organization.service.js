@@ -3,7 +3,7 @@ import apiManager from '@/config/ApiManager';
 
 const NAME_ENTITY = 'organizations';
 
-const organizationService = {
+const OrganizationService = {
   getAll: async () => {
     try {
       return await apiManager.get(NAME_ENTITY);
@@ -61,4 +61,4 @@ const organizationService = {
   },
 };
 
-export default organizationService;
+export default OrganizationService;

@@ -1,5 +1,5 @@
 import {useState} from "react"
-import organizationService from "../../organization/services/organization.service"
+import OrganizationService from "../../organization/services/organization.service.js"
 
 const initialStaff = {
     country: 'United States',
@@ -17,7 +17,7 @@ const useActionStaff = (idOrganization) => {
     const [isLoading, setIsLoading] = useState(false)
 
     const getFacilityList = () => {
-        organizationService.get(`${idOrganization}/facilities`)
+        OrganizationService.get(`${idOrganization}/facilities`)
             .then(response => {
                 setFacilityList(response); /*console.log(response)*/
             })
@@ -67,7 +67,7 @@ const useActionStaff = (idOrganization) => {
                 },
                 facility_id: dataStaff.facility_id,
             }
-            await organizationService.create(`${idOrganization}/employees`, profile)
+            await OrganizationService.create(`${idOrganization}/employees`, profile)
                 .then(response => {
                     toggleModalStaffList();
                 })
