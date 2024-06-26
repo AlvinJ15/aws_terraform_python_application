@@ -20,6 +20,29 @@ const FileService = {
         }
     },
 
+    uploadFile: async (organizationId, path, data) => {
+        try {
+            return await apiManager.post(`organizations/${organizationId}/files?path=${path}`, data)
+        } catch (error) {
+            console.error('my error', error)
+        }
+    },
+
+    editFile: async (organizationId, data, fileName) => {
+        try {
+            return await apiManager.put(`organizations/${organizationId}/files/${fileName}`, data)
+        } catch (error) {
+            console.error('my error', error)
+        }
+    },
+
+    deleteFile: async (organizationId, data, fileName) => {
+        try {
+            return await apiManager.delete(`organizations/${organizationId}/files/${fileName}`, data)
+        } catch (error) {
+            console.error('my error', error)
+        }
+    },
 }
 
 export default FileService

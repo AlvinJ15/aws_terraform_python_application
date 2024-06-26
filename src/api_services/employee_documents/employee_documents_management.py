@@ -125,8 +125,11 @@ def update_handler(event, context, stage):
             upload_url = generate_file_link(path, 'put_object', file_type)
         if data.get('status') == 'Approved':
             document.approval_date = DataBase.get_now()
-        if data.get('expiry_date') and document.expiry_date and document.expiry_date > DataBase.get_now():
-            document.status = 'Awaiting Approval'
+        if data.get('expiry_date') and document.expiry_date:
+            if document.expiry_date > DataBase.get_now():
+                document.status = 'Awaiting Approval'
+            else:
+                document.status = 'Expired'
         db.commit()
         check_employee_compliance(db, employee)
         dict_document = document.to_dict()

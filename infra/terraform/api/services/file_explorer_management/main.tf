@@ -25,13 +25,13 @@ locals {
       responses = var.api_status_response
       resource  = "base_resource"
     }
-    create_file_explorer = {
+    update_file_explorer = {
       lambda_name = "UpdateFileExplorer"
       handler   = "api_services/file_explorer/file_explorer_management.update_handler"
       path      = "{file_name}"
       method    = "PUT"
       responses = var.api_status_response
-      resource  = "base_resource"
+      resource  = "id_resource"
     }
     delete_single_file_explorer = {
       lambda_name = "DeleteSingleFileExplorer"

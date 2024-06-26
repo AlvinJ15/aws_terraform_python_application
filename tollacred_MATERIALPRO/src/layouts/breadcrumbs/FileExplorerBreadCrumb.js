@@ -1,6 +1,5 @@
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import {useLocation, Link, useParams} from 'react-router-dom';
-//import SidebarData from '../sidebars/sidebardata/SidebarData';
 
 const FileBreadCrumb = ({name = ''}) => {
   const location = useLocation();
@@ -15,12 +14,22 @@ const FileBreadCrumb = ({name = ''}) => {
   const queryParams = getQueryParams(location.search);
   const path = queryParams.get('path') || '';
 
+  const forbiddenSegments = ["app_data", "orgs"];
   // Split the 'path' into segments
   const pathSegments = path.split('/').filter(segment => segment);
 
+  const allSegments = pathSegments.map((segment, index) => {
+    return `${pathSegments.slice(0, index + 1).join('/')}/`;
+  });
+  const allUrls = allSegments.filter(allSegments => {
+    const folders = allSegments.split('/');
+    return !forbiddenSegments.includes(folders[folders.length - 2])
+  });
   // Generate breadcrumb items for each segment
-  const breadcrumbItems = pathSegments.map((segment, index) => {
-    const url = `${location.pathname}?path=${pathSegments.slice(0, index + 1).join('/')}/`;
+  const breadcrumbItems = allUrls.map((url, index) => {
+    const folders = url.split('/');
+    const segment = folders[folders.length - 2];
+    url = `${location.pathname}?path=${url}`;
     return (
       <BreadcrumbItem key={index} tag={Link} to={url} className="text-decoration-none">
         {segment}

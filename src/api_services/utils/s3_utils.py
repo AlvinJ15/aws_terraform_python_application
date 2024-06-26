@@ -77,6 +77,11 @@ def create_path_to_s3(path):
         print(f'Error creating path in S3: {e}')
 
 
+def change_object_name(object_key, new_object_key):
+    s3.copy_object(Bucket=BUCKET_NAME, CopySource={'Bucket': BUCKET_NAME, 'Key': object_key}, Key=new_object_key)
+    s3.delete_object(Bucket=BUCKET_NAME, Key=object_key)
+
+
 def delete_file_from_s3(path):
     try:
         s3_client.delete_object(

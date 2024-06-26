@@ -42,14 +42,15 @@ const apiManager = {
     },
 
     // delete method
-    delete: async (endpoint) => {
+    delete: async (endpoint, data={}) => {
         try {
             const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': await getApiToken(),
-                }
+                },
+                body: JSON.stringify(data)
             });
             return response.json();
 
