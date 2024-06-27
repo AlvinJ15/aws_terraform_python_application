@@ -74,7 +74,7 @@ const FilesTable = () => {
   });
 
   const handleClickFile = (row) => {
-    let objectPath = row.value;
+    let objectPath = row.original.object_key;
     objectPath = objectPath.replace(`${import.meta.env.VITE_ENV}/`, '')
     if (row.original.type === 'folder')
       updateQueryParams({path: objectPath});
@@ -95,7 +95,7 @@ const FilesTable = () => {
     }
   };
 
-  const get_object_name = (full_name) => {
+  const getObjectName = (full_name) => {
     return full_name.replace(/\/$/, '').split('/').pop()
   }
 
@@ -132,8 +132,9 @@ const getFileIcon = (filename) => {
             <ReactTable
               columns={[
                 {
+                  id: 'file_name',
                   Header: 'FileName',
-                  accessor: 'object_key',
+                  accessor: d => getObjectName(d.object_key),
                   Cell: row => (
                     <ContextMenuTrigger id={`contextmenu_${row.index}`} holdToDisplay={-1}>
                       <div className="d-flex align-items-center p-2"
@@ -148,8 +149,8 @@ const getFileIcon = (filename) => {
                           height="45"
                         />
                         <div className="ms-3">
-                          <h6 className="mb-0">{get_object_name(row.value)}</h6>
-                          <span className="text-muted">{get_object_name(row.value)}</span>
+                          <h6 className="mb-0">{row.value}</h6>
+                          <span className="text-muted">{row.value}</span>
                         </div>
                       </div>
                     </ContextMenuTrigger>

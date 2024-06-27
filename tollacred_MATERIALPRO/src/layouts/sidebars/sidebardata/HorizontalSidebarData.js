@@ -36,11 +36,11 @@ const SidebarData = [
         href: '/organization/:idOrganization/documents',
         icon: <MaterialIcon icon="description" />,
       },
-      {
+      /*{
         title: 'Questionnaires',
         href: '/organization/:idOrganization/questionnaires',
         icon: <MaterialIcon icon="description" />,
-      },
+      },*/
       {
         title: 'Onboarding',
         href: '/organization/:idOrganization/onboarding',

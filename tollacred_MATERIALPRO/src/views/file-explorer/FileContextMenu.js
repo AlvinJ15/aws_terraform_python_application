@@ -23,13 +23,16 @@ const FileContextMenu = ({ contextMenu, refreshTable }) => {
   const [openModal, setOpenModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isRenameModal, setIsRenameModal] = useState(true)
-  const [objectName, setObjectName] = useState("")
+  const [objectName, setObjectName] = useState(contextMenu.row.original.object_key.split('/').pop())
   const [selectedFile, setSelectedFile] = useState(null);
+  const [linkRedirectModal, setLinkRedirectModal] = useState(false);
+  // Modal states:
   const [isOpen1, setIsOpen1] = useState(false);
 
   const handleContextMenuEditClick = (row) => {
+    setObjectName(contextMenu.row.original.object_key.split('/').pop())
     if (contextMenu.row.original.tags['file_visibility'] !== 'file_explorer') {
-      alert('Use Document Section to modify/delete this file');
+      setLinkRedirectModal(true);
       return;
     }
     setIsRenameModal(true);
@@ -38,7 +41,7 @@ const FileContextMenu = ({ contextMenu, refreshTable }) => {
 
   const handleContextMenuDeleteClick = (row) => {
     if (contextMenu.row.original.tags['file_visibility'] !== 'file_explorer') {
-      alert('Use Document Section to modify/delete this file');
+      setLinkRedirectModal(true);
       return;
     }
     setIsRenameModal(false);
@@ -86,6 +89,10 @@ const FileContextMenu = ({ contextMenu, refreshTable }) => {
   const toggle1 = () => {
     setIsOpen1(!isOpen1);
   };
+  const toggle = () => {
+    setLinkRedirectModal(!linkRedirectModal);
+  };
+
   return (
     <>
     <ContextMenu id={`contextmenu_${contextMenu.row.index}`} style={{top: contextMenu.y, left: contextMenu.x}}>
@@ -106,7 +113,7 @@ const FileContextMenu = ({ contextMenu, refreshTable }) => {
               <ModalBody>
                 <div className='mb-3'>
                   <input type='text' id="folder_name" className='form-control' name='folder_name'
-                         value={contextMenu.row.original.object_key.split('/').pop()}
+                         value={objectName}
                          onChange={handleObjectNameChange}/>
                 </div>
               </ModalBody>
@@ -130,6 +137,18 @@ const FileContextMenu = ({ contextMenu, refreshTable }) => {
               </ModalFooter>
             </>
         }
+      </Modal>
+      <Modal isOpen={linkRedirectModal} toggle={toggle.bind(null)}>
+        <ModalHeader toggle={toggle.bind(null)}>Modal title</ModalHeader>
+        <ModalBody>
+          Please go into Staff documents to edit/delete this document: <br />
+          <a href={`/organization/${params.idOrganization}/staff`}>CLICK HERE</a>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={toggle.bind(null)}>
+            Close
+          </Button>
+        </ModalFooter>
       </Modal>
     </>
   );
