@@ -128,7 +128,7 @@ const getFileIcon = (filename) => {
           <ComponentCard>
             <CardTitle tag="h3">Data Migration Pulse</CardTitle>
             <FileActionButtons newUpdated={newUpdated} setNewUpdated={setNewUpdated}></FileActionButtons>
-            <FileBreadCrumb/* name='Files'*//>
+            <FileBreadCrumb/>
             <ReactTable
               columns={[
                 {
