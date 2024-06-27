@@ -2,15 +2,7 @@ import {
   Card,
   CardBody,
   CardTitle,
-  CardSubtitle,
-  Table,
-  Button,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle, ButtonDropdown
 } from 'reactstrap';
-import folder_icon from '../../assets/images/icons/icons8-folder-96.png';
-import file_icon from '../../assets/images/icons/icons8-file-96.png';
 import React, {useEffect, useState} from "react";
 import ComponentCard from "@/components/ComponentCard.js";
 import ReactTable from "react-table-v6";
@@ -18,12 +10,15 @@ import {useLocation, useParams, useNavigate} from "react-router-dom";
 import FileService from "@/views/file-explorer/services/file.service.js";
 import 'react-table-v6/react-table.css';
 import FileBreadCrumb from "@/layouts/breadcrumbs/FileExplorerBreadCrumb.js";
-import * as Icon from 'react-feather';
 import FileActionButtons from "@/views/file-explorer/FileActionButtons.js";
 import { format } from 'date-fns';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import FileContextMenu from "@/views/file-explorer/FileContextMenu.js";
-
+import folderIcon from '../../assets/images/icons/icons8-folder-96.png';
+import fileIcon from '../../assets/images/icons/icons8-file-96.png';
+import pdfIcon from '../../assets/images/icons/icons8-pdf-96.png';
+import imageIcon from '../../assets/images/icons/icons8-image-96.png';
+import csvIcon from '../../assets/images/icons/icons8-csv-96.png';
 const FilesTable = () => {
 
   const params = useParams()
@@ -108,6 +103,24 @@ const FilesTable = () => {
     setNewUpdated(newUpdated+1);
   }
 
+const getFileIcon = (filename) => {
+  const extension = filename.split('.').pop().toLowerCase();
+
+  switch (extension) {
+    case 'pdf':
+      return pdfIcon;
+    case 'jpg':
+    case 'jpeg':
+    case 'png':
+    case 'gif':
+      return imageIcon;
+    case 'csv':
+      return csvIcon;
+    default:
+      return fileIcon;
+  }
+};
+
   return (
     <div>
       <Card>
@@ -127,9 +140,8 @@ const FilesTable = () => {
                         onClick={() => handleClickFile(row)}
                         onContextMenu={(e) => handleRightClick(e, row)}
                       >
-
                         <img
-                          src={row.original.type === 'folder' ? folder_icon : file_icon}
+                          src={row.original.type === 'folder' ? folderIcon : getFileIcon(row.value)}
                           className="rounded-circle"
                           alt="avatar"
                           width="45"
