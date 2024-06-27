@@ -123,11 +123,6 @@ const ProfileDashboard = () => {
                                                         data={packagesEmployee.compliance_packages}
                                                         columns={[
                                                             {
-                                                                Header: 'Package ID',
-                                                                accessor: 'package_id',
-                                                                id: 'id',
-                                                            },
-                                                            {
                                                                 Header: 'Name',
                                                                 id: 'name',
                                                                 accessor: (d) => d.name,
