@@ -111,12 +111,6 @@ def delete_entire_folder(path):
 
 
 def list_files_from_path(path: str):
-    # delimiter = "/"
-    # response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=path, Delimiter=delimiter)
-    # print("RESPONSE: ", response)
-    # folders = [prefix['Prefix'] for prefix in response.get('CommonPrefixes', [])]
-    # return folders
-
     child_objects = get_child_folders(path)
     if child_objects:
         print(f"Information for objects within path '{path}':")
@@ -132,9 +126,6 @@ def get_child_folders(parent_path):
     try:
         # List objects with delimiter to identify folders (avoid listing objects within folders)
         response_folders = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=parent_path, Delimiter='/', FetchOwner=True)
-        print("LAST:", response_folders)
-        response2 = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=parent_path,  FetchOwner=True)
-        print("ALL OBJECTS: ", response2)
 
         # Extract child folder prefixes
         child_folders = [
@@ -143,7 +134,7 @@ def get_child_folders(parent_path):
                 "modification_date": '-',
                 "size": "-",  # Size not available for folders
                 "type": "folder",
-                "owner": "-"
+                "owner": "-",
              }
             for prefix in response_folders.get('CommonPrefixes', [])
         ]
@@ -158,6 +149,11 @@ def get_child_folders(parent_path):
 
 
 def get_file_info(object_info):
+    tagging_response = s3.get_object_tagging(
+        Bucket=BUCKET_NAME,
+        Key=object_info.get('Key')
+    )
+    tags = {tag['Key']: tag['Value'] for tag in tagging_response.get('TagSet', [])}
     object_date = object_info['LastModified']
     object_size = object_info['Size']
     formatted_date = object_date.strftime('%Y-%m-%d %H:%M:%S')
@@ -166,7 +162,8 @@ def get_file_info(object_info):
         "modification_date": formatted_date,
         "size": object_size,  # Size not available for folders
         "type": "file",
-        "owner": object_info.get('Owner', {}).get('DisplayName')
+        "owner": object_info.get('Owner', {}).get('DisplayName'),
+        "tags": tags
     }
 
 def get_child_objects(parent_path):

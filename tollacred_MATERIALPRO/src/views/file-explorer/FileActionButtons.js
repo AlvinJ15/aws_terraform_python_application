@@ -64,7 +64,6 @@ const FileActionButtons = ({ newUpdated, setNewUpdated }) => {
         setIsLoading(false);
       })
     }
-
   };
 
   const handleFileChange = (event) => {
@@ -88,7 +87,6 @@ const FileActionButtons = ({ newUpdated, setNewUpdated }) => {
     setIsUploadDocument(true);
     toggleModalDocument();
   }
-
 
 
   return (

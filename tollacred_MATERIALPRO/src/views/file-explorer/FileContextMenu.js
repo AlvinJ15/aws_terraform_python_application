@@ -28,11 +28,19 @@ const FileContextMenu = ({ contextMenu, refreshTable }) => {
   const [isOpen1, setIsOpen1] = useState(false);
 
   const handleContextMenuEditClick = (row) => {
+    if (contextMenu.row.original.tags['file_visibility'] !== 'file_explorer') {
+      alert('Use Document Section to modify/delete this file');
+      return;
+    }
     setIsRenameModal(true);
     toggleModalDocument();
   };
 
   const handleContextMenuDeleteClick = (row) => {
+    if (contextMenu.row.original.tags['file_visibility'] !== 'file_explorer') {
+      alert('Use Document Section to modify/delete this file');
+      return;
+    }
     setIsRenameModal(false);
     toggleModalDocument();
   };

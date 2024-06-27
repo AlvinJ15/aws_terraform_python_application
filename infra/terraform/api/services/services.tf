@@ -107,7 +107,8 @@ resource "aws_s3_bucket_policy" "lambda_access" {
         "s3:PutObject",
         "s3:ListBucket",
         "s3:DeleteObject",
-        "s3:PutObjectTagging"
+        "s3:PutObjectTagging",
+        "s3:GetObjectTagging"
       ],
       "Resource": [
         "arn:aws:s3:::tollacred",
