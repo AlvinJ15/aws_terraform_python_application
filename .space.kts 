@@ -1,0 +1,25 @@
+job("Run on git push") {
+    startOn {
+        gitPush {
+            // run only on changes in 'main'
+            anyBranchMatching {
+                +"feature/CRD-191-Create-CI-CD-pipeline-on-Space"
+            }
+
+            //pathFilter {
+            //    +"tollacred_MATERIALPRO"
+            //}
+        }
+    }
+    shellScript {
+        interpreter = "/bin/bash"
+        content = """
+            echo Working dir contents
+            ls /mnt/space/work
+            pwd
+            sh -c {{ project:ENV_FILE_SECRET }}
+            echo $DB_USERNAME
+            echo DB_NAME
+        """
+    }
+}
