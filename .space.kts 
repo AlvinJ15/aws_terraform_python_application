@@ -22,7 +22,7 @@ job("Run on git push") {
                 pwd
                 sh -c {{ project:ENV_FILE_SECRET }}
                 echo $DB_USERNAME
-                echo DB_NAME
+                echo $DB_NAME
             """
         }
     }
