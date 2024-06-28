@@ -1,29 +1,9 @@
-job("Run on git push") {
-    startOn {
-        gitPush {
-            anyBranch()
-            // run only on changes in 'main'
-            //anyBranchMatching {
-            //    +"feature/CRD-191-Create-CI-CD-pipeline-on-Space"
-            //}
+/**
+* JetBrains Space Automation
+* This Kotlin script file lets you automate build activities
+* For more info, see https://www.jetbrains.com/help/space/automation.html
+*/
 
-            //pathFilter {
-            //    +"tollacred_MATERIALPRO"
-            //}
-        }
-    }
-
-    container(displayName = "Get param value from env variable", image = "ubuntu") {
-        shellScript {
-            interpreter = "/bin/bash"
-            content = """
-                echo Working dir contents
-                ls /mnt/space/work
-                pwd
-                sh -c {{ project:ENV_FILE_SECRET }}
-                echo $DB_USERNAME
-                echo DB_NAME
-            """
-        }
-    }
+job("Hello World!") {
+    container(displayName = "Say Hello", image = "hello-world")
 }
