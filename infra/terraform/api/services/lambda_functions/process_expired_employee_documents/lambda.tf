@@ -1,20 +1,11 @@
-module "lambda_layers" {
-  source = "../../layers"
-}
-
-module "source_code" {
-  source = "../../source_code"
-}
-
 resource "aws_lambda_function" "lambda_function_expired_employees_documents" {
   function_name    = "${var.project_name}-ExpiredEmployeesDocuments-${title(var.env)}"
-  filename         = module.source_code.source_code_package.output_path
-  source_code_hash = module.source_code.source_code_package.output_base64sha256
+  filename         = var.source_code.source_code_package.output_path
+  source_code_hash = var.source_code.source_code_package.output_base64sha256
   role             = var.lambda_exec.arn
   runtime          = "python3.10"
   handler          = "api_services/lambdas_functions/lambda_documents_expired.expired_handler"
-  depends_on       = [module.lambda_layers]
-  layers           = [module.lambda_layers.layer_arn]
+  layers           = [var.lambda_layers.layer_arn]
   timeout          = 500
 
   vpc_config {

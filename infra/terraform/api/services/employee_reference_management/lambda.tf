@@ -1,22 +1,13 @@
-module "lambda_layers" {
-  source = "../layers"
-}
-
-module "source_code" {
-  source = "../source_code"
-}
-
 resource "aws_lambda_function" "lambda_function_employee_references" {
   for_each = local.methods_names
 
   function_name    = "${var.project_name}-${each.value.lambda_name}-${title(var.env)}"
-  filename         = module.source_code.source_code_package.output_path
-  source_code_hash = module.source_code.source_code_package.output_base64sha256
+  filename         = var.source_code.source_code_package.output_path
+  source_code_hash = var.source_code.source_code_package.output_base64sha256
   role             = var.lambda_exec.arn
   runtime          = "python3.10"
   handler          = each.value.handler
-  depends_on       = [module.lambda_layers]
-  layers           = [module.lambda_layers.layer_arn]
+  layers           = [var.lambda_layers.layer_arn]
   timeout          = 30
 
   vpc_config {

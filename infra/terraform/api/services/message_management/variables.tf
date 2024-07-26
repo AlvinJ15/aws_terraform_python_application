@@ -17,3 +17,7 @@ variable "api_status_response" {}
 variable "lambda_exec" {}
 
 variable "id_resource_conversation" {}
+
+variable "lambda_layers" {}
+
+variable "source_code" {}
