@@ -1,8 +1,8 @@
 from api_services.utils.s3_utils import upload_files
 
 
-bucket_name = 'tollaniscred-stageapp-content'
-local_folder = '../../tollacred'
+bucket_name = 'Organizationcred-stageapp-content'
+local_folder = '../../Org'
 
 exclude_file = 'env_config.js'  # File to exclude
 

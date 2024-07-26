@@ -12,7 +12,7 @@ session = Session()
 s3_client = session.client("s3")
 # s3_client = session.client("s3", config=Config(signature_version='v4'))
 
-BUCKET_NAME = 'tollacred'
+BUCKET_NAME = 'Org'
 s3 = boto3.client('s3')
 
 

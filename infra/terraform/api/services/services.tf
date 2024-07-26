@@ -89,7 +89,7 @@ resource "aws_iam_role" "lambda_exec" {
 }
 
 resource "aws_s3_bucket_policy" "lambda_access" {
-  bucket = "tollacred"
+  bucket = "Org"
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -111,8 +111,8 @@ resource "aws_s3_bucket_policy" "lambda_access" {
         "s3:GetObjectTagging"
       ],
       "Resource": [
-        "arn:aws:s3:::tollacred",
-        "arn:aws:s3:::tollacred/*"
+        "arn:aws:s3:::Org",
+        "arn:aws:s3:::Org/*"
       ]
     }
   ]
@@ -134,9 +134,9 @@ resource "aws_iam_policy" "lambda_policy_secrets" {
         "secretsmanager:GetSecretValue"
       ],
       "Resource": [
-        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:tollaniscred_auto_stage-S0EWSH",
-        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:tollaniscred_auto_dev-LqRD2e",
-        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:tollacred_auto-vTGnv5",
+        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:Organizationcred_auto_stage-S0EWSH",
+        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:Organizationcred_auto_dev-LqRD2e",
+        "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:Org_auto-vTGnv5",
         "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:Paperform_access_token-B9wnrv",
         "arn:aws:secretsmanager:${var.aws_region}:${var.account_id}:secret:click_send_credentials-6tOON8"
       ]
@@ -188,7 +188,7 @@ EOF
 }
 
 locals {
-  db_user = var.env == "prod" ? "tollacred_auto" : format("tollaniscred_auto_%s", var.env)
+  db_user = var.env == "prod" ? "Org_auto" : format("Organizationcred_auto_%s", var.env)
 }
 
 resource "aws_iam_policy" "lambda_policy_rds" {

@@ -1,12 +1,12 @@
 locals {
   organizations = {
-    "0c53f3f8-5088-444a-a9e2-2c773a20fe6f": "Tollanis Payor",
+    "0c53f3f8-5088-444a-a9e2-2c773a20fe6f": "Organization Payor",
     "2c8d5c83-eac7-4ec2-bb57-ca2631d5f0ae": "Elite 365 - Locums",
     "4c6e19a0-0a58-43f0-a12e-9d66eabe2265": "TrueCare Nursing Services",
     "5d552a6c-1bef-412f-a913-36c2326975a3": "Genevive",
     "9cf728c0-288a-4d92-9524-04d58b2ab32d": "Elite 365",
     "aed47a1f-0ab4-44be-a903-2fb3ca783980": "Pulse",
-    "e5a88912-a95b-47a8-9a2f-f0f0594c7a3b": "Tollanis Demo"
+    "e5a88912-a95b-47a8-9a2f-f0f0594c7a3b": "Organization Demo"
   }
 }
 

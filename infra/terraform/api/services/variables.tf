@@ -1,7 +1,7 @@
 data "terraform_remote_state" "shared_services" {
   backend = "s3"
   config = {  # Corrected syntax: No quotes around "s3"
-    bucket = "tollacred"
+    bucket = "Org"
     key    = "terraform.tfstate"
     region = "us-east-1"
   }
@@ -28,5 +28,5 @@ variable "secret_manager_name" {}
 variable "env" {}
 
 variable "project_name" {
-  default   = "Tollacred"
+  default   = "Org"
 }

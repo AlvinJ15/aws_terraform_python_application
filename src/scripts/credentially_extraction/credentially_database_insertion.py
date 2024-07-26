@@ -386,13 +386,13 @@ class CredentiallyDatabaseInsertion:
 
     def get_admins_map(self):
         return {
-            'regine.desacula@tollanis.com': '99ad0db6-cbf0-4c2b-8152-37537c5c5a2e',
-            'mary.reyes@tollanis.com': '0936234f-6858-4789-8fe5-84c861145bcf',
-            'grace.angelica@tollanis.com': 'b696c0cf-842f-4373-9c16-b7aa2289b9b5',
-            'justine.malubay@tollanis.com': '57955069-52e5-4b35-b123-c6f47d0bb7d6',
-            'nikko.reyes@tollanis.com': 'ea3507ec-794d-4627-9bd2-668f5e7111b1',
-            'richelle.gordove@tollanis.com': '7f2dbe31-437e-435a-a73f-64a95e5c91da',
-            'tina.marietan@tollanis.com': '526b6c7d-5221-4873-bb8c-c04e88d0f22b',
+            'regine.desacula@Organization.com': '99ad0db6-cbf0-4c2b-8152-37537c5c5a2e',
+            'mary.reyes@Organization.com': '0936234f-6858-4789-8fe5-84c861145bcf',
+            'grace.angelica@Organization.com': 'b696c0cf-842f-4373-9c16-b7aa2289b9b5',
+            'justine.malubay@Organization.com': '57955069-52e5-4b35-b123-c6f47d0bb7d6',
+            'nikko.reyes@Organization.com': 'ea3507ec-794d-4627-9bd2-668f5e7111b1',
+            'richelle.gordove@Organization.com': '7f2dbe31-437e-435a-a73f-64a95e5c91da',
+            'tina.marietan@Organization.com': '526b6c7d-5221-4873-bb8c-c04e88d0f22b',
             'default': '99ad0db6-cbf0-4c2b-8152-37537c5c5a2e'
         }
 

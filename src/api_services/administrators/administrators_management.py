@@ -20,7 +20,7 @@ def get_all_handler(event, context, stage: str):
     client = boto3.client('lambda')
 
     database_response = client.invoke(
-        FunctionName=f'Tollacred-DatabaseGateway-{stage.title()}',
+        FunctionName=f'Org-DatabaseGateway-{stage.title()}',
         InvocationType='RequestResponse',
         Payload=json.dumps(event_data)
     )

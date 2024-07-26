@@ -18,7 +18,7 @@ class DataBase:
 
     @classmethod
     def create_session(cls, stage):
-        credentials = credentials_utils.retrieve_credentials_tollacred(stage)
+        credentials = credentials_utils.retrieve_credentials_Org(stage)
         path_to_certificate = 'api_services/utils/us-east-1-bundle.pem'
 
         token = client.generate_db_auth_token(

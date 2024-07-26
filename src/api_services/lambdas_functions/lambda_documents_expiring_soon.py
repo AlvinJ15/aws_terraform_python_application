@@ -39,7 +39,7 @@ def expiry_soon_handler(event, context, stage):
         body = '<BR>Expiring Soon Employee Documents Attached<BR><BR>'
         csv_file = create_csv_in_memory(build_employee_header(), rows)
         SES.send_email_credentially(
-            'credentialing@tollanis.com', 'EXPIRING SOON DOCUMENTS',
+            'credentialing@Organization.com', 'EXPIRING SOON DOCUMENTS',
             body, csv_file, 'expiring_soon_documents.csv'
         )
         db.commit()

@@ -7,10 +7,10 @@ from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 
 ses_client = boto3.client('ses')
-SENDER_REFEVALS = 'refevals@tollaniscred.com'
-SENDER_CREDENTIALLY = 'automation@tollaniscred.com'
-SENDER_NOTIFICATION = 'notifications@tollaniscred.com'
-DEFAULT_CC = 'shubham.aggarwal@tollanis.com'
+SENDER_REFEVALS = 'refevals@Organizationcred.com'
+SENDER_CREDENTIALLY = 'automation@Organizationcred.com'
+SENDER_NOTIFICATION = 'notifications@Organizationcred.com'
+DEFAULT_CC = 'shubham.aggarwal@Organization.com'
 CHARSET = "utf-8"
 
 

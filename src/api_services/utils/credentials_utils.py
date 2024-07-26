@@ -4,7 +4,7 @@ import json
 from botocore.exceptions import ClientError
 
 
-def retrieve_credentials_tollacred(stage):
+def retrieve_credentials_Org(stage):
     secret_name = resolve_secret_name(stage)
     region_name = "us-east-1"
 
@@ -85,10 +85,10 @@ def retrieve_credentials_clicksend():
 
 def resolve_secret_name(stage):
     if stage == 'prod':
-        return 'tollacred_auto'
+        return 'Org_auto'
     elif stage == 'dev':
-        return 'tollaniscred_auto_dev'
+        return 'Organizationcred_auto_dev'
     elif stage == 'stage':
-        return 'tollaniscred_auto_stage'
+        return 'Organizationcred_auto_stage'
     else:
         raise Exception('Unknown stage {}'.format(stage))

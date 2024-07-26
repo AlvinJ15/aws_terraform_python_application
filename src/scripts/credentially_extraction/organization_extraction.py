@@ -3,11 +3,11 @@ from concurrent.futures import ThreadPoolExecutor
 from scripts.credentially_extraction.credentially_extractor import CredentiallyExtractor
 
 
-def get_tollanis_training_creds():
+def get_Organization_training_creds():
     return {
         'TOKEN': 'UEfPylkw8DLCzeSMuTexuWoGLsM',
-        'APP_NAME': 'tollanis-training',
-        'BUCKET_FOLDER_NAME': 'Tollanis-training',
+        'APP_NAME': 'Organization-training',
+        'BUCKET_FOLDER_NAME': 'Organization-training',
         'CRED_ORGANIZATION_ID': '2'
     }
 
@@ -21,11 +21,11 @@ def get_genevive_creds():
     }
 
 
-def get_tollanis_payor_creds():
+def get_Organization_payor_creds():
     return {
         'TOKEN': '7toK0AfveRWqBxKJJcjKxm494Vc',
-        'APP_NAME': 'tollanis-payor',
-        'BUCKET_FOLDER_NAME': 'Tollanis-payor',
+        'APP_NAME': 'Organization-payor',
+        'BUCKET_FOLDER_NAME': 'Organization-payor',
         'CRED_ORGANIZATION_ID': '12'
     }
 
@@ -80,9 +80,9 @@ if __name__ == "__main__":
     creds = get_elite365locums_creds()
 
     with ThreadPoolExecutor(max_workers=20) as executor:
-        executor.submit(paralel_upload, get_tollanis_training_creds())
+        executor.submit(paralel_upload, get_Organization_training_creds())
         executor.submit(paralel_upload, get_genevive_creds())
-        executor.submit(paralel_upload, get_tollanis_payor_creds())
+        executor.submit(paralel_upload, get_Organization_payor_creds())
         executor.submit(paralel_upload, get_truecarenursing_creds())
         executor.submit(paralel_upload, get_elite365_creds())
         executor.submit(paralel_upload, get_pulse_creds())

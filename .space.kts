@@ -9,7 +9,7 @@ job("Run Build and Deploy for UI - DEVELOPMENT") {
             }
 
             pathFilter {
-                +"tollacred_MATERIALPRO/**"
+                +"Org_MATERIALPRO/**"
             }
         }
     }
@@ -23,8 +23,8 @@ job("Run Build and Deploy for UI - DEVELOPMENT") {
 
     container(displayName = "Get param value from env variable", image = "doctrine/nodejs-aws-cli") {
         env["MY_SECRET"] = "{{ project:ENV_FILE_SECRET }}"
-        env["PROJECT_NAME"] = "tollacredapp"
-        env["UI_FOLDER"] = "tollacred_MATERIALPRO"
+        env["PROJECT_NAME"] = "Orgapp"
+        env["UI_FOLDER"] = "Org_MATERIALPRO"
         env["UI_DEVELOPMENT"] = "{{ project:SECRET_UI_DEV }}"
         env["CLOUD_FRONT_ID"] = "E73BZKFCO53N0"
 
@@ -81,7 +81,7 @@ job("Deploy API/terraform - DEVELOPMENT") {
 
     container(displayName = "Get param value from env variable", image = "python:3.10-bookworm") {
         env["MY_SECRET"] = "{{ project:ENV_FILE_SECRET }}"
-        env["PROJECT_NAME"] = "tollacredapp"
+        env["PROJECT_NAME"] = "Orgapp"
 
         shellScript {
             interpreter = "/bin/bash"
@@ -144,7 +144,7 @@ job("Run Build and Deploy for UI - PRODUCTION") {
             }
 
             pathFilter {
-                +"tollacred_MATERIALPRO/**"
+                +"Org_MATERIALPRO/**"
             }
         }
     }
@@ -158,8 +158,8 @@ job("Run Build and Deploy for UI - PRODUCTION") {
 
     container(displayName = "Get param value from env variable", image = "doctrine/nodejs-aws-cli") {
         env["MY_SECRET"] = "{{ project:ENV_FILE_SECRET }}"
-        env["PROJECT_NAME"] = "tollacredapp"
-        env["UI_FOLDER"] = "tollacred_MATERIALPRO"
+        env["PROJECT_NAME"] = "Orgapp"
+        env["UI_FOLDER"] = "Org_MATERIALPRO"
         env["UI_PRODUCTION"] = "{{ project:SECRET_UI_PROD }}"
         env["CLOUD_FRONT_ID"] = "E2X02VFWPPQWQI"
 
@@ -216,7 +216,7 @@ job("Deploy API/terraform - PRODUCTION") {
 
     container(displayName = "Get param value from env variable", image = "python:3.10-bookworm") {
         env["MY_SECRET"] = "{{ project:ENV_FILE_SECRET }}"
-        env["PROJECT_NAME"] = "tollacredapp"
+        env["PROJECT_NAME"] = "Orgapp"
 
         shellScript {
             interpreter = "/bin/bash"

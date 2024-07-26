@@ -5,11 +5,11 @@ from scripts.credentially_extraction.credentially_extractor import CredentiallyE
 from scripts.credentially_extraction.employee_database_insertion import EmployeeDatabaseInsertion
 
 
-def get_tollanis_training_creds():
+def get_Organization_training_creds():
     return {
         'TOKEN': 'xhKL6wmdDPrhNoJdrhwV1dtF7Qc',
-        'APP_NAME': 'tollanis-training',
-        'BUCKET_FOLDER_NAME': 'Tollanis-training',
+        'APP_NAME': 'Organization-training',
+        'BUCKET_FOLDER_NAME': 'Organization-training',
         'CRED_ORGANIZATION_ID': '2',
         'ORGANIZATION_ID': 'e5a88912-a95b-47a8-9a2f-f0f0594c7a3b'
     }
@@ -25,11 +25,11 @@ def get_genevive_creds():
     }
 
 
-def get_tollanis_payor_creds():
+def get_Organization_payor_creds():
     return {
         'TOKEN': 'lS7toX4laqDklD52cbcaBVsgpdQ',
-        'APP_NAME': 'tollanis-payor',
-        'BUCKET_FOLDER_NAME': 'Tollanis-payor',
+        'APP_NAME': 'Organization-payor',
+        'BUCKET_FOLDER_NAME': 'Organization-payor',
         'CRED_ORGANIZATION_ID': '12',
         'ORGANIZATION_ID': '0c53f3f8-5088-444a-a9e2-2c773a20fe6f'
     }
@@ -89,9 +89,9 @@ def insert_employee_subtable(creds):
 
 if __name__ == "__main__":
     a=3
-    #insert_employee_subtable(get_tollanis_training_creds())
+    #insert_employee_subtable(get_Organization_training_creds())
     #insert_employee_subtable(get_genevive_creds())
-    #insert_employee_subtable(get_tollanis_payor_creds())
+    #insert_employee_subtable(get_Organization_payor_creds())
     #insert_employee_subtable(get_truecarenursing_creds())
     #insert_employee_subtable(get_elite365_creds())
     #insert_employee_subtable(get_elite365locums_creds())

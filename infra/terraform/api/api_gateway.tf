@@ -1,6 +1,6 @@
 resource "aws_api_gateway_rest_api" "rest_api" {
   name        = "${var.project_name}-API"
-  description = "Tollanis Credentially API Gateway"
+  description = "Organization Credentially API Gateway"
   binary_media_types = ["multipart/form-data"]
 }
 

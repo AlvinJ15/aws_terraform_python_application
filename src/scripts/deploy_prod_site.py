@@ -1,8 +1,8 @@
 from api_services.utils.s3_utils import upload_files
 
 
-bucket_name = 'tollaniscred-prodapp-content'
-local_folder = '../../tollacred_MATERIALPRO/dist'
+bucket_name = 'Organizationcred-prodapp-content'
+local_folder = '../../Org_MATERIALPRO/dist'
 
 exclude_file = '.env.'  # File to exclude
 

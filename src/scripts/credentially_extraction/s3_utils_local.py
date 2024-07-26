@@ -12,7 +12,7 @@ s3_client = session.client(
 )
 
 
-def upload_file_to_s3(path, file, bucket_name='tollacred'):
+def upload_file_to_s3(path, file, bucket_name='Org'):
     try:
         s3_client.put_object(
             Bucket=bucket_name,
@@ -25,7 +25,7 @@ def upload_file_to_s3(path, file, bucket_name='tollacred'):
         print(f'Error on S3 upload: {e}')
 
 
-def create_path_to_s3(path, bucket_name='tollacred'):
+def create_path_to_s3(path, bucket_name='Org'):
     try:
         s3_client.put_object(
             Bucket=bucket_name,

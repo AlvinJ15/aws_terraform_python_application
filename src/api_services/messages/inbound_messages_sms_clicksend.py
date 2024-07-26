@@ -41,7 +41,7 @@ def inbound_sms_handler(event, context):
                 db.commit()
                 receiver_admin = db.query(Employee).filter_by(employee_id=new_message.receiver_id).first()
                 sender_employee = db.query(Employee).filter_by(employee_id=new_message.sender_id).first()
-                domain = 'app.tollaniscred.com'
+                domain = 'app.Organizationcred.com'
                 if stage != 'prod':
                     domain = domain.replace('app', f'app-{stage}')
                 email_body = (f'<BR>Dear {receiver_admin.profile.get_name()}<BR><BR>'
@@ -52,7 +52,7 @@ def inbound_sms_handler(event, context):
                               f'Message:\t{new_message.content}<BR><BR>'
                               f'To reply, click here: {domain}/organization/{sender_employee.organization_id}'
                               f'/user/{sender_employee.employee_id}/conversation<BR><BR>'
-                              f'Thank you for using TollanisCred!')
+                              f'Thank you for using OrganizationCred!')
                 SES.send_notification_email(
                     recipient=receiver_admin.profile.email,
                     subject=f'SMS Reply from {sender_employee.profile.get_name()}',

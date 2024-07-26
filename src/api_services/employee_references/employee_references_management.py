@@ -87,7 +87,7 @@ def create_handler(event, context, stage):
             }
             subject = f'Reference request for {employee_profile.get_name()}'
             body_mail = (f'Please send you reference for {employee_profile.get_name()}\n'
-                         f'<a href="https://tollaniscred.paperform.co/?{urlencode_dict(query_parameters)}">'
+                         f'<a href="https://Organizationcred.paperform.co/?{urlencode_dict(query_parameters)}">'
                          f'FORM LINK </a>')
             mail_result = SES.send_email_refevals(new_reference.referee_email, subject, body_mail)
             new_reference.status = 'Sent'
@@ -158,7 +158,7 @@ def update_handler(event, context, stage):
             }
             subject = f'Reference request for {employee_profile.get_name()}'
             body_mail = (f'Please send you reference for {employee_profile.get_name()}\n'
-                         f'https://tollaniscred.paperform.co/?{urlencode_dict(query_parameters)}')
+                         f'https://Organizationcred.paperform.co/?{urlencode_dict(query_parameters)}')
             mail_result = SES.send_email_refevals(reference.referee_email, subject, body_mail)
         if reference.status == 'Approved':
             reference.completion_date = DataBase.get_now()

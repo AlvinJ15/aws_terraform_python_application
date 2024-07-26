@@ -28,7 +28,7 @@ def get_employees_with_filter(db, organization_id, query_params: dict):
 
 
 def notify_assignee(db, stage, employee, data):
-    domain = 'app.tollaniscred.com'
+    domain = 'app.Organizationcred.com'
     if stage != 'prod':
         domain = domain.replace('app', f'app-{stage}')
     administrator = db.query(Administrator).filter_by(admin_id=data['assignee_id']).first()
@@ -38,7 +38,7 @@ def notify_assignee(db, stage, employee, data):
                   f'\tCandidate Email:\t{employee.profile.email}<BR>'
                   f'\tCandidate Profile:\t{domain}/organization/{employee.organization_id}/'
                   f'employee/{employee.employee_id}/profile<BR><BR>'
-                  f'Thank you for using TollanisCred!')
+                  f'Thank you for using OrganizationCred!')
     SES.send_notification_email(
         recipient=administrator.email,
         subject=f'New candidate assigned: {employee.profile.get_name()}',
